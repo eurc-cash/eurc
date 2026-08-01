@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>EURC Market — Product</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+        body { background: #0A1628; color: #FFFFFF; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .back-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 20px;
+            border-radius: 20px;
+            color: #8899AA;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .product-detail { display: flex; flex-direction: column; gap: 20px; }
+        .product-detail img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 16px;
+            background: #1A2A5E;
+        }
+        .product-detail h1 { font-size: 28px; margin-bottom: 8px; }
+        .product-detail .price { font-size: 32px; font-weight: 800; color: #00E5FF; }
+        .product-detail .price-rub { color: #8899AA; font-size: 18px; margin-left: 10px; }
+        .product-detail .specs { color: #8899AA; font-size: 16px; margin-bottom: 16px; }
+        .product-detail .section { margin: 16px 0; }
+        .product-detail .section h3 { color: #FFFFFF; font-size: 18px; margin-bottom: 8px; }
+        .product-detail .section p { color: #8899AA; font-size: 14px; line-height: 1.6; }
+        .product-detail .buy-btn {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #1A5CFF, #0066FF);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .product-detail .buy-btn:hover { transform: scale(1.02); box-shadow: 0 0 40px rgba(26,92,255,0.4); }
+        .product-detail .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+        .product-detail .meta-item { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; }
+        .product-detail .meta-item .label { color: #667; font-size: 12px; }
+        .product-detail .meta-item .value { color: #FFFFFF; font-size: 15px; }
+
+        @media (max-width: 480px) {
+            .product-detail h1 { font-size: 22px; }
+            .product-detail .price { font-size: 26px; }
+            .product-detail .meta { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="../market.html" class="back-btn">← Back to Market</a>
+
+        <div id="productDetail" class="product-detail">
+            <div style="text-align:center;color:#8899AA;padding:40px;">⏳ Loading product...</div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  PRODUCT.JS — ЗАГРУЗКА ДАННЫХ О ТОВАРЕ ПО ID
+        // ============================================================
+
+        const EURC_USD = 1.15;
+
+        // Получаем ID из URL
+        const params = new URLSearchParams(window.location.search);
+        const productId = parseInt(params.get('id'));
+
+        // Загружаем все JSON
+        async function loadProduct() {
+            try {
+                const files = [
+                    '../data/electronics.json',
+                    '../data/ev.json',
+                    '../data/realestate.json',
+                    '../data/photos.json'
+                ];
+                const responses = await Promise.all(files.map(f => fetch(f)));
+                const data = await Promise.all(responses.map(r => r.json()));
+                const allProducts = data.flat();
+                const product = allProducts.find(p => p.id === productId);
+
+                if (!product) {
+                    document.getElementById('productDetail').innerHTML = `
+                        <div style="text-align:center;color:#ff6b6b;padding:40px;">
+                            ❌ Product not found (ID: ${productId})
+                        </div>
+                    `;
+                    return;
+                }
+
+                renderProduct(product);
+            } catch (err) {
+                document.getElementById('productDetail').innerHTML = `
+                    <div style="text-align:center;color:#ff6b6b;padding:40px;">
+                        ❌ Error loading product: ${err.message}
+                    </div>
+                `;
+            }
+        }
+
+        function renderProduct(p) {
+            const priceEURC = (p.price_usd / EURC_USD) * 1.35;
+            const priceRub = priceEURC * 90;
+            const categoryEmoji = {
+                'electronics': '📱',
+                'ev': '🚗',
+                'realestate': '🏠',
+                'photos': '📷'
+            } [p.category] || '📦';
+
+            document.getElementById('productDetail').innerHTML = `
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='https://picsum.photos/seed/error/800/400'" />
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                    <h1>${categoryEmoji} ${p.name}</h1>
+                    <span style="background:rgba(255,255,255,0.05);padding:4px 14px;border-radius:20px;font-size:13px;color:#667;">${p.category}</span>
+                </div>
+                <div class="specs">${p.specs || 'No specifications provided.'}</div>
+                <div>
+                    <span class="price">${priceEURC.toFixed(2)} EURC</span>
+                    <span class="price-rub">≈ ${priceRub.toFixed(0)} ₽</span>
+                </div>
+
+                <div class="meta">
+                    <div class="meta-item"><div class="label">⭐ Rating</div><div class="value">${p.rating || 'N/A'} / 5.0</div></div>
+                    <div class="meta-item"><div class="label">📝 Reviews</div><div class="value">${p.reviews || 0}</div></div>
+                    <div class="meta-item"><div class="label">🏷️ Seller</div><div class="value">${p.seller || 'Unknown'}</div></div>
+                    <div class="meta-item"><div class="label">📦 Warranty</div><div class="value">${p.warranty || 'Standard'}</div></div>
+                </div>
+
+                <div class="section">
+                    <h3>📋 Description</h3>
+                    <p>${p.full_description || 'No description available.'}</p>
+                </div>
+
+                <div class="section">
+                    <h3>🚚 Delivery</h3>
+                    <p>${p.delivery || 'Standard delivery terms apply.'}</p>
+                </div>
+
+                <button class="buy-btn" onclick="openPayment(${priceEURC.toFixed(2)})">
+                    💳 Buy now for ${priceEURC.toFixed(2)} EURC
+                </button>
+            `;
+        }
+
+        // ===== ОПЛАТА =====
+        function openPayment(amount) {
+            const wallet = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
+            alert(
+                `💳 Payment in EURC\n\n` +
+                `Amount: ${amount} EURC\n` +
+                `Wallet: ${wallet}\n\n` +
+                `Send exact amount from Phantom/Solflare to the wallet above.\n` +
+                `After confirmation we will ship the product.`
+            );
+        }
+
+        // ЗАПУСК
+        document.addEventListener('DOMContentLoaded', loadProduct);
+    </script>
+</body>
+</html>
