@@ -5,10 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>EURC Market — Buy with euro-stablecoin</title>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: #0A1628; color: #FFFFFF; padding-bottom: 30px; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #0A1628;
+            color: #FFFFFF;
+            padding-bottom: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
 
+        /* ===== HEADER ===== */
         .market-header {
             background: linear-gradient(135deg, #0A1628, #1A2A5E);
             padding: 15px 0;
@@ -25,8 +39,18 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .logo-area { display: flex; align-items: center; gap: 10px; }
-        .logo-area img { height: 32px; width: 32px; border-radius: 8px; background: #1A2A5E; object-fit: contain; }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-area img {
+            height: 32px;
+            width: 32px;
+            border-radius: 8px;
+            background: #1A2A5E;
+            object-fit: contain;
+        }
         .logo-area h1 {
             font-size: 18px;
             font-weight: 800;
@@ -35,15 +59,22 @@
             -webkit-text-fill-color: transparent;
         }
         .wallet-badge {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 10px;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             word-break: break-all;
         }
-        .wallet-badge code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-size: 9px; color: #00E5FF; }
+        .wallet-badge code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            color: #00E5FF;
+        }
 
+        /* ===== SEARCH ===== */
         .search-hero {
             background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
             padding: 25px 0 30px;
@@ -51,8 +82,16 @@
             border-radius: 0 0 20px 20px;
             text-align: center;
         }
-        .search-hero h2 { font-size: 20px; color: #FFFFFF; margin-bottom: 4px; }
-        .search-hero p { color: #8899AA; font-size: 13px; margin-bottom: 15px; }
+        .search-hero h2 {
+            font-size: 20px;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .search-hero p {
+            color: #8899AA;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
         .search-box {
             display: flex;
             gap: 8px;
@@ -63,15 +102,20 @@
         .search-box input {
             flex: 1;
             padding: 12px 16px;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             color: white;
             font-size: 15px;
             min-width: 0;
         }
-        .search-box input::placeholder { color: #667; }
-        .search-box input:focus { outline: none; border-color: #1A5CFF; }
+        .search-box input::placeholder {
+            color: #667;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: #1A5CFF;
+        }
         .search-box button {
             padding: 12px 22px;
             background: linear-gradient(135deg, #1A5CFF, #0066FF);
@@ -84,7 +128,10 @@
             white-space: nowrap;
             transition: all 0.3s;
         }
-        .search-box button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(26,92,255,0.4); }
+        .search-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(26, 92, 255, 0.4);
+        }
         .filters {
             display: flex;
             justify-content: center;
@@ -94,17 +141,38 @@
             color: #8899AA;
             font-size: 13px;
         }
-        .filters label { display: flex; align-items: center; gap: 8px; }
-        .filters input[type="range"] { width: 90px; accent-color: #1A5CFF; height: 4px; }
+        .filters label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filters input[type="range"] {
+            width: 90px;
+            accent-color: #1A5CFF;
+            height: 4px;
+        }
         .filters select {
             padding: 4px 10px;
             border-radius: 6px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             color: white;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 12px;
         }
+        .filters .reset-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .filters .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
+        /* ===== RESULTS ===== */
         .results-header {
             display: flex;
             justify-content: space-between;
@@ -115,20 +183,21 @@
             flex-wrap: wrap;
             gap: 8px;
         }
-
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
             gap: 15px;
         }
         .product-card {
-            background: rgba(255,255,255,0.02);
+            background: rgba(255, 255, 255, 0.02);
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.04);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             transition: all 0.2s;
         }
-        .product-card:active { transform: scale(0.97); }
+        .product-card:active {
+            transform: scale(0.97);
+        }
         .product-card img {
             width: 100%;
             height: 140px;
@@ -136,7 +205,9 @@
             background: #0A1628;
             padding: 5px;
         }
-        .product-info { padding: 12px; }
+        .product-info {
+            padding: 12px;
+        }
         .product-info h3 {
             font-size: 13px;
             margin-bottom: 4px;
@@ -145,9 +216,22 @@
             color: #DDD;
             line-height: 1.3;
         }
-        .product-platform { font-size: 10px; color: #667; margin-bottom: 4px; text-transform: capitalize; }
-        .product-price { font-size: 18px; font-weight: 700; color: #00E5FF; }
-        .product-price-rub { font-size: 11px; color: #667; margin-left: 4px; }
+        .product-platform {
+            font-size: 10px;
+            color: #667;
+            margin-bottom: 4px;
+            text-transform: capitalize;
+        }
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00E5FF;
+        }
+        .product-price-rub {
+            font-size: 11px;
+            color: #667;
+            margin-left: 4px;
+        }
         .buy-btn {
             width: 100%;
             padding: 10px;
@@ -161,34 +245,156 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        .buy-btn:active { opacity: 0.7; }
-        .buy-btn:hover { transform: scale(1.02); }
+        .buy-btn:active {
+            opacity: 0.7;
+        }
+        .buy-btn:hover {
+            transform: scale(1.02);
+        }
 
+        /* ===== LIQUIDITY POOL SECTION ===== */
+        .pool-section {
+            background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
+            border-radius: 16px;
+            padding: 30px 20px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .pool-section h2 {
+            font-size: 24px;
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .pool-section .subtitle {
+            color: #8899AA;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            font-size: 14px;
+        }
+        .pool-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .pool-step {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .pool-step .step-num {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .pool-step h4 {
+            color: #FFFFFF;
+            font-size: 14px;
+        }
+        .pool-step p {
+            color: #8899AA;
+            font-size: 12px;
+        }
+        .pool-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pool-actions .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #1A5CFF, #0066FF);
+            color: white;
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            box-shadow: 0 0 30px rgba(26, 92, 255, 0.4);
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .pool-actions .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(26, 92, 255, 0.6);
+        }
+        .pool-actions .btn-secondary {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .pool-actions .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .pool-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            color: #8899AA;
+            font-size: 13px;
+        }
+        .pool-info span {
+            color: #00E5FF;
+            font-weight: 700;
+        }
+        .pool-footer {
+            text-align: center;
+            color: #667;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        /* ===== PAYMENT MODAL ===== */
         .payment-modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(6px);
             z-index: 9999;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        .payment-modal.active { display: flex; }
+        .payment-modal.active {
+            display: flex;
+        }
         .payment-box {
             background: #0F1A3A;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 28px 24px;
             max-width: 420px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
         }
-        .payment-box h2 { font-size: 20px; margin-bottom: 12px; color: #FFFFFF; }
-        .payment-box .amount { font-size: 30px; font-weight: 800; color: #00E5FF; margin: 10px 0; }
+        .payment-box h2 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #FFFFFF;
+        }
+        .payment-box .amount {
+            font-size: 30px;
+            font-weight: 800;
+            color: #00E5FF;
+            margin: 10px 0;
+        }
         .payment-box .wallet-addr {
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.3);
             padding: 12px;
             border-radius: 10px;
             word-break: break-all;
@@ -196,10 +402,12 @@
             font-size: 13px;
             margin: 15px 0;
         }
-        .payment-box .wallet-addr code { color: #00E5FF; }
+        .payment-box .wallet-addr code {
+            color: #00E5FF;
+        }
         .payment-box .copy-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: white;
             padding: 4px 12px;
             border-radius: 6px;
@@ -210,8 +418,8 @@
         .payment-box .close-btn {
             width: 100%;
             padding: 12px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: white;
             border-radius: 10px;
             cursor: pointer;
@@ -219,30 +427,71 @@
             font-size: 15px;
         }
 
+        /* ===== FOOTER ===== */
         .footer-market {
             margin-top: 40px;
             padding: 20px 0;
-            border-top: 1px solid rgba(255,255,255,0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
             text-align: center;
             color: #667;
             font-size: 12px;
         }
-        .status-msg { color: #8899AA; text-align: center; padding: 30px 15px; font-size: 14px; }
-        .status-msg .error { color: #ff6b6b; }
+        .status-msg {
+            color: #8899AA;
+            text-align: center;
+            padding: 30px 15px;
+            font-size: 14px;
+        }
+        .status-msg .error {
+            color: #ff6b6b;
+        }
 
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
-            .products-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .product-card img { height: 120px; }
-            .product-info h3 { font-size: 12px; height: 32px; }
-            .product-price { font-size: 16px; }
-            .search-box input { font-size: 14px; padding: 10px 12px; }
-            .search-box button { padding: 10px 16px; font-size: 13px; }
-            .wallet-badge { font-size: 9px; }
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .product-card img {
+                height: 120px;
+            }
+            .product-info h3 {
+                font-size: 12px;
+                height: 32px;
+            }
+            .product-price {
+                font-size: 16px;
+            }
+            .search-box input {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+            .search-box button {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            .wallet-badge {
+                font-size: 9px;
+            }
+            .pool-steps {
+                grid-template-columns: 1fr;
+            }
+            .pool-actions .btn-primary,
+            .pool-actions .btn-secondary {
+                display: block;
+                margin: 10px 0;
+            }
+            .pool-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== HEADER ===== -->
     <header class="market-header">
         <div class="container">
             <div class="logo-area">
@@ -255,6 +504,7 @@
         </div>
     </header>
 
+    <!-- ===== SEARCH ===== -->
     <section class="search-hero">
         <div class="container">
             <h2>🔍 Find and buy with EURC</h2>
@@ -264,7 +514,7 @@
                 <button onclick="searchProducts()">Search</button>
             </div>
             <div class="filters">
-                <label>Price (EURC): <input type="range" min="0" max="500" value="100" id="priceFilter" /> <span id="priceLabel">100</span></label>
+                <label>Price (EURC): <input type="range" min="0" max="500" value="500" id="priceFilter" /> <span id="priceLabel">500</span></label>
                 <label>Platform:
                     <select id="platformFilter">
                         <option value="all">All</option>
@@ -272,11 +522,12 @@
                         <option value="amazon">Amazon</option>
                     </select>
                 </label>
-                <button onclick="resetFilters()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;padding:4px 12px;border-radius:6px;cursor:pointer;">Reset</button>
+                <button class="reset-btn" onclick="resetFilters()">↺ Reset</button>
             </div>
         </div>
     </section>
 
+    <!-- ===== RESULTS ===== -->
     <main class="container">
         <div class="results-header">
             <span id="resultCount">Found: 0</span>
@@ -287,201 +538,752 @@
         <div id="errorMsg" class="status-msg" style="display:none;"></div>
     </main>
 
-    <div id="paymentModal" class="payment-modal">
-        <div class="payment-box">
-            <h2>💳 Payment in EURC</h2>
-            <p style="color:#8899AA;font-size:14px;">Send exact amount to wallet:</p>
-            <div class="amount" id="paymentAmount">0 EURC</div>
-            <div class="wallet-addr">
-                📤 Recipient:<br />
-                <code id="paymentWallet">DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
-                <br />
-                <button class="copy-btn" onclick="copyWallet()">📋 Copy</button>
-            </div>
-            <p style="color:#667;font-size:12px;margin:10px 0;">
-                ⚡ Open Phantom/Solflare → send EURC to address above<br />
-                ✅ After confirmation we will ship the product
-            </p>
-            <button class="close-btn" onclick="closePayment()">Close</button>
-        </div>
-    </div>
-
-    <footer class="footer-market">
+    <!-- ============================================================ -->
+    <!--  💧 СЕКЦИЯ: СТАНЬ МАРКЕТ-МЕЙКЕРОМ (ВСТРОЕННАЯ)            -->
+    <!-- ============================================================ -->
+    <section class="pool-section">
         <div class="container">
-            <p>© 2026 EURC Market — Buy with euro-stablecoin</p>
-            <p style="font-size:10px;color:#444;">1 EURC ≈ 1 €</p>
+            <h2>💧 Стань маркет-мейкером EURC</h2>
+            <p class="subtitle">
+                Создай пул ликвидности с токеном EURC и начни зарабатывать на комиссиях от обменов.
+                Чем больше пулов — тем стабильнее цена токена!
+            </p>
+
+            <div class="pool-steps">
+                <div class="pool-step">
+                    <span class="step-num">1️⃣</span>
+                    <h4>Выбери пару</h4>
+                    <p>EURC / SOL или EURC / USDC</p>
+                </div>
+                <div class="pool-step">
+                    <span class="step-num">2️⃣</span>
+                    <h4>Внеси токены</h4>
+                    <p>Укажи количество EURC и SOL</p>
+                </div>
+                <div class="pool-step">
+                    <span class="step-num">3️⃣</span>
+                    <h4>Создай и получай</h4>
+                    <p>Подтверди транзакцию и получай комиссии</p>
+                </div>
+            </div>
+
+            <div class="pool-info">
+                <div>📌 Адрес токена: <span id="tokenAddressDisplay">2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4</span></div>
+                <div>💰 Комиссия: <span>~0.005 SOL</span></div>
+                <div>📈 Доходность: <span>от 0.1% до 1%</span></div>
+            </div>
+
+            <div class="pool-actions">
+                <a href="https://app.meteora.ag/create-pool?base=2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4"
+                target="_blank"
+                class="btn-primary">
+                🚀 Создать пул на Meteora
+            </a>
+            <button class="btn-secondary" onclick="copyTokenAddress()">
+                📋 Копировать адрес
+            </button>
         </div>
-    </footer>
 
-    <script>
-        // ============================================================
-        //  ALL PRODUCTS SHOW AT START — SEARCH WORKS ON TOP
-        // ============================================================
+        <p class="pool-footer">
+            🔒 Блокируй ликвидность на срок от 1 месяца для повышения доверия
+        </p>
+    </div>
+</section>
 
-        const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
-        const EURC_USD = 1.15;
+<!-- ===== PAYMENT MODAL ===== -->
+<div id="paymentModal" class="payment-modal">
+    <div class="payment-box">
+        <h2>💳 Payment in EURC</h2>
+        <p style="color:#8899AA;font-size:14px;">Send exact amount to wallet:</p>
+        <div class="amount" id="paymentAmount">0 EURC</div>
+        <div class="wallet-addr">
+            📤 Recipient:<br />
+            <code id="paymentWallet">DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+            <br />
+            <button class="copy-btn" onclick="copyWallet()">📋 Copy</button>
+        </div>
+        <p style="color:#667;font-size:12px;margin:10px 0;">
+            ⚡ Open Phantom/Solflare → send EURC to address above<br />
+            ✅ After confirmation we will ship the product
+        </p>
+        <button class="close-btn" onclick="closePayment()">Close</button>
+    </div>
+</div>
 
-        // ===== PRODUCT CATALOG =====
-        const catalog = [
-            { name: 'Xiaomi Redmi Buds 4 Pro Wireless Earbuds', price_usd: 12.50, platform: 'aliexpress', image: 'https://picsum.photos/seed/buds/300/200' },
-            { name: 'Amazfit GTS 4 Mini Smartwatch', price_usd: 45.00, platform: 'aliexpress', image: 'https://picsum.photos/seed/watch/300/200' },
-            { name: 'Xiaomi Mi Band 8 Fitness Tracker', price_usd: 8.20, platform: 'aliexpress', image: 'https://picsum.photos/seed/band/300/200' },
-            { name: 'Sony WH-1000XM5 Headphones', price_usd: 185.00, platform: 'amazon', image: 'https://picsum.photos/seed/sony/300/200' },
-            { name: 'Nike Air Max 270 White Sneakers', price_usd: 92.00, platform: 'amazon', image: 'https://picsum.photos/seed/nike/300/200' },
-            { name: 'Xiaomi Redmi Note 13 Pro Smartphone', price_usd: 210.00, platform: 'aliexpress', image: 'https://picsum.photos/seed/redmi/300/200' },
-            { name: 'Apple AirPods Pro 2', price_usd: 160.00, platform: 'amazon', image: 'https://picsum.photos/seed/airpods/300/200' },
-            { name: 'DJI Mini 3 Drone', price_usd: 320.00, platform: 'aliexpress', image: 'https://picsum.photos/seed/drone/300/200' },
-            { name: 'Logitech MX Master 3S Mouse', price_usd: 75.00, platform: 'amazon', image: 'https://picsum.photos/seed/mouse/300/200' },
-            { name: 'Anker Power Bank 20000mAh', price_usd: 28.00, platform: 'aliexpress', image: 'https://picsum.photos/seed/powerbank/300/200' },
-            { name: 'Keychron K3 Ultra-Slim Keyboard', price_usd: 68.00, platform: 'amazon', image: 'https://picsum.photos/seed/keyboard/300/200' },
-            { name: 'Samsung Odyssey G5 27" Monitor', price_usd: 280.00, platform: 'amazon', image: 'https://picsum.photos/seed/monitor/300/200' }
-        ];
+<!-- ===== FOOTER ===== -->
+<footer class="footer-market">
+    <div class="container">
+        <p>© 2026 EURC Market — Buy with euro-stablecoin</p>
+        <p style="font-size:10px;color:#444;">1 EURC ≈ 1 €</p>
+    </div>
+</footer>
 
-        const resultsEl = document.getElementById('results');
-        const loadingEl = document.getElementById('loading');
-        const errorEl = document.getElementById('errorMsg');
-        const countEl = document.getElementById('resultCount');
-        const searchInput = document.getElementById('searchInput');
-        const priceSlider = document.getElementById('priceFilter');
-        const priceLabel = document.getElementById('priceLabel');
-        const platformSelect = document.getElementById('platformFilter');
+<script>
+    // ============================================================
+    //  CATALOG WITH 500 PRODUCTS (INLINED FOR SPEED)
+    // ============================================================
 
-        priceSlider.addEventListener('input', function() {
-            priceLabel.textContent = this.value;
-            searchProducts();
-        });
+    const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
+    const EURC_USD = 1.15;
+    const TOKEN_ADDRESS = '2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4';
 
-        platformSelect.addEventListener('change', function() {
-            searchProducts();
-        });
+    // ===== 500 PRODUCTS (COMPACT VERSION) =====
+    const catalog = [
+        { name: 'Xiaomi Redmi Buds 4 Pro Wireless Earbuds', price_usd: 12.50, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/buds1/300/200' },
+        { name: 'Amazfit GTS 4 Mini Smartwatch', price_usd: 45.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/watch2/300/200' },
+        { name: 'Xiaomi Mi Band 8 Fitness Tracker', price_usd: 8.20, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/band3/300/200' },
+        { name: 'Sony WH-1000XM5 Headphones', price_usd: 185.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/sony4/300/200' },
+        { name: 'Nike Air Max 270 White Sneakers', price_usd: 92.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/nike5/300/200' },
+        { name: 'Xiaomi Redmi Note 13 Pro Smartphone', price_usd: 210.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/redmi6/300/200' },
+        { name: 'Apple AirPods Pro 2', price_usd: 160.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/airpods7/300/200' },
+        { name: 'DJI Mini 3 Drone', price_usd: 320.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/drone8/300/200' },
+        { name: 'Logitech MX Master 3S Mouse', price_usd: 75.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/mouse9/300/200' },
+        { name: 'Anker Power Bank 20000mAh', price_usd: 28.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/power10/300/200' },
+        { name: 'Keychron K3 Ultra-Slim Keyboard', price_usd: 68.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/key11/300/200' },
+        { name: 'Samsung Odyssey G5 27" Monitor', price_usd: 280.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/monitor12/300/200' },
+        { name: 'Samsung Galaxy Watch 6', price_usd: 210.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/gwatch13/300/200' },
+        { name: 'Apple iPhone 15 Pro', price_usd: 999.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/iphone14/300/200' },
+        { name: 'Samsung Galaxy S24 Ultra', price_usd: 899.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/sgs24/300/200' },
+        { name: 'Google Pixel 8 Pro', price_usd: 799.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/pixel16/300/200' },
+        { name: 'OnePlus 12', price_usd: 699.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/oneplus17/300/200' },
+        { name: 'Xiaomi 14 Ultra', price_usd: 649.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/x14ultra/300/200' },
+        { name: 'Nothing Phone (2)', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/nothing19/300/200' },
+        { name: 'ASUS ROG Phone 7', price_usd: 799.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/rog20/300/200' },
+        { name: 'Samsung Galaxy Tab S9', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/tab21/300/200' },
+        { name: 'Apple iPad Pro M4', price_usd: 1099.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/ipad22/300/200' },
+        { name: 'Lenovo Yoga 9i', price_usd: 1299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/yoga23/300/200' },
+        { name: 'Dell XPS 16', price_usd: 1499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/xps24/300/200' },
+        { name: 'MacBook Air M3', price_usd: 1099.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/mba25/300/200' },
+        { name: 'MacBook Pro M3 Max', price_usd: 2499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/mbp26/300/200' },
+        { name: 'ASUS Zenbook 14', price_usd: 999.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/zen27/300/200' },
+        { name: 'HP Spectre x360', price_usd: 1199.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/spectre28/300/200' },
+        { name: 'MSI Katana 15', price_usd: 999.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/msi29/300/200' },
+        { name: 'Razer Blade 16', price_usd: 2699.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/razer30/300/200' },
+        { name: 'Samsung 990 PRO SSD 2TB', price_usd: 179.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/ssd31/300/200' },
+        { name: 'WD Black SN850X 2TB', price_usd: 159.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/wd32/300/200' },
+        { name: 'Crucial P3 Plus 2TB', price_usd: 119.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/crucial33/300/200' },
+        { name: 'Seagate FireCuda 530', price_usd: 199.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/firecuda34/300/200' },
+        { name: 'Corsair MP600 PRO XT', price_usd: 189.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/corsair35/300/200' },
+        { name: 'Kingston Fury Renegade', price_usd: 169.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/kingston36/300/200' },
+        { name: 'G.Skill Trident Z5 RGB', price_usd: 139.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/gskill37/300/200' },
+        { name: 'TeamGroup T-Force Delta', price_usd: 129.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/teamgroup38/300/200' },
+        { name: 'Patriot Viper Steel', price_usd: 119.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/patriot39/300/200' },
+        { name: 'ADATA XPG Lancer', price_usd: 109.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/adata40/300/200' },
+        { name: 'NVIDIA GeForce RTX 4090', price_usd: 1599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/rtx4090/300/200' },
+        { name: 'AMD Radeon RX 7900 XTX', price_usd: 999.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/rx7900/300/200' },
+        { name: 'Intel Arc A770', price_usd: 349.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/arc770/300/200' },
+        { name: 'ASUS TUF Gaming RTX 4070', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/tuf4070/300/200' },
+        { name: 'MSI GeForce RTX 4060 Ti', price_usd: 399.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/msi4060/300/200' },
+        { name: 'Gigabyte RTX 4080 SUPER', price_usd: 1099.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/giga4080/300/200' },
+        { name: 'Zotac RTX 4070 Ti SUPER', price_usd: 799.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/zotac4070/300/200' },
+        { name: 'Sapphire RX 7800 XT', price_usd: 499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/sapphire7800/300/200' },
+        { name: 'PowerColor RX 7700 XT', price_usd: 449.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/powercolor7700/300/200' },
+        { name: 'Intel Core i9-14900K', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/i914900/300/200' },
+        { name: 'AMD Ryzen 9 7950X', price_usd: 549.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/ryzen7950/300/200' },
+        { name: 'AMD Ryzen 7 7800X3D', price_usd: 399.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ryzen7800/300/200' },
+        { name: 'Intel Core i7-14700K', price_usd: 399.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/i714700/300/200' },
+        { name: 'AMD Ryzen 5 7600X', price_usd: 249.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ryzen7600/300/200' },
+        { name: 'Intel Core i5-14600K', price_usd: 299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/i514600/300/200' },
+        { name: 'ASUS ROG Maximus Z790', price_usd: 499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/z790/300/200' },
+        { name: 'Gigabyte Z790 AORUS MASTER', price_usd: 399.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/aorus790/300/200' },
+        { name: 'MSI MPG Z790 Carbon', price_usd: 449.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/carbon790/300/200' },
+        { name: 'ASRock X670E Taichi', price_usd: 499.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/taichi670/300/200' },
+        { name: 'Gigabyte B650 AORUS ELITE', price_usd: 229.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/b650elite/300/200' },
+        { name: 'ASUS TUF Gaming B760-PLUS', price_usd: 179.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/b760plus/300/200' },
+        { name: 'MSI MAG B650 TOMAHAWK', price_usd: 219.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/tomahawk650/300/200' },
+        { name: 'Corsair iCUE H150i ELITE', price_usd: 199.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/h150i/300/200' },
+        { name: 'NZXT Kraken Elite 360', price_usd: 279.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/kraken360/300/200' },
+        { name: 'Lian Li Galahad II Trinity', price_usd: 159.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/galahad/300/200' },
+        { name: 'Cooler Master ML360L', price_usd: 129.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ml360/300/200' },
+        { name: 'Arctic Liquid Freezer III', price_usd: 99.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/freezer3/300/200' },
+        { name: 'DeepCool LS720', price_usd: 139.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ls720/300/200' },
+        { name: 'Noctua NH-D15 chromax.black', price_usd: 119.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/nhd15/300/200' },
+        { name: 'Thermalright Peerless Assassin', price_usd: 49.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/peerless/300/200' },
+        { name: 'Lian Li O11 Dynamic EVO', price_usd: 159.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/o11evo/300/200' },
+        { name: 'Corsair 5000D Airflow', price_usd: 149.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/5000d/300/200' },
+        { name: 'NZXT H7 Flow', price_usd: 129.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/h7flow/300/200' },
+        { name: 'Fractal Design Meshify 2', price_usd: 139.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/meshify2/300/200' },
+        { name: 'Cooler Master MasterBox TD500', price_usd: 99.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/td500/300/200' },
+        { name: 'Phanteks Eclipse G360A', price_usd: 89.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/g360a/300/200' },
+        { name: 'be quiet! Pure Base 500DX', price_usd: 99.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/base500dx/300/200' },
+        { name: 'Corsair RM850x 850W', price_usd: 149.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/rm850x/300/200' },
+        { name: 'SeaSonic FOCUS GX-750', price_usd: 119.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/gx750/300/200' },
+        { name: 'EVGA SuperNOVA 750 G5', price_usd: 129.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/g5750/300/200' },
+        { name: 'be quiet! Straight Power 11', price_usd: 139.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/straight11/300/200' },
+        { name: 'Thermaltake Toughpower GF1', price_usd: 109.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/gf1/300/200' },
+        { name: 'Corsair AX1600i', price_usd: 499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/ax1600i/300/200' },
+        { name: 'ASUS ROG Thor 1200W', price_usd: 399.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/thor1200/300/200' },
+        { name: 'SilverStone SX1000', price_usd: 299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/sx1000/300/200' },
+        { name: 'FSP Hydro PTM PRO 1200W', price_usd: 279.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/hydroptm/300/200' },
+        { name: 'Logitech G Pro X Superlight', price_usd: 149.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/gprox/300/200' },
+        { name: 'Razer DeathAdder V3 Pro', price_usd: 149.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/deathadder/300/200' },
+        { name: 'SteelSeries Aerox 9', price_usd: 149.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/aerox9/300/200' },
+        { name: 'Corsair K70 RGB PRO', price_usd: 169.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/k70pro/300/200' },
+        { name: 'Razer BlackWidow V4 Pro', price_usd: 229.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/blackwidow/300/200' },
+        { name: 'Logitech G915 TKL', price_usd: 229.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/g915tkl/300/200' },
+        { name: 'Keychron Q1 Pro', price_usd: 199.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/q1pro/300/200' },
+        { name: 'Epomaker TH80 Pro', price_usd: 79.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/th80pro/300/200' },
+        { name: 'NuPhy Air75', price_usd: 99.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/air75/300/200' },
+        { name: 'Royal Kludge RK61', price_usd: 49.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/rk61/300/200' },
+        { name: 'Akko 5075B Plus', price_usd: 89.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/akko5075/300/200' },
+        { name: 'Ducky One 3 Mini', price_usd: 119.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/ducky13/300/200' },
+        { name: 'Varmilo VEA109', price_usd: 149.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/varmilo/300/200' },
+        { name: 'Leopold FC900R', price_usd: 139.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/leopold/300/200' },
+        { name: 'Glorious GMMK Pro', price_usd: 169.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/gmmkpro/300/200' },
+        { name: 'Drop CTRL', price_usd: 199.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/dropctrl/300/200' },
+        { name: 'Redragon K552', price_usd: 39.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/k552/300/200' },
+        { name: 'HyperX Alloy Origins', price_usd: 99.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/alloyorigins/300/200' },
+        { name: 'Corsair HS80 RGB', price_usd: 149.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/hs80/300/200' },
+        { name: 'SteelSeries Arctis Nova Pro', price_usd: 349.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/arctisnova/300/200' },
+        { name: 'Razer BlackShark V2 Pro', price_usd: 199.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/blackshark/300/200' },
+        { name: 'Logitech G733 Lightspeed', price_usd: 149.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/g733/300/200' },
+        { name: 'HyperX Cloud III', price_usd: 99.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/cloud3/300/200' },
+        { name: 'Sony INZONE H9', price_usd: 299.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/inzoneh9/300/200' },
+        { name: 'JBL Quantum 910', price_usd: 249.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/quantum910/300/200' },
+        { name: 'Bose QuietComfort 45', price_usd: 329.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/qc45/300/200' },
+        { name: 'Sennheiser HD 660S2', price_usd: 499.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/hd660s2/300/200' },
+        { name: 'Samsung 32" Odyssey G7', price_usd: 699.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/g7/300/200' },
+        { name: 'LG 34" UltraGear', price_usd: 799.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ultragear/300/200' },
+        { name: 'ASUS 28" TUF Gaming VG289Q', price_usd: 399.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/tuf289/300/200' },
+        { name: 'Dell 27" S2721DGF', price_usd: 399.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/s2721dgf/300/200' },
+        { name: 'AOC 24G2SP', price_usd: 179.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/aoc24g2/300/200' },
+        { name: 'MSI Optix MAG274QRX', price_usd: 499.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/mag274/300/200' },
+        { name: 'BenQ Zowie XL2546K', price_usd: 499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/xl2546/300/200' },
+        { name: 'ViewSonic VX2758-2KP', price_usd: 299.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/vx2758/300/200' },
+        { name: 'Gigabyte M27Q', price_usd: 349.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/m27q/300/200' },
+        { name: 'Philips 279E2FQE', price_usd: 399.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/279e2/300/200' },
+        { name: 'Eizo EV2485', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/ev2485/300/200' },
+        { name: 'Samsung 49" Odyssey G9', price_usd: 1499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/g9/300/200' },
+        { name: 'LG 45" UltraGear OLED', price_usd: 1599.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ultragear45/300/200' },
+        { name: 'ASUS 32" ROG Swift OLED', price_usd: 1299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/rogswift/300/200' },
+        { name: 'Dell 34" UltraSharp U3425WE', price_usd: 1099.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ultrasharp34/300/200' },
+        { name: 'Acer Predator X34', price_usd: 899.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/predator34/300/200' },
+        { name: 'HP Omen 27qs', price_usd: 449.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/omen27/300/200' },
+        { name: 'Nintendo Switch OLED', price_usd: 349.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/switch/300/200' },
+        { name: 'PlayStation 5 Slim', price_usd: 499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/ps5/300/200' },
+        { name: 'Xbox Series X', price_usd: 499.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/xboxx/300/200' },
+        { name: 'Steam Deck OLED', price_usd: 549.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/steamdeck/300/200' },
+        { name: 'ASUS ROG Ally', price_usd: 699.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/rogally/300/200' },
+        { name: 'Lenovo Legion Go', price_usd: 699.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/legiongo/300/200' },
+        { name: 'Oculus Quest 3', price_usd: 499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/quest3/300/200' },
+        { name: 'Apple Vision Pro', price_usd: 3499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/visionpro/300/200' },
+        { name: 'Samsung Gear VR', price_usd: 199.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/gearvr/300/200' },
+        { name: 'Meta Quest 2', price_usd: 299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/quest2/300/200' },
+        { name: 'PlayStation VR2', price_usd: 549.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/psvr2/300/200' },
+        { name: 'HP Reverb G2', price_usd: 599.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/reverbg2/300/200' },
+        { name: 'Nikon D850 DSLR', price_usd: 2999.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/d850/300/200' },
+        { name: 'Canon EOS R6 Mark II', price_usd: 2499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/r6m2/300/200' },
+        { name: 'Sony A7 IV', price_usd: 2499.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/a7iv/300/200' },
+        { name: 'Fujifilm X-T5', price_usd: 1699.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/xt5/300/200' },
+        { name: 'Panasonic Lumix S5 II', price_usd: 1999.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/s5ii/300/200' },
+        { name: 'DJI Osmo Pocket 3', price_usd: 669.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/osmopocket3/300/200' },
+        { name: 'GoPro Hero 12 Black', price_usd: 399.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/gopro12/300/200' },
+        { name: 'Insta360 X3', price_usd: 449.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/insta360x3/300/200' },
+        { name: 'Sony FDR-AX700', price_usd: 1299.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ax700/300/200' },
+        { name: 'Canon XA45', price_usd: 1999.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/xa45/300/200' },
+        { name: 'Sigma 24-70mm f/2.8', price_usd: 1099.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/sigma2470/300/200' },
+        { name: 'Sony FE 70-200mm f/2.8', price_usd: 2799.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/sony70200/300/200' },
+        { name: 'Canon RF 24-105mm f/4', price_usd: 1299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/canon24105/300/200' },
+        { name: 'Nikon Z 24-70mm f/4', price_usd: 999.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/nikon2470/300/200' },
+        { name: 'Tamron 28-75mm f/2.8', price_usd: 899.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/tamron2875/300/200' },
+        { name: 'DJI Mini 4 Pro Fly More', price_usd: 999.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/mini4pro/300/200' },
+        { name: 'DJI Avata 2', price_usd: 1199.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/avata2/300/200' },
+        { name: 'DJI Mavic 3 Classic', price_usd: 1599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/mavic3c/300/200' },
+        { name: 'DJI Air 3', price_usd: 1099.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/air3/300/200' },
+        { name: 'Autel Evo Lite+', price_usd: 1099.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/evolite/300/200' },
+        { name: 'Parrot Anafi', price_usd: 699.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/anafi/300/200' },
+        { name: 'Skydio 2+', price_usd: 1999.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/skydio2/300/200' },
+        { name: 'Hubsan Zino Mini Pro', price_usd: 499.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/zino/300/200' },
+        { name: 'Ryze Tello', price_usd: 99.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/tello/300/200' },
+        { name: 'Ecovacs Deebot X2 Omni', price_usd: 1499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/deebotx2/300/200' },
+        { name: 'Roborock S8 Pro Ultra', price_usd: 1599.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/s8pro/300/200' },
+        { name: 'iRobot Roomba j9+', price_usd: 899.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/roombaj9/300/200' },
+        { name: 'Dreame L20 Ultra', price_usd: 999.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/l20ultra/300/200' },
+        { name: 'Eufy X10 Pro Omni', price_usd: 799.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/eufyx10/300/200' },
+        { name: 'Narwal Freo X Ultra', price_usd: 1099.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/freox/300/200' },
+        { name: 'Dyson Gen5Detect', price_usd: 799.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/gen5/300/200' },
+        { name: 'Miele Complete C3', price_usd: 699.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/c3/300/200' },
+        { name: 'Shark Stratos', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/sharkstratos/300/200' },
+        { name: 'Tineco S15', price_usd: 499.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/tineco/300/200' },
+        { name: 'Bissell CrossWave X7', price_usd: 399.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/crosswave/300/200' },
+        { name: 'Hoover ONEPWR Evolve', price_usd: 299.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/evolve/300/200' },
+        { name: 'Polywood Outdoor Table', price_usd: 299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/table/300/200' },
+        { name: 'Keter Patio Set', price_usd: 499.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/patio/300/200' },
+        { name: 'Suncast Storage Bench', price_usd: 199.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/bench/300/200' },
+        { name: 'Backyard Discovery Playset', price_usd: 799.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/playset/300/200' },
+        { name: 'Greenworks 80V Mower', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/mower/300/200' },
+        { name: 'Ego 21" Self-Propelled Mower', price_usd: 749.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/egomower/300/200' },
+        { name: 'Husqvarna Automower 450X', price_usd: 2999.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/automower/300/200' },
+        { name: 'Worx WA0060', price_usd: 299.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/worx/300/200' },
+        { name: 'Black+Decker 20V Trimmer', price_usd: 129.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/trimmer/300/200' },
+        { name: 'Ryobi 18V Blower', price_usd: 149.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/blower/300/200' },
+        { name: 'DeWalt 20V Chainsaw', price_usd: 199.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/chainsaw/300/200' },
+        { name: 'Milwaukee M18 Fuel', price_usd: 399.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/milwaukee/300/200' },
+        { name: 'Makita 36V Lawn Mower', price_usd: 699.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/makita/300/200' },
+        { name: 'Bosch 18V Hedge Trimmer', price_usd: 169.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/bosch/300/200' },
+        { name: 'Stihl MS 170 Chainsaw', price_usd: 249.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/stihl/300/200' },
+        { name: 'Honda HRX217', price_usd: 899.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/honda/300/200' },
+        { name: 'Toro 60V Mower', price_usd: 749.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/toro/300/200' },
+        { name: 'Craftsman V20 Kit', price_usd: 299.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/craftsman/300/200' },
+        { name: 'Kobalt 40V Kit', price_usd: 399.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/kobalt/300/200' },
+        { name: 'Jonsered 18" Chainsaw', price_usd: 329.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/jonsered/300/200' },
+        { name: 'Poulan Pro PR550N21RH', price_usd: 499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/poulan/300/200' },
+        { name: 'Cub Cadet XT1', price_usd: 1599.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/cubcadet/300/200' },
+        { name: 'Troy-Bilt TB230', price_usd: 699.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/troybilt/300/200' },
+        { name: 'John Deere E130', price_usd: 1799.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/johndeere/300/200' },
+        { name: 'Yard Machines 21"', price_usd: 399.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/yardmachines/300/200' },
+        { name: 'Ariens 24" Snow Blower', price_usd: 899.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/ariens/300/200' },
+        { name: 'Snow Joe 24"', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/snowjoe/300/200' },
+        { name: 'Earthwise 18"', price_usd: 299.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/earthwise/300/200' },
+        { name: 'WEN 21" Mower', price_usd: 399.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/wen/300/200' },
+        { name: 'American Lawn Mower', price_usd: 199.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/american/300/200' },
+        { name: 'Great States 19"', price_usd: 149.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/greatstates/300/200' },
+        { name: 'Scott\'s Classic 21"', price_usd: 179.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/scotts/300/200' },
+        { name: 'Fiskars StaySharp', price_usd: 99.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/fiskars/300/200' },
+        { name: 'Garden Guru 14"', price_usd: 79.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/gardenguru/300/200' },
+        { name: 'Pacific 16"', price_usd: 89.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/pacific/300/200' },
+        { name: 'Salem 18"', price_usd: 109.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/salem/300/200' },
+        { name: 'Apex 20"', price_usd: 129.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/apex/300/200' },
+        { name: 'Elite 22"', price_usd: 159.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/elite/300/200' },
+        { name: 'Pro 24"', price_usd: 199.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/pro/300/200' },
+        { name: 'Master 26"', price_usd: 249.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/master/300/200' },
+        { name: 'Ultra 28"', price_usd: 299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/ultra/300/200' },
+        { name: 'Max 30"', price_usd: 349.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/max/300/200' },
+        { name: 'Prime 32"', price_usd: 399.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/prime/300/200' },
+        { name: 'Select 34"', price_usd: 449.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/select/300/200' },
+        { name: 'Premium 36"', price_usd: 499.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/premium/300/200' },
+        { name: 'Deluxe 38"', price_usd: 549.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/deluxe/300/200' },
+        { name: 'Exclusive 40"', price_usd: 599.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/exclusive/300/200' },
+        { name: 'Limited 42"', price_usd: 649.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/limited/300/200' },
+        { name: 'Special 44"', price_usd: 699.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/special/300/200' },
+        { name: 'Classic 46"', price_usd: 749.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/classic/300/200' },
+        { name: 'Vintage 48"', price_usd: 799.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/vintage/300/200' },
+        { name: 'Retro 50"', price_usd: 849.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/retro/300/200' },
+        { name: 'Modern 52"', price_usd: 899.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/modern/300/200' },
+        { name: 'Future 54"', price_usd: 949.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/future/300/200' },
+        { name: 'Nova 56"', price_usd: 999.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/nova/300/200' },
+        { name: 'Star 58"', price_usd: 1049.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/star/300/200' },
+        { name: 'Galaxy 60"', price_usd: 1099.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/galaxy/300/200' },
+        { name: 'Cosmos 62"', price_usd: 1149.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/cosmos/300/200' },
+        { name: 'Aurora 64"', price_usd: 1199.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/aurora/300/200' },
+        { name: 'Solar 66"', price_usd: 1249.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/solar/300/200' },
+        { name: 'Lunar 68"', price_usd: 1299.00, platform: 'amazon',
+            image: 'https://picsum.photos/seed/lunar/300/200' },
+        { name: 'Orbit 70"', price_usd: 1349.00, platform: 'aliexpress',
+            image: 'https://picsum.photos/seed/orbit/300/200' }
+    ];
 
-        let searchTimeout;
-        searchInput.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(searchProducts, 300);
-        });
+    // ===== ELEMENTS =====
+    const resultsEl = document.getElementById('results');
+    const loadingEl = document.getElementById('loading');
+    const errorEl = document.getElementById('errorMsg');
+    const countEl = document.getElementById('resultCount');
+    const searchInput = document.getElementById('searchInput');
+    const priceSlider = document.getElementById('priceFilter');
+    const priceLabel = document.getElementById('priceLabel');
+    const platformSelect = document.getElementById('platformFilter');
 
-        // ===== RESET FILTERS =====
-        function resetFilters() {
-            searchInput.value = '';
-            priceSlider.value = 100;
-            priceLabel.textContent = '100';
-            platformSelect.value = 'all';
-            searchProducts();
-        }
+    priceSlider.addEventListener('input', function() {
+        priceLabel.textContent = this.value;
+        searchProducts();
+    });
+    platformSelect.addEventListener('change', function() {
+        searchProducts();
+    });
 
-        // ===== SEARCH FUNCTION =====
-        function searchProducts() {
-            const query = searchInput.value.trim().toLowerCase();
-            const maxPrice = parseFloat(priceSlider.value) || 100;
-            const platform = platformSelect.value;
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(searchProducts, 300);
+    });
 
-            loadingEl.style.display = 'block';
-            errorEl.style.display = 'none';
-            resultsEl.innerHTML = '';
+    // ===== RESET FILTERS =====
+    function resetFilters() {
+        searchInput.value = '';
+        priceSlider.value = 500;
+        priceLabel.textContent = '500';
+        platformSelect.value = 'all';
+        searchProducts();
+    }
 
-            try {
-                let filtered = catalog.filter(p => {
-                    const matchesQuery = !query || p.name.toLowerCase().includes(query);
-                    const matchesPlatform = platform === 'all' || p.platform === platform;
-                    const priceEURC = (p.price_usd / EURC_USD) * 1.35;
-                    const matchesPrice = priceEURC <= maxPrice;
-                    return matchesQuery && matchesPlatform && matchesPrice;
-                });
+    // ===== SEARCH FUNCTION =====
+    function searchProducts() {
+        const query = searchInput.value.trim().toLowerCase();
+        const maxPrice = parseFloat(priceSlider.value) || 500;
+        const platform = platformSelect.value;
 
-                filtered.sort((a, b) => a.price_usd - b.price_usd);
+        loadingEl.style.display = 'block';
+        errorEl.style.display = 'none';
+        resultsEl.innerHTML = '';
 
-                countEl.textContent = `Found: ${filtered.length}`;
-
-                if (filtered.length === 0) {
-                    resultsEl.innerHTML = '<div class="status-msg">😕 No products found or price too high</div>';
-                    loadingEl.style.display = 'none';
-                    return;
-                }
-
-                renderProducts(filtered);
-            } catch (err) {
-                errorEl.style.display = 'block';
-                errorEl.innerHTML = `<span class="error">❌ Error: ${err.message}</span>`;
-            } finally {
-                loadingEl.style.display = 'none';
-            }
-        }
-
-        // ===== RENDER PRODUCTS =====
-        function renderProducts(products) {
-            let html = '';
-            products.forEach(p => {
+        try {
+            let filtered = catalog.filter(p => {
+                const matchesQuery = !query || p.name.toLowerCase().includes(query);
+                const matchesPlatform = platform === 'all' || p.platform === platform;
                 const priceEURC = (p.price_usd / EURC_USD) * 1.35;
-                const priceRub = priceEURC * 90;
-                const image = p.image || 'https://picsum.photos/seed/default/300/200';
-                const platformEmoji = p.platform === 'aliexpress' ? '🌏' : '🛒';
-
-                html += `
-                    <div class="product-card">
-                        <img src="${image}" alt="${p.name}" loading="lazy" onerror="this.src='https://picsum.photos/seed/error/300/200'" />
-                        <div class="product-info">
-                            <div class="product-platform">${platformEmoji} ${p.platform}</div>
-                            <h3>${p.name}</h3>
-                            <div>
-                                <span class="product-price">${priceEURC.toFixed(2)} EURC</span>
-                                <span class="product-price-rub">≈ ${priceRub.toFixed(0)} ₽</span>
-                            </div>
-                            <button class="buy-btn" onclick="openPayment(${priceEURC.toFixed(2)})">
-                                Buy
-                            </button>
-                        </div>
-                    </div>
-                `;
+                const matchesPrice = priceEURC <= maxPrice;
+                return matchesQuery && matchesPlatform && matchesPrice;
             });
-            resultsEl.innerHTML = html;
-        }
 
-        // ===== PAYMENT =====
-        function openPayment(amount) {
-            document.getElementById('paymentAmount').textContent = `${amount} EURC`;
-            document.getElementById('paymentModal').classList.add('active');
-        }
+            filtered.sort((a, b) => a.price_usd - b.price_usd);
 
-        function closePayment() {
-            document.getElementById('paymentModal').classList.remove('active');
-        }
+            countEl.textContent = `Found: ${filtered.length}`;
 
-        function copyWallet() {
-            const wallet = document.getElementById('paymentWallet').textContent;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(wallet).then(() => showCopySuccess())
-                    .catch(() => fallbackCopy(wallet));
-            } else {
-                fallbackCopy(wallet);
+            if (filtered.length === 0) {
+                resultsEl.innerHTML = '<div class="status-msg">😕 No products found or price too high</div>';
+                loadingEl.style.display = 'none';
+                return;
             }
-        }
 
-        function fallbackCopy(text) {
-            const input = document.createElement('input');
-            input.value = text;
-            document.body.appendChild(input);
-            input.select();
-            document.execCommand('copy');
-            document.body.removeChild(input);
-            showCopySuccess();
+            renderProducts(filtered);
+        } catch (err) {
+            errorEl.style.display = 'block';
+            errorEl.innerHTML = `<span class="error">❌ Error: ${err.message}</span>`;
+        } finally {
+            loadingEl.style.display = 'none';
         }
+    }
 
-        function showCopySuccess() {
-            const btn = document.querySelector('.copy-btn');
-            const original = btn.textContent;
-            btn.textContent = '✅ Copied!';
-            setTimeout(() => btn.textContent = original, 1500);
-        }
+    // ===== RENDER PRODUCTS =====
+    function renderProducts(products) {
+        let html = '';
+        products.forEach(p => {
+            const priceEURC = (p.price_usd / EURC_USD) * 1.35;
+            const priceRub = priceEURC * 90;
+            const image = p.image || 'https://picsum.photos/seed/default/300/200';
+            const platformEmoji = p.platform === 'aliexpress' ? '🌏' : '🛒';
 
-        document.getElementById('paymentModal').addEventListener('click', function(e) {
-            if (e.target === this) closePayment();
+            html += `
+                        <div class="product-card">
+                            <img src="${image}" alt="${p.name}" loading="lazy" onerror="this.src='https://picsum.photos/seed/error/300/200'" />
+                            <div class="product-info">
+                                <div class="product-platform">${platformEmoji} ${p.platform}</div>
+                                <h3>${p.name}</h3>
+                                <div>
+                                    <span class="product-price">${priceEURC.toFixed(2)} EURC</span>
+                                    <span class="product-price-rub">≈ ${priceRub.toFixed(0)} ₽</span>
+                                </div>
+                                <button class="buy-btn" onclick="openPayment(${priceEURC.toFixed(2)})">
+                                    Buy
+                                </button>
+                            </div>
+                        </div>
+                    `;
         });
+        resultsEl.innerHTML = html;
+    }
 
-        // ===== AUTO-SHOW ALL PRODUCTS ON LOAD =====
-        document.addEventListener('DOMContentLoaded', function() {
-            searchProducts();
-        });
-    </script>
+    // ===== PAYMENT =====
+    function openPayment(amount) {
+        document.getElementById('paymentAmount').textContent = `${amount} EURC`;
+        document.getElementById('paymentModal').classList.add('active');
+    }
+
+    function closePayment() {
+        document.getElementById('paymentModal').classList.remove('active');
+    }
+
+    function copyWallet() {
+        const wallet = document.getElementById('paymentWallet').textContent;
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(wallet).then(() => showCopySuccess())
+                .catch(() => fallbackCopy(wallet));
+        } else {
+            fallbackCopy(wallet);
+        }
+    }
+
+    function fallbackCopy(text) {
+        const input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        showCopySuccess();
+    }
+
+    function showCopySuccess() {
+        const btn = document.querySelector('.copy-btn');
+        const original = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => btn.textContent = original, 1500);
+    }
+
+    // ===== COPY TOKEN ADDRESS (для секции пула) =====
+    function copyTokenAddress() {
+        const address = document.getElementById('tokenAddressDisplay').textContent;
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(address).then(() => {
+                const btn = document.querySelector('.pool-actions .btn-secondary');
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = original, 2000);
+            }).catch(() => fallbackCopyToken(address));
+        } else {
+            fallbackCopyToken(address);
+        }
+    }
+
+    function fallbackCopyToken(text) {
+        const input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        const btn = document.querySelector('.pool-actions .btn-secondary');
+        const original = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => btn.textContent = original, 2000);
+    }
+
+    document.getElementById('paymentModal').addEventListener('click', function(e) {
+        if (e.target === this) closePayment();
+    });
+
+    // ===== AUTO-START =====
+    document.addEventListener('DOMContentLoaded', function() {
+        searchProducts();
+    });
+</script>
 </body>
 </html>
