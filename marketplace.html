@@ -382,13 +382,15 @@
 
     <script>
         // ============================================================
-        //  АВТОНОМНАЯ ЛОГИКА — БЕЗ БЭКЕНДА, РАБОТАЕТ С ТЕЛЕФОНА
+        //  РАБОЧАЯ ВЕРСИЯ — С ИСПОЛЬЗОВАНИЕМ CORS-ПРОКСИ
         // ============================================================
 
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
-        const EURC_USD = 1.15;  // 1 EURC ≈ 1.15 USD
+        const EURC_USD = 1.15;
 
-        // Элементы
+        // Прокси для обхода CORS (бесплатный, работает с телефона)
+        const PROXY = 'https://corsproxy.io/?';
+
         const resultsEl = document.getElementById('results');
         const loadingEl = document.getElementById('loading');
         const errorEl = document.getElementById('errorMsg');
@@ -398,19 +400,17 @@
         const priceLabel = document.getElementById('priceLabel');
         const platformSelect = document.getElementById('platformFilter');
 
-        // Ползунок
         priceSlider.addEventListener('input', function() {
             priceLabel.textContent = this.value;
         });
 
-        // Поиск при вводе (с задержкой)
         let searchTimeout;
         searchInput.addEventListener('input', function() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(searchProducts, 500);
         });
 
-        // ===== ГЛАВНАЯ ФУНКЦИЯ ПОИСКА =====
+        // ===== ОСНОВНАЯ ФУНКЦИЯ =====
         async function searchProducts() {
             const query = searchInput.value.trim();
             if (!query) {
@@ -427,10 +427,7 @@
             resultsEl.innerHTML = '';
 
             try {
-                // Загружаем товары с публичных API
                 const products = await fetchProducts(query, platform);
-
-                // Фильтруем по цене
                 const filtered = products.filter(p => p.price_eurc <= maxPrice);
 
                 countEl.textContent = `Найдено: ${filtered.length}`;
@@ -441,7 +438,6 @@
                     return;
                 }
 
-                // Рендерим карточки
                 renderProducts(filtered);
             } catch (err) {
                 console.error('Ошибка:', err);
@@ -453,14 +449,17 @@
             }
         }
 
-        // ===== ЗАГРУЗКА ТОВАРОВ С ПУБЛИЧНЫХ API =====
+        // ===== ЗАГРУЗКА ТОВАРОВ ЧЕРЕЗ ПРОКСИ =====
         async function fetchProducts(query, platform) {
             const allProducts = [];
 
             // 1. AliExpress
             if (platform === 'all' || platform === 'aliexpress') {
                 try {
-                    const ali = await fetchAliExpress(query);
+                    const ali = await fetchWithProxy(
+                        `https://api.alisearch.ae/pub/v1/search/ae?q=${encodeURIComponent(query)}&limit=10`,
+                        'aliexpress'
+                    );
                     allProducts.push(...ali);
                 } catch (e) { console.log('AliExpress error:', e); }
             }
@@ -468,7 +467,10 @@
             // 2. Ozon
             if (platform === 'all' || platform === 'ozon') {
                 try {
-                    const ozon = await fetchOzon(query);
+                    const ozon = await fetchWithProxy(
+                        `https://api.ozon.ru/composer-api/1.0/search?q=${encodeURIComponent(query)}&limit=10`,
+                        'ozon'
+                    );
                     allProducts.push(...ozon);
                 } catch (e) { console.log('Ozon error:', e); }
             }
@@ -476,7 +478,10 @@
             // 3. Wildberries
             if (platform === 'all' || platform === 'wildberries') {
                 try {
-                    const wb = await fetchWildberries(query);
+                    const wb = await fetchWithProxy(
+                        `https://search.wb.ru/exactmatch/ru/common/v4/search?query=${encodeURIComponent(query)}&limit=10`,
+                        'wildberries'
+                    );
                     allProducts.push(...wb);
                 } catch (e) { console.log('Wildberries error:', e); }
             }
@@ -485,7 +490,7 @@
                 throw new Error('Не удалось загрузить товары. Попробуйте другой запрос.');
             }
 
-            // Добавляем наценку 35%
+            // Наценка 35%
             return allProducts.map(p => ({
                 ...p,
                 price_eurc: round(p.price_eurc * 1.35, 2),
@@ -493,15 +498,32 @@
             }));
         }
 
-        // ===== ПАРСИНГ ALIEXPRESS =====
-        async function fetchAliExpress(query) {
-            // Используем публичное API AliExpress
-            const url = `https://api.alisearch.ae/pub/v1/search/ae?q=${encodeURIComponent(query)}&limit=12`;
-            const resp = await fetch(url);
+        // ===== ЗАПРОС ЧЕРЕЗ ПРОКСИ =====
+        async function fetchWithProxy(url, platform) {
+            const proxyUrl = `${PROXY}${encodeURIComponent(url)}`;
+            const resp = await fetch(proxyUrl, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Origin': 'https://eurc-cash.github.io'
+                }
+            });
             if (!resp.ok) return [];
             const data = await resp.json();
-            const items = data.items || [];
 
+            // Парсим в зависимости от платформы
+            if (platform === 'aliexpress') {
+                return parseAliExpress(data);
+            } else if (platform === 'ozon') {
+                return parseOzon(data);
+            } else if (platform === 'wildberries') {
+                return parseWildberries(data);
+            }
+            return [];
+        }
+
+        // ===== ПАРСЕРЫ =====
+        function parseAliExpress(data) {
+            const items = data.items || [];
             return items.map(item => {
                 const priceUsd = parseFloat(item.price?.min || 0);
                 return {
@@ -515,15 +537,8 @@
             });
         }
 
-        // ===== ПАРСИНГ OZON =====
-        async function fetchOzon(query) {
-            // Публичное API Ozon
-            const url = `https://api.ozon.ru/composer-api/1.0/search?q=${encodeURIComponent(query)}&limit=12`;
-            const resp = await fetch(url);
-            if (!resp.ok) return [];
-            const data = await resp.json();
+        function parseOzon(data) {
             const items = data.items || [];
-
             return items.map(item => {
                 const priceRub = parseFloat(item.price?.value || 0);
                 return {
@@ -537,31 +552,23 @@
             });
         }
 
-        // ===== ПАРСИНГ WILDBERRIES =====
-        async function fetchWildberries(query) {
-            // Публичное API Wildberries
-            const url = `https://search.wb.ru/exactmatch/ru/common/v4/search?query=${encodeURIComponent(query)}&limit=12`;
-            const resp = await fetch(url);
-            if (!resp.ok) return [];
-            const data = await resp.json();
+        function parseWildberries(data) {
             const items = data.data?.products || [];
-
             return items.map(item => {
                 const priceRub = parseFloat(item.priceU || 0) / 100;
                 const basket = item.basket || '01';
-                const imgUrl = `https://basket-${basket}.wbbasket.ru/images/${item.id}.jpg`;
                 return {
                     name: item.name || 'Без названия',
                     price_eurc: round(priceRub / 90 / EURC_USD, 2),
                     price_rub: round(priceRub, 0),
                     platform: 'wildberries',
-                    image: imgUrl,
+                    image: `https://basket-${basket}.wbbasket.ru/images/${item.id}.jpg`,
                     url: `https://www.wildberries.ru/catalog/${item.id}/detail.aspx`
                 };
             });
         }
 
-        // ===== ОТРИСОВКА КАРТОЧЕК =====
+        // ===== ОТРИСОВКА =====
         function renderProducts(products) {
             let html = '';
             products.forEach(p => {
@@ -605,36 +612,42 @@
 
         function copyWallet() {
             const wallet = document.getElementById('paymentWallet').textContent;
-            navigator.clipboard.writeText(wallet).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const original = btn.textContent;
-                btn.textContent = '✅ Скопировано!';
-                setTimeout(() => btn.textContent = original, 1500);
-            }).catch(() => {
-                // fallback для телефонов
-                const input = document.createElement('input');
-                input.value = wallet;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-                alert('✅ Адрес скопирован!');
-            });
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(wallet).then(() => {
+                    showCopySuccess();
+                }).catch(() => fallbackCopy(wallet));
+            } else {
+                fallbackCopy(wallet);
+            }
         }
 
-        // Закрытие по клику на фон
+        function fallbackCopy(text) {
+            const input = document.createElement('input');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showCopySuccess();
+        }
+
+        function showCopySuccess() {
+            const btn = document.querySelector('.copy-btn');
+            const original = btn.textContent;
+            btn.textContent = '✅ Скопировано!';
+            setTimeout(() => btn.textContent = original, 1500);
+        }
+
         document.getElementById('paymentModal').addEventListener('click', function(e) {
             if (e.target === this) closePayment();
         });
 
-        // ===== ХЕЛПЕРЫ =====
         function round(num, decimals) {
             return Math.round(num * 10 ** decimals) / 10 ** decimals;
         }
 
-        // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
+        // ===== ЗАПУСК =====
         document.addEventListener('DOMContentLoaded', function() {
-            // Автопоиск при загрузке
             searchInput.value = 'наушники';
             searchProducts();
         });
