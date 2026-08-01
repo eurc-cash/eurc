@@ -2,246 +2,305 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>EURC Market — Покупай за евро-стейблкоин</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        /* Дополнительные стили для маркетплейса (поверх styles.css) */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #0A1628;
+            color: #FFFFFF;
+            padding-bottom: 30px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+
+        /* Хедер */
         .market-header {
             background: linear-gradient(135deg, #0A1628, #1A2A5E);
-            color: white;
-            padding: 20px 0;
+            padding: 15px 0;
             border-bottom: 2px solid #1A5CFF;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
         .market-header .container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
-        .market-header .logo-area {
+        .logo-area {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
-        .market-header .logo-area img {
-            height: 40px;
+        .logo-area img {
+            height: 32px;
+            width: 32px;
             border-radius: 8px;
+            background: #1A2A5E;
+            object-fit: contain;
         }
-        .market-header .logo-area h1 {
-            font-size: 24px;
+        .logo-area h1 {
+            font-size: 18px;
             font-weight: 800;
             background: linear-gradient(135deg, #FFFFFF, #00E5FF);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .wallet-badge {
-            background: rgba(255,255,255,0.1);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            word-break: break-all;
         }
         .wallet-badge code {
             background: rgba(0,0,0,0.3);
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 9px;
             color: #00E5FF;
         }
+
+        /* Поиск */
         .search-hero {
             background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
-            padding: 40px 0;
-            margin-bottom: 30px;
-            border-radius: 0 0 30px 30px;
+            padding: 25px 0 30px;
+            margin-bottom: 20px;
+            border-radius: 0 0 20px 20px;
+            text-align: center;
+        }
+        .search-hero h2 {
+            font-size: 20px;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .search-hero p {
+            color: #8899AA;
+            font-size: 13px;
+            margin-bottom: 15px;
         }
         .search-box {
             display: flex;
-            gap: 12px;
-            max-width: 700px;
-            margin: 15px auto;
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
         .search-box input {
             flex: 1;
-            padding: 14px 20px;
-            border: 2px solid rgba(255,255,255,0.15);
-            border-radius: 12px;
+            padding: 12px 16px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
             background: rgba(255,255,255,0.05);
             color: white;
-            font-size: 16px;
+            font-size: 15px;
+            min-width: 0;
         }
-        .search-box input::placeholder { color: #8899AA; }
+        .search-box input::placeholder { color: #667; }
         .search-box input:focus { outline: none; border-color: #1A5CFF; }
         .search-box button {
-            padding: 14px 32px;
-            background: linear-gradient(135deg, #1A5CFF, #0066FF);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .search-box button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(26,92,255,0.4); }
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            color: #8899AA;
-        }
-        .filters label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .filters input[type="range"] {
-            width: 120px;
-            accent-color: #1A5CFF;
-        }
-        .filters select {
-            padding: 6px 12px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.05);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 20px 0;
-            color: #8899AA;
-        }
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-        .product-card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.06);
-            transition: all 0.3s;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            border-color: #1A5CFF;
-            box-shadow: 0 10px 40px rgba(26,92,255,0.15);
-        }
-        .product-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: #0A1628;
-        }
-        .product-info {
-            padding: 18px;
-        }
-        .product-info h3 {
-            font-size: 16px;
-            margin-bottom: 8px;
-            height: 48px;
-            overflow: hidden;
-            color: #FFFFFF;
-        }
-        .product-platform {
-            font-size: 12px;
-            color: #8899AA;
-            margin-bottom: 6px;
-        }
-        .product-price {
-            font-size: 24px;
-            font-weight: 700;
-            color: #00E5FF;
-        }
-        .product-price-rub {
-            font-size: 14px;
-            color: #8899AA;
-            margin-left: 8px;
-        }
-        .buy-btn {
-            width: 100%;
-            padding: 12px;
-            margin-top: 14px;
+            padding: 12px 22px;
             background: linear-gradient(135deg, #1A5CFF, #0066FF);
             color: white;
             border: none;
             border-radius: 10px;
             font-weight: 700;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s;
+            white-space: nowrap;
         }
-        .buy-btn:hover { background: #0066FF; transform: scale(1.02); }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            color: #8899AA;
+            font-size: 13px;
+        }
+        .filters label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filters input[type="range"] {
+            width: 90px;
+            accent-color: #1A5CFF;
+            height: 4px;
+        }
+        .filters select {
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            color: #8899AA;
+            font-size: 13px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+            gap: 15px;
+        }
+        .product-card {
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.2s;
+        }
+        .product-card:active { transform: scale(0.97); }
+        .product-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            background: #0A1628;
+        }
+        .product-info { padding: 12px; }
+        .product-info h3 {
+            font-size: 13px;
+            margin-bottom: 4px;
+            height: 36px;
+            overflow: hidden;
+            color: #DDD;
+            line-height: 1.3;
+        }
+        .product-platform {
+            font-size: 10px;
+            color: #667;
+            margin-bottom: 4px;
+        }
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00E5FF;
+        }
+        .product-price-rub {
+            font-size: 11px;
+            color: #667;
+            margin-left: 4px;
+        }
+        .buy-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #1A5CFF, #0066FF);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .buy-btn:active { opacity: 0.7; }
+
+        /* Модалка */
         .payment-modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(6px);
             z-index: 9999;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
         .payment-modal.active { display: flex; }
         .payment-box {
-            background: #0A1628;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            background: #0F1A3A;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 28px 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
         }
-        .payment-box h2 { margin-bottom: 20px; color: #FFFFFF; }
-        .payment-box .amount { font-size: 36px; font-weight: 800; color: #00E5FF; }
+        .payment-box h2 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #FFFFFF;
+        }
+        .payment-box .amount {
+            font-size: 30px;
+            font-weight: 800;
+            color: #00E5FF;
+            margin: 10px 0;
+        }
         .payment-box .wallet-addr {
             background: rgba(0,0,0,0.3);
             padding: 12px;
             border-radius: 10px;
             word-break: break-all;
             color: #8899AA;
-            font-size: 14px;
+            font-size: 13px;
             margin: 15px 0;
         }
         .payment-box .wallet-addr code { color: #00E5FF; }
         .payment-box .copy-btn {
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.08);
             color: white;
-            padding: 6px 14px;
+            padding: 4px 12px;
             border-radius: 6px;
             cursor: pointer;
+            font-size: 12px;
+            margin-top: 6px;
         }
-        .payment-box .copy-btn:hover { background: rgba(26,92,255,0.2); }
         .payment-box .close-btn {
             width: 100%;
             padding: 12px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.08);
             color: white;
             border-radius: 10px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 12px;
+            font-size: 15px;
         }
-        .payment-box .close-btn:hover { background: rgba(255,255,255,0.1); }
+
         .footer-market {
-            margin-top: 60px;
-            padding: 30px 0;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 40px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255,255,255,0.03);
             text-align: center;
+            color: #667;
+            font-size: 12px;
+        }
+
+        .status-msg {
             color: #8899AA;
+            text-align: center;
+            padding: 30px 15px;
             font-size: 14px;
         }
-        @media (max-width: 768px) {
-            .market-header .container { flex-direction: column; text-align: center; }
-            .search-box { flex-direction: column; }
-            .filters { flex-direction: column; align-items: center; }
-            .products-grid { grid-template-columns: 1fr; }
+        .status-msg .error { color: #ff6b6b; }
+
+        @media (max-width: 480px) {
+            .products-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .product-card img { height: 120px; }
+            .product-info h3 { font-size: 12px; height: 32px; }
+            .product-price { font-size: 16px; }
+            .search-box input { font-size: 14px; padding: 10px 12px; }
+            .search-box button { padding: 10px 16px; font-size: 13px; }
+            .wallet-badge { font-size: 9px; }
         }
     </style>
 </head>
@@ -251,26 +310,26 @@
     <header class="market-header">
         <div class="container">
             <div class="logo-area">
-                <img src="eurc-logo.png" alt="EURC" />
+                <img src="https://raw.githubusercontent.com/eurc-cash/eurc/main/eurc-logo.png" alt="EURC" />
                 <h1>EURC Market</h1>
             </div>
             <div class="wallet-badge">
-                💳 Кошелек: <code>DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+                💳 <code>DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
             </div>
         </div>
     </header>
 
     <!-- ===== ПОИСК ===== -->
     <section class="search-hero">
-        <div class="container" style="text-align:center;">
-            <h2 style="color:#FFFFFF; font-size:28px; margin-bottom:8px;">🔍 Найди товар и купи за EURC</h2>
-            <p style="color:#8899AA; margin-bottom:20px;">Автоматическая конвертация цен в евро-стейблкоин</p>
+        <div class="container">
+            <h2>🔍 Найди и купи за EURC</h2>
+            <p>Реальные товары с AliExpress, Ozon, Wildberries</p>
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Например: наушники, телефон, кроссовки..." />
+                <input type="text" id="searchInput" placeholder="Наушники, телефон..." />
                 <button onclick="searchProducts()">Найти</button>
             </div>
             <div class="filters">
-                <label>Макс. цена (EURC): <input type="range" min="0" max="200" value="50" id="priceFilter" /> <span id="priceLabel">50</span></label>
+                <label>Цена (EURC): <input type="range" min="0" max="500" value="100" id="priceFilter" /> <span id="priceLabel">100</span></label>
                 <label>Платформа:
                     <select id="platformFilter">
                         <option value="all">Все</option>
@@ -286,133 +345,257 @@
     <!-- ===== РЕЗУЛЬТАТЫ ===== -->
     <main class="container">
         <div class="results-header">
-            <span id="resultCount">Найдено: 0 товаров</span>
-            <span style="color:#8899AA; font-size:13px;">💰 1 EURC ≈ 1.15 USDC</span>
+            <span id="resultCount">Найдено: 0</span>
+            <span style="color:#667;">💰 1 EURC ≈ 1.15 USD</span>
         </div>
         <div id="results" class="products-grid"></div>
+        <div id="loading" class="status-msg" style="display:none;">⏳ Загрузка товаров...</div>
+        <div id="errorMsg" class="status-msg" style="display:none;"></div>
     </main>
 
     <!-- ===== МОДАЛКА ОПЛАТЫ ===== -->
     <div id="paymentModal" class="payment-modal">
         <div class="payment-box">
-            <h2>💳 Оплата в EURC</h2>
-            <p style="color:#8899AA;">Отправьте точную сумму на кошелёк ниже:</p>
+            <h2>💳 Оплата EURC</h2>
+            <p style="color:#8899AA;font-size:14px;">Отправьте точную сумму на кошелёк:</p>
             <div class="amount" id="paymentAmount">0 EURC</div>
             <div class="wallet-addr">
-                📤 Адрес получателя:<br />
+                📤 Адрес:<br />
                 <code id="paymentWallet">DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+                <br />
                 <button class="copy-btn" onclick="copyWallet()">📋 Копировать</button>
             </div>
-            <p style="color:#8899AA; font-size:13px; margin:10px 0;">
-                ⚡ Откройте Phantom/Solflare → отправьте EURC на адрес выше<br />
-                ✅ После подтверждения мы отправим товар
+            <p style="color:#667;font-size:12px;margin:10px 0;">
+                ⚡ Отправьте EURC из Phantom/Solflare<br />
+                ✅ После подтверждения товар будет отправлен
             </p>
             <button class="close-btn" onclick="closePayment()">Закрыть</button>
         </div>
     </div>
 
-    <!-- ===== ФУТЕР ===== -->
     <footer class="footer-market">
         <div class="container">
-            <p>© 2026 EURC Cash — Покупай товары со всего мира за евро-стейблкоин</p>
-            <p style="font-size:12px; color:#666;">1 EURC ≈ 1 € (привязка к евро) • Наценка 35% включена в цену</p>
+            <p>© 2026 EURC Market — Покупай за евро-стейблкоин</p>
+            <p style="font-size:10px;color:#444;">1 EURC ≈ 1 €</p>
         </div>
     </footer>
 
     <script>
         // ============================================================
-        //  app.js — ВСЯ ЛОГИКА МАРКЕТПЛЕЙСА
+        //  АВТОНОМНАЯ ЛОГИКА — БЕЗ БЭКЕНДА, РАБОТАЕТ С ТЕЛЕФОНА
         // ============================================================
 
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
-        const API_URL = 'http://localhost:8000/api';
+        const EURC_USD = 1.15;  // 1 EURC ≈ 1.15 USD
 
-        // Ползунок цены
-        document.addEventListener('DOMContentLoaded', function() {
-            const slider = document.getElementById('priceFilter');
-            if (slider) {
-                slider.addEventListener('input', function() {
-                    document.getElementById('priceLabel').textContent = this.value;
-                });
-            }
-            // Демо-поиск при загрузке
-            const input = document.getElementById('searchInput');
-            if (input) {
-                input.value = 'наушники';
-                searchProducts();
-            }
+        // Элементы
+        const resultsEl = document.getElementById('results');
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('errorMsg');
+        const countEl = document.getElementById('resultCount');
+        const searchInput = document.getElementById('searchInput');
+        const priceSlider = document.getElementById('priceFilter');
+        const priceLabel = document.getElementById('priceLabel');
+        const platformSelect = document.getElementById('platformFilter');
+
+        // Ползунок
+        priceSlider.addEventListener('input', function() {
+            priceLabel.textContent = this.value;
         });
 
-        // ===== ПОИСК ТОВАРОВ =====
+        // Поиск при вводе (с задержкой)
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchProducts, 500);
+        });
+
+        // ===== ГЛАВНАЯ ФУНКЦИЯ ПОИСКА =====
         async function searchProducts() {
-            const query = document.getElementById('searchInput').value.trim();
+            const query = searchInput.value.trim();
             if (!query) {
-                alert('Введите запрос для поиска');
+                resultsEl.innerHTML = '<div class="status-msg">🔍 Введите запрос для поиска</div>';
+                countEl.textContent = 'Найдено: 0';
                 return;
             }
 
-            const maxPrice = parseFloat(document.getElementById('priceFilter')?.value || 200);
-            const platform = document.getElementById('platformFilter')?.value || 'all';
+            const maxPrice = parseFloat(priceSlider.value) || 100;
+            const platform = platformSelect.value;
 
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '<p style="color:#8899AA;">⏳ Загрузка товаров...</p>';
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            resultsEl.innerHTML = '';
 
             try {
-                const response = await axios.get(`${API_URL}/search`, {
-                    params: { q: query, limit: 30, platform: platform }
-                });
+                // Загружаем товары с публичных API
+                const products = await fetchProducts(query, platform);
 
-                let products = response.data.products || [];
+                // Фильтруем по цене
+                const filtered = products.filter(p => p.price_eurc <= maxPrice);
 
-                // Фильтр по цене (клиентская проверка)
-                products = products.filter(p => p.price_eurc <= maxPrice);
+                countEl.textContent = `Найдено: ${filtered.length}`;
 
-                document.getElementById('resultCount').textContent = `Найдено: ${products.length} товаров`;
-
-                if (products.length === 0) {
-                    resultsDiv.innerHTML = '<p style="color:#8899AA;">😕 Товары не найдены. Попробуйте другой запрос.</p>';
+                if (filtered.length === 0) {
+                    resultsEl.innerHTML = '<div class="status-msg">😕 Товары не найдены или дороже выбранной цены</div>';
+                    loadingEl.style.display = 'none';
                     return;
                 }
 
-                let html = '';
-                products.forEach(p => {
-                    const price = p.price_eurc || 0;
-                    const priceRub = p.price_rub || Math.round(price * 90 * 1.15);
-                    const image = p.image || 'https://via.placeholder.com/300x200?text=No+Image';
-                    const platformName = p.platform || 'aliexpress';
-                    const platformEmoji = platformName === 'aliexpress' ? '🌏' :
-                                          platformName === 'ozon' ? '🟢' :
-                                          platformName === 'wildberries' ? '🟣' : '📦';
-
-                    html += `
-                        <div class="product-card">
-                            <img src="${image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=Error'" />
-                            <div class="product-info">
-                                <div class="product-platform">${platformEmoji} ${platformName}</div>
-                                <h3>${p.name}</h3>
-                                <div>
-                                    <span class="product-price">${price.toFixed(2)} EURC</span>
-                                    <span class="product-price-rub">≈ ${priceRub} ₽</span>
-                                </div>
-                                <button class="buy-btn" onclick="openPayment(${price.toFixed(2)})">
-                                    Купить за EURC
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                resultsDiv.innerHTML = html;
-
-            } catch (error) {
-                console.error('Ошибка поиска:', error);
-                resultsDiv.innerHTML = `<p style="color:#ff6b6b;">❌ Ошибка загрузки: ${error.message}. Убедитесь, что бэкенд запущен.</p>`;
+                // Рендерим карточки
+                renderProducts(filtered);
+            } catch (err) {
+                console.error('Ошибка:', err);
+                errorEl.style.display = 'block';
+                errorEl.innerHTML = `<span class="error">❌ Ошибка загрузки: ${err.message}</span>`;
+                resultsEl.innerHTML = '';
+            } finally {
+                loadingEl.style.display = 'none';
             }
+        }
+
+        // ===== ЗАГРУЗКА ТОВАРОВ С ПУБЛИЧНЫХ API =====
+        async function fetchProducts(query, platform) {
+            const allProducts = [];
+
+            // 1. AliExpress
+            if (platform === 'all' || platform === 'aliexpress') {
+                try {
+                    const ali = await fetchAliExpress(query);
+                    allProducts.push(...ali);
+                } catch (e) { console.log('AliExpress error:', e); }
+            }
+
+            // 2. Ozon
+            if (platform === 'all' || platform === 'ozon') {
+                try {
+                    const ozon = await fetchOzon(query);
+                    allProducts.push(...ozon);
+                } catch (e) { console.log('Ozon error:', e); }
+            }
+
+            // 3. Wildberries
+            if (platform === 'all' || platform === 'wildberries') {
+                try {
+                    const wb = await fetchWildberries(query);
+                    allProducts.push(...wb);
+                } catch (e) { console.log('Wildberries error:', e); }
+            }
+
+            if (allProducts.length === 0) {
+                throw new Error('Не удалось загрузить товары. Попробуйте другой запрос.');
+            }
+
+            // Добавляем наценку 35%
+            return allProducts.map(p => ({
+                ...p,
+                price_eurc: round(p.price_eurc * 1.35, 2),
+                price_rub: round(p.price_rub * 1.35, 0)
+            }));
+        }
+
+        // ===== ПАРСИНГ ALIEXPRESS =====
+        async function fetchAliExpress(query) {
+            // Используем публичное API AliExpress
+            const url = `https://api.alisearch.ae/pub/v1/search/ae?q=${encodeURIComponent(query)}&limit=12`;
+            const resp = await fetch(url);
+            if (!resp.ok) return [];
+            const data = await resp.json();
+            const items = data.items || [];
+
+            return items.map(item => {
+                const priceUsd = parseFloat(item.price?.min || 0);
+                return {
+                    name: item.title || 'Без названия',
+                    price_eurc: round(priceUsd / EURC_USD, 2),
+                    price_rub: round(priceUsd * 90, 0),
+                    platform: 'aliexpress',
+                    image: item.image?.url || 'https://via.placeholder.com/300x200/1A2A5E/8899AA?text=AliExpress',
+                    url: item.url || '#'
+                };
+            });
+        }
+
+        // ===== ПАРСИНГ OZON =====
+        async function fetchOzon(query) {
+            // Публичное API Ozon
+            const url = `https://api.ozon.ru/composer-api/1.0/search?q=${encodeURIComponent(query)}&limit=12`;
+            const resp = await fetch(url);
+            if (!resp.ok) return [];
+            const data = await resp.json();
+            const items = data.items || [];
+
+            return items.map(item => {
+                const priceRub = parseFloat(item.price?.value || 0);
+                return {
+                    name: item.title || 'Без названия',
+                    price_eurc: round(priceRub / 90 / EURC_USD, 2),
+                    price_rub: round(priceRub, 0),
+                    platform: 'ozon',
+                    image: item.image?.url || 'https://via.placeholder.com/300x200/1A2A5E/8899AA?text=Ozon',
+                    url: item.url || '#'
+                };
+            });
+        }
+
+        // ===== ПАРСИНГ WILDBERRIES =====
+        async function fetchWildberries(query) {
+            // Публичное API Wildberries
+            const url = `https://search.wb.ru/exactmatch/ru/common/v4/search?query=${encodeURIComponent(query)}&limit=12`;
+            const resp = await fetch(url);
+            if (!resp.ok) return [];
+            const data = await resp.json();
+            const items = data.data?.products || [];
+
+            return items.map(item => {
+                const priceRub = parseFloat(item.priceU || 0) / 100;
+                const basket = item.basket || '01';
+                const imgUrl = `https://basket-${basket}.wbbasket.ru/images/${item.id}.jpg`;
+                return {
+                    name: item.name || 'Без названия',
+                    price_eurc: round(priceRub / 90 / EURC_USD, 2),
+                    price_rub: round(priceRub, 0),
+                    platform: 'wildberries',
+                    image: imgUrl,
+                    url: `https://www.wildberries.ru/catalog/${item.id}/detail.aspx`
+                };
+            });
+        }
+
+        // ===== ОТРИСОВКА КАРТОЧЕК =====
+        function renderProducts(products) {
+            let html = '';
+            products.forEach(p => {
+                const price = p.price_eurc || 0;
+                const priceRub = p.price_rub || 0;
+                const image = p.image || 'https://via.placeholder.com/300x200/1A2A5E/8899AA?text=No+Image';
+                const platformName = p.platform || 'marketplace';
+                const emoji = platformName === 'aliexpress' ? '🌏' :
+                              platformName === 'ozon' ? '🟢' :
+                              platformName === 'wildberries' ? '🟣' : '📦';
+
+                html += `
+                    <div class="product-card">
+                        <img src="${image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/1A2A5E/8899AA?text=Error'" />
+                        <div class="product-info">
+                            <div class="product-platform">${emoji} ${platformName}</div>
+                            <h3>${p.name}</h3>
+                            <div>
+                                <span class="product-price">${price.toFixed(2)} EURC</span>
+                                <span class="product-price-rub">≈ ${priceRub.toFixed(0)} ₽</span>
+                            </div>
+                            <button class="buy-btn" onclick="openPayment(${price.toFixed(2)})">
+                                Купить
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsEl.innerHTML = html;
         }
 
         // ===== ОПЛАТА =====
         function openPayment(amount) {
-            document.getElementById('paymentAmount').textContent = `${amount.toFixed(2)} EURC`;
+            document.getElementById('paymentAmount').textContent = `${amount} EURC`;
             document.getElementById('paymentModal').classList.add('active');
         }
 
@@ -426,44 +609,35 @@
                 const btn = document.querySelector('.copy-btn');
                 const original = btn.textContent;
                 btn.textContent = '✅ Скопировано!';
-                setTimeout(() => btn.textContent = original, 2000);
+                setTimeout(() => btn.textContent = original, 1500);
+            }).catch(() => {
+                // fallback для телефонов
+                const input = document.createElement('input');
+                input.value = wallet;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                alert('✅ Адрес скопирован!');
             });
         }
 
-        // Закрытие по клику вне окна
+        // Закрытие по клику на фон
         document.getElementById('paymentModal').addEventListener('click', function(e) {
             if (e.target === this) closePayment();
         });
 
-        // ===== ДЕМО-ДАННЫЕ (если бэкенд не запущен) =====
-        // Раскомментируй для теста без бэкенда:
-        /*
-        async function searchProducts() {
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = `
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Demo+Product" />
-                    <div class="product-info">
-                        <div class="product-platform">🌏 Aliexpress</div>
-                        <h3>Беспроводные наушники Xiaomi</h3>
-                        <div><span class="product-price">12.50 EURC</span><span class="product-price-rub">≈ 1290 ₽</span></div>
-                        <button class="buy-btn" onclick="openPayment(12.50)">Купить за EURC</button>
-                    </div>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x200?text=Demo+Product" />
-                    <div class="product-info">
-                        <div class="product-platform">🟢 Ozon</div>
-                        <h3>Смарт-часы Amazfit GTS 4</h3>
-                        <div><span class="product-price">45.00 EURC</span><span class="product-price-rub">≈ 4650 ₽</span></div>
-                        <button class="buy-btn" onclick="openPayment(45.00)">Купить за EURC</button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('resultCount').textContent = 'Найдено: 2 товара (демо)';
+        // ===== ХЕЛПЕРЫ =====
+        function round(num, decimals) {
+            return Math.round(num * 10 ** decimals) / 10 ** decimals;
         }
-        */
-    </script>
 
+        // ===== ЗАПУСК ПРИ ЗАГРУЗКЕ =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Автопоиск при загрузке
+            searchInput.value = 'наушники';
+            searchProducts();
+        });
+    </script>
 </body>
 </html>
