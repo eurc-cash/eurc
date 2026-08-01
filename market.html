@@ -539,7 +539,7 @@
                 <button onclick="searchProducts()">Search</button>
             </div>
             <div class="filters">
-                <label>Price (EURC): <input type="range" min="0" max="50000" value="5000" id="priceFilter" /> <span id="priceLabel">5000</span></label>
+                <label>Price (EURC): <input type="range" min="0" max="100000000" value="5000000" id="priceFilter" /> <span id="priceLabel">5,000,000</span></label>
                 <label>Category:
                     <select id="categoryFilter">
                         <option value="all">All</option>
@@ -670,13 +670,13 @@
         // ===== ПОИСК =====
         function searchProducts() {
             const query = searchInput.value.trim().toLowerCase();
-            const maxPrice = parseFloat(priceSlider.value) || 5000;
+            const maxPrice = parseFloat(priceSlider.value) || 5000000;
             const category = categoryFilter.value;
 
             let filtered = allProducts.filter(p => {
                 const matchesQuery = !query || p.name.toLowerCase().includes(query);
                 const matchesCategory = category === 'all' || p.category === category;
-                const matchesPrice = ((p.price_usd / EURC_USD) * 1.35) <= maxPrice;
+                const matchesPrice = ((p.price_usd / EURC_USD) * 1.30) <= maxPrice;
                 const matchesCategoryTab = currentCategory === 'all' || p.category === currentCategory;
                 return matchesQuery && matchesCategory && matchesPrice && matchesCategoryTab;
             });
@@ -697,7 +697,7 @@
         function renderProducts(products) {
             let html = '';
             products.forEach(p => {
-                const priceEURC = (p.price_usd / EURC_USD) * 1.35;
+                const priceEURC = (p.price_usd / EURC_USD) * 1.30;
                 const priceRub = priceEURC * 90;
                 const categoryEmoji = {
                     'electronics': '📱',
@@ -744,8 +744,8 @@
         // ===== СБРОС =====
         function resetFilters() {
             searchInput.value = '';
-            priceSlider.value = 5000;
-            priceLabel.textContent = '5000';
+            priceSlider.value = 5000000;
+            priceLabel.textContent = '5,000,000';
             categoryFilter.value = 'all';
             currentCategory = 'all';
             document.querySelectorAll('.category-tabs button').forEach(b => b.classList.remove('active'));
@@ -811,7 +811,7 @@
 
         // ===== ОБРАБОТЧИКИ =====
         priceSlider.addEventListener('input', function() {
-            priceLabel.textContent = this.value;
+            priceLabel.textContent = Number(this.value).toLocaleString();
             searchProducts();
         });
         categoryFilter.addEventListener('change', function() {
