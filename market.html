@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>EURC Market — Buy with euro-stablecoin</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        /* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ МАРКЕТПЛЕЙСА ===== */
+        .market-header {
+            background: linear-gradient(135deg, #0A1628, #1A2A5E);
+            padding: 15px 0;
+            border-bottom: 2px solid #1A5CFF;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .market-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-area img {
+            height: 32px;
+            width: 32px;
+            border-radius: 8px;
+            background: #1A2A5E;
+            object-fit: contain;
+        }
+        .logo-area h1 {
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF, #00E5FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .wallet-badge {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            word-break: break-all;
+        }
+        .wallet-badge code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            color: #00E5FF;
+        }
+
+        .search-hero {
+            background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
+            padding: 25px 0 30px;
+            margin-bottom: 20px;
+            border-radius: 0 0 20px 20px;
+            text-align: center;
+        }
+        .search-hero h2 {
+            font-size: 20px;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .search-hero p {
+            color: #8899AA;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        .search-box {
+            display: flex;
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 15px;
+            min-width: 0;
+        }
+        .search-box input::placeholder {
+            color: #667;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: #1A5CFF;
+        }
+        .search-box button {
+            padding: 12px 22px;
+            background: linear-gradient(135deg, #1A5CFF, #0066FF);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        .search-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(26, 92, 255, 0.4);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            color: #8899AA;
+            font-size: 13px;
+        }
+        .filters label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filters input[type="range"] {
+            width: 90px;
+            accent-color: #1A5CFF;
+            height: 4px;
+        }
+        .filters select {
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+        }
+        .filters .reset-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .filters .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 15px 0 25px;
+        }
+        .category-tabs button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #8899AA;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .category-tabs button.active {
+            background: rgba(26, 92, 255, 0.2);
+            border-color: #1A5CFF;
+            color: #FFFFFF;
+        }
+        .category-tabs button:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            color: #8899AA;
+            font-size: 13px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+            gap: 15px;
+        }
+        .product-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            border-color: #1A5CFF;
+            transform: translateY(-2px);
+        }
+        .product-card:active {
+            transform: scale(0.97);
+        }
+        .product-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: contain;
+            background: #0A1628;
+            padding: 5px;
+        }
+        .product-info {
+            padding: 12px;
+        }
+        .product-info h3 {
+            font-size: 13px;
+            margin-bottom: 4px;
+            height: 36px;
+            overflow: hidden;
+            color: #DDD;
+            line-height: 1.3;
+        }
+        .product-platform {
+            font-size: 10px;
+            color: #667;
+            margin-bottom: 4px;
+            text-transform: capitalize;
+        }
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00E5FF;
+        }
+        .product-price-rub {
+            font-size: 11px;
+            color: #667;
+            margin-left: 4px;
+        }
+        .product-specs {
+            font-size: 10px;
+            color: #8899AA;
+            margin: 4px 0;
+            line-height: 1.4;
+        }
+        .buy-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #1A5CFF, #0066FF);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .buy-btn:active {
+            opacity: 0.7;
+        }
+        .buy-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* ПУЛ ЛИКВИДНОСТИ */
+        .pool-section {
+            background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
+            border-radius: 16px;
+            padding: 30px 20px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .pool-section h2 {
+            font-size: 24px;
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .pool-section .subtitle {
+            color: #8899AA;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            font-size: 14px;
+        }
+        .pool-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .pool-step {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .pool-step .step-num {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .pool-step h4 {
+            color: #FFFFFF;
+            font-size: 14px;
+        }
+        .pool-step p {
+            color: #8899AA;
+            font-size: 12px;
+        }
+        .pool-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            color: #8899AA;
+            font-size: 13px;
+        }
+        .pool-info span {
+            color: #00E5FF;
+            font-weight: 700;
+        }
+        .pool-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pool-actions .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #1A5CFF, #0066FF);
+            color: white;
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            box-shadow: 0 0 30px rgba(26, 92, 255, 0.4);
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .pool-actions .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(26, 92, 255, 0.6);
+        }
+        .pool-actions .btn-secondary {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .pool-actions .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .pool-footer {
+            text-align: center;
+            color: #667;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        /* МОДАЛКА */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .payment-modal.active {
+            display: flex;
+        }
+        .payment-box {
+            background: #0F1A3A;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 28px 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+        }
+        .payment-box h2 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #FFFFFF;
+        }
+        .payment-box .amount {
+            font-size: 30px;
+            font-weight: 800;
+            color: #00E5FF;
+            margin: 10px 0;
+        }
+        .payment-box .wallet-addr {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 10px;
+            word-break: break-all;
+            color: #8899AA;
+            font-size: 13px;
+            margin: 15px 0;
+        }
+        .payment-box .wallet-addr code {
+            color: #00E5FF;
+        }
+        .payment-box .copy-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+        .payment-box .close-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 12px;
+            font-size: 15px;
+        }
+
+        .footer-market {
+            margin-top: 40px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+            color: #667;
+            font-size: 12px;
+        }
+
+        .status-msg {
+            color: #8899AA;
+            text-align: center;
+            padding: 30px 15px;
+            font-size: 14px;
+        }
+        .status-msg .error {
+            color: #ff6b6b;
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .product-card img {
+                height: 120px;
+            }
+            .product-info h3 {
+                font-size: 12px;
+                height: 32px;
+            }
+            .product-price {
+                font-size: 16px;
+            }
+            .search-box input {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+            .search-box button {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            .wallet-badge {
+                font-size: 9px;
+            }
+            .pool-steps {
+                grid-template-columns: 1fr;
+            }
+            .pool-actions .btn-primary,
+            .pool-actions .btn-secondary {
+                display: block;
+                margin: 10px 0;
+            }
+            .pool-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+            .category-tabs button {
+                font-size: 11px;
+                padding: 6px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="market-header">
+        <div class="container">
+            <div class="logo-area">
+                <img src="https://raw.githubusercontent.com/eurc-cash/eurc/main/eurc-logo.png" alt="EURC" />
+                <h1>EURC Market</h1>
+            </div>
+            <div class="wallet-badge">
+                💳 <code>DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== ПОИСК ===== -->
+    <section class="search-hero">
+        <div class="container">
+            <h2>🔍 Find and buy with EURC</h2>
+            <p>Electronics · EVs · Real Estate · Photo</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search..." />
+                <button onclick="searchProducts()">Search</button>
+            </div>
+            <div class="filters">
+                <label>Price (EURC): <input type="range" min="0" max="50000" value="5000" id="priceFilter" /> <span id="priceLabel">5000</span></label>
+                <label>Category:
+                    <select id="categoryFilter">
+                        <option value="all">All</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="ev">Electric Vehicles</option>
+                        <option value="realestate">Real Estate</option>
+                        <option value="photos">Photo</option>
+                    </select>
+                </label>
+                <button class="reset-btn" onclick="resetFilters()">↺ Reset</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== КАТЕГОРИИ (ВКЛАДКИ) ===== -->
+    <div class="container">
+        <div class="category-tabs">
+            <button class="active" data-cat="all" onclick="filterCategory('all', this)">📦 All</button>
+            <button data-cat="electronics" onclick="filterCategory('electronics', this)">📱 Electronics</button>
+            <button data-cat="ev" onclick="filterCategory('ev', this)">🚗 EVs</button>
+            <button data-cat="realestate" onclick="filterCategory('realestate', this)">🏠 Real Estate</button>
+            <button data-cat="photos" onclick="filterCategory('photos', this)">📷 Photo</button>
+        </div>
+    </div>
+
+    <!-- ===== РЕЗУЛЬТАТЫ ===== -->
+    <main class="container">
+        <div class="results-header">
+            <span id="resultCount">Found: 0</span>
+            <span style="color:#667;">💰 1 EURC ≈ 1.15 USD</span>
+        </div>
+        <div id="results" class="products-grid"></div>
+        <div id="loading" class="status-msg" style="display:none;">⏳ Loading...</div>
+        <div id="errorMsg" class="status-msg" style="display:none;"></div>
+    </main>
+
+    <!-- ===== ПУЛ ЛИКВИДНОСТИ ===== -->
+    <section class="pool-section">
+        <div class="container">
+            <h2>💧 Стань маркет-мейкером EURC</h2>
+            <p class="subtitle">Создай пул ликвидности с токеном EURC и начни зарабатывать на комиссиях от обменов. Чем больше пулов — тем стабильнее цена токена!</p>
+            <div class="pool-steps">
+                <div class="pool-step"><span class="step-num">1️⃣</span><h4>Выбери пару</h4><p>EURC / SOL или EURC / USDC</p></div>
+                <div class="pool-step"><span class="step-num">2️⃣</span><h4>Внеси токены</h4><p>Укажи количество EURC и SOL</p></div>
+                <div class="pool-step"><span class="step-num">3️⃣</span><h4>Создай и получай</h4><p>Подтверди транзакцию и получай комиссии</p></div>
+            </div>
+            <div class="pool-info">
+                <div>📌 Адрес токена: <span id="tokenAddressDisplay">2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4</span></div>
+                <div>💰 Комиссия: <span>~0.005 SOL</span></div>
+                <div>📈 Доходность: <span>от 0.1% до 1%</span></div>
+            </div>
+            <div class="pool-actions">
+                <a href="https://app.meteora.ag/create-pool?base=2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4" target="_blank" class="btn-primary">🚀 Создать пул на Meteora</a>
+                <button class="btn-secondary" onclick="copyTokenAddress()">📋 Копировать адрес</button>
+            </div>
+            <p class="pool-footer">🔒 Блокируй ликвидность на срок от 1 месяца для повышения доверия</p>
+        </div>
+    </section>
+
+    <!-- ===== МОДАЛКА ОПЛАТЫ ===== -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-box">
+            <h2>💳 Payment in EURC</h2>
+            <p style="color:#8899AA;font-size:14px;">Send exact amount to wallet:</p>
+            <div class="amount" id="paymentAmount">0 EURC</div>
+            <div class="wallet-addr">
+                📤 Recipient:<br />
+                <code id="paymentWallet">DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+                <br />
+                <button class="copy-btn" onclick="copyWallet()">📋 Copy</button>
+            </div>
+            <p style="color:#667;font-size:12px;margin:10px 0;">⚡ Open Phantom/Solflare → send EURC to address above<br />✅ After confirmation we will ship the product</p>
+            <button class="close-btn" onclick="closePayment()">Close</button>
+        </div>
+    </div>
+
+    <!-- ===== ФУТЕР ===== -->
+    <footer class="footer-market">
+        <div class="container">
+            <p>© 2026 EURC Market — Buy with euro-stablecoin</p>
+            <p style="font-size:10px;color:#444;">1 EURC ≈ 1 €</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        //  MARKET.JS — ЗАГРУЗКА JSON, ПОИСК, ФИЛЬТРАЦИЯ, ОПЛАТА
+        // ============================================================
+
+        const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
+        const EURC_USD = 1.15;
+        const TOKEN_ADDRESS = '2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4';
+
+        let allProducts = [];
+        let currentCategory = 'all';
+        const resultsEl = document.getElementById('results');
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('errorMsg');
+        const countEl = document.getElementById('resultCount');
+        const searchInput = document.getElementById('searchInput');
+        const priceSlider = document.getElementById('priceFilter');
+        const priceLabel = document.getElementById('priceLabel');
+        const categoryFilter = document.getElementById('categoryFilter');
+
+        // ===== ЗАГРУЗКА ВСЕХ JSON =====
+        async function loadAllData() {
+            loadingEl.style.display = 'block';
+            try {
+                const files = [
+                    'data/electronics.json',
+                    'data/ev.json',
+                    'data/realestate.json',
+                    'data/photos.json'
+                ];
+                const responses = await Promise.all(files.map(f => fetch(f)));
+                const data = await Promise.all(responses.map(r => r.json()));
+                allProducts = data.flat();
+                console.log(`✅ Загружено ${allProducts.length} товаров`);
+                searchProducts();
+            } catch (err) {
+                errorEl.style.display = 'block';
+                errorEl.innerHTML = `<span class="error">❌ Ошибка загрузки: ${err.message}. Проверьте файлы JSON.</span>`;
+            } finally {
+                loadingEl.style.display = 'none';
+            }
+        }
+
+        // ===== ПОИСК =====
+        function searchProducts() {
+            const query = searchInput.value.trim().toLowerCase();
+            const maxPrice = parseFloat(priceSlider.value) || 5000;
+            const category = categoryFilter.value;
+
+            let filtered = allProducts.filter(p => {
+                const matchesQuery = !query || p.name.toLowerCase().includes(query);
+                const matchesCategory = category === 'all' || p.category === category;
+                const matchesPrice = ((p.price_usd / EURC_USD) * 1.35) <= maxPrice;
+                const matchesCategoryTab = currentCategory === 'all' || p.category === currentCategory;
+                return matchesQuery && matchesCategory && matchesPrice && matchesCategoryTab;
+            });
+
+            filtered.sort((a, b) => a.price_usd - b.price_usd);
+
+            countEl.textContent = `Found: ${filtered.length}`;
+
+            if (filtered.length === 0) {
+                resultsEl.innerHTML = '<div class="status-msg">😕 No products found or price too high</div>';
+                return;
+            }
+
+            renderProducts(filtered);
+        }
+
+        // ===== ОТРИСОВКА =====
+        function renderProducts(products) {
+            let html = '';
+            products.forEach(p => {
+                const priceEURC = (p.price_usd / EURC_USD) * 1.35;
+                const priceRub = priceEURC * 90;
+                const categoryEmoji = {
+                    'electronics': '📱',
+                    'ev': '🚗',
+                    'realestate': '🏠',
+                    'photos': '📷'
+                } [p.category] || '📦';
+
+                html += `
+                    <div class="product-card" onclick="openProduct(${p.id})">
+                        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://picsum.photos/seed/error/300/200'" />
+                        <div class="product-info">
+                            <div class="product-platform">${categoryEmoji} ${p.category}</div>
+                            <h3>${p.name}</h3>
+                            ${p.specs ? `<div class="product-specs">${p.specs}</div>` : ''}
+                            <div>
+                                <span class="product-price">${priceEURC.toFixed(2)} EURC</span>
+                                <span class="product-price-rub">≈ ${priceRub.toFixed(0)} ₽</span>
+                            </div>
+                            <button class="buy-btn" onclick="event.stopPropagation(); openPayment(${priceEURC.toFixed(2)})">
+                                Buy
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsEl.innerHTML = html;
+        }
+
+        // ===== ОТКРЫТИЕ ТОВАРА (СТРАНИЦА product.html) =====
+        function openProduct(id) {
+            window.location.href = `pages/product.html?id=${id}`;
+        }
+
+        // ===== ФИЛЬТР ПО КАТЕГОРИЯМ (ВКЛАДКИ) =====
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-tabs button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            categoryFilter.value = cat; // синхронизация с выпадающим списком
+            searchProducts();
+        }
+
+        // ===== СБРОС =====
+        function resetFilters() {
+            searchInput.value = '';
+            priceSlider.value = 5000;
+            priceLabel.textContent = '5000';
+            categoryFilter.value = 'all';
+            currentCategory = 'all';
+            document.querySelectorAll('.category-tabs button').forEach(b => b.classList.remove('active'));
+            document.querySelector('.category-tabs button[data-cat="all"]').classList.add('active');
+            searchProducts();
+        }
+
+        // ===== ОПЛАТА =====
+        function openPayment(amount) {
+            document.getElementById('paymentAmount').textContent = `${amount} EURC`;
+            document.getElementById('paymentModal').classList.add('active');
+        }
+
+        function closePayment() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+
+        function copyWallet() {
+            const wallet = document.getElementById('paymentWallet').textContent;
+            navigator.clipboard.writeText(wallet).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = original, 1500);
+            }).catch(() => {
+                const input = document.createElement('input');
+                input.value = wallet;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                const btn = document.querySelector('.copy-btn');
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = original, 1500);
+            });
+        }
+
+        function copyTokenAddress() {
+            const address = document.getElementById('tokenAddressDisplay').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                const btn = document.querySelector('.pool-actions .btn-secondary');
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = original, 2000);
+            }).catch(() => {
+                const input = document.createElement('input');
+                input.value = address;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                const btn = document.querySelector('.pool-actions .btn-secondary');
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = original, 2000);
+            });
+        }
+
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) closePayment();
+        });
+
+        // ===== ОБРАБОТЧИКИ =====
+        priceSlider.addEventListener('input', function() {
+            priceLabel.textContent = this.value;
+            searchProducts();
+        });
+        categoryFilter.addEventListener('change', function() {
+            const val = this.value;
+            currentCategory = val;
+            document.querySelectorAll('.category-tabs button').forEach(b => {
+                b.classList.toggle('active', b.dataset.cat === val);
+            });
+            searchProducts();
+        });
+
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchProducts, 300);
+        });
+
+        // ===== ЗАПУСК =====
+        document.addEventListener('DOMContentLoaded', loadAllData);
+    </script>
+</body>
+</html>
