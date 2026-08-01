@@ -310,86 +310,87 @@
 
     <script>
         // ============================================================
-        //  CATALOG WITH REAL PRODUCT IMAGES (DIRECT LINKS)
-        //  INTERFACE IN ENGLISH
+        //  CATALOG WITH REAL WORKING IMAGES
+        //  USING PLACEHOLDER SERVICE FOR GUARANTEED DISPLAY
         // ============================================================
 
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
         const EURC_USD = 1.15;
 
-        // ===== PRODUCT CATALOG WITH REAL IMAGES =====
+        // ===== PRODUCT CATALOG WITH RELIABLE IMAGES =====
+        // Using picsum.photos for guaranteed working images
         const catalog = [
             { 
                 name: 'Xiaomi Redmi Buds 4 Pro Wireless Earbuds',
                 price_usd: 12.50,
                 platform: 'aliexpress',
-                image: 'https://ae01.alicdn.com/kf/Sb1f2d3e4c5d6e7f8g9h0i1j2k3l4m5n6o.jpg'
+                image: 'https://picsum.photos/seed/buds/300/200'
             },
             { 
                 name: 'Amazfit GTS 4 Mini Smartwatch',
                 price_usd: 45.00,
                 platform: 'aliexpress',
-                image: 'https://ae01.alicdn.com/kf/Sc2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s.jpg'
+                image: 'https://picsum.photos/seed/watch/300/200'
             },
             { 
                 name: 'Xiaomi Mi Band 8 Fitness Tracker',
                 price_usd: 8.20,
                 platform: 'aliexpress',
-                image: 'https://ae01.alicdn.com/kf/Sd3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t.jpg'
+                image: 'https://picsum.photos/seed/band/300/200'
             },
             { 
                 name: 'Sony WH-1000XM5 Headphones',
                 price_usd: 185.00,
                 platform: 'amazon',
-                image: 'https://m.media-amazon.com/images/I/71V5K3l4x5L._AC_SL1500_.jpg'
+                image: 'https://picsum.photos/seed/sony/300/200'
             },
             { 
                 name: 'Nike Air Max 270 White Sneakers',
                 price_usd: 92.00,
                 platform: 'amazon',
-                image: 'https://m.media-amazon.com/images/I/61X5K3l4x5L._AC_SL1500_.jpg'
+                image: 'https://picsum.photos/seed/nike/300/200'
             },
             { 
                 name: 'Xiaomi Redmi Note 13 Pro Smartphone',
                 price_usd: 210.00,
                 platform: 'aliexpress',
-                image: 'https://ae01.alicdn.com/kf/Sf5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0.jpg'
+                image: 'https://picsum.photos/seed/redmi/300/200'
             },
             { 
                 name: 'Apple AirPods Pro 2',
                 price_usd: 160.00,
                 platform: 'amazon',
-                image: 'https://m.media-amazon.com/images/I/71K3l4x5L6M._AC_SL1500_.jpg'
+                image: 'https://picsum.photos/seed/airpods/300/200'
             },
             { 
                 name: 'DJI Mini 3 Drone',
                 price_usd: 320.00,
                 platform: 'aliexpress',
-                image: 'https://ae01.alicdn.com/kf/Sg7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2.jpg'
+                image: 'https://picsum.photos/seed/drone/300/200'
             },
             { 
                 name: 'Logitech MX Master 3S Mouse',
                 price_usd: 75.00,
                 platform: 'amazon',
-                image: 'https://m.media-amazon.com/images/I/81X5K3l4x5L._AC_SL1500_.jpg'
+                image: 'https://picsum.photos/seed/mouse/300/200'
             },
             { 
                 name: 'Anker Power Bank 20000mAh',
                 price_usd: 28.00,
                 platform: 'aliexpress',
-                image: 'https://ae01.alicdn.com/kf/Si9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4.jpg'
+                image: 'https://picsum.photos/seed/powerbank/300/200'
             },
             { 
                 name: 'Keychron K3 Ultra-Slim Keyboard',
                 price_usd: 68.00,
                 platform: 'amazon',
-                image: 'https://m.media-amazon.com/images/I/71V5K3l4x5L._AC_SL1500_.jpg'
+                image: 'https://picsum.photos/seed/keyboard/300/200'
             },
             { 
                 name: 'Samsung Odyssey G5 27" Monitor',
                 price_usd: 280.00,
                 platform: 'amazon',
-                image: 'https://m.media-amazon.com/images/I/81X5K3l4x5L._AC_SL1500_.jpg'
+                image: 'https://picsum.photos/seed/monitor/300/200'
             }
         ];
 
@@ -456,12 +457,12 @@
             products.forEach(p => {
                 const priceEURC = (p.price_usd / EURC_USD) * 1.35;
                 const priceRub = priceEURC * 90;
-                const image = p.image || 'https://via.placeholder.com/300x200/1A2A5E/8899AA?text=No+Image';
+                const image = p.image || 'https://picsum.photos/seed/default/300/200';
                 const platformEmoji = p.platform === 'aliexpress' ? '🌏' : '🛒';
 
                 html += `
                     <div class="product-card">
-                        <img src="${image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/1A2A5E/8899AA?text=No+Image'" />
+                        <img src="${image}" alt="${p.name}" loading="lazy" onerror="this.src='https://picsum.photos/seed/error/300/200'" />
                         <div class="product-info">
                             <div class="product-platform">${platformEmoji} ${p.platform}</div>
                             <h3>${p.name}</h3>
