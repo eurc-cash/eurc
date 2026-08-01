@@ -82,7 +82,9 @@
             font-size: 14px;
             cursor: pointer;
             white-space: nowrap;
+            transition: all 0.3s;
         }
+        .search-box button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(26,92,255,0.4); }
         .filters {
             display: flex;
             justify-content: center;
@@ -157,8 +159,10 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
+            transition: all 0.3s;
         }
         .buy-btn:active { opacity: 0.7; }
+        .buy-btn:hover { transform: scale(1.02); }
 
         .payment-modal {
             display: none;
@@ -256,7 +260,7 @@
             <h2>🔍 Find and buy with EURC</h2>
             <p>Popular products catalog</p>
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Headphones, phone..." />
+                <input type="text" id="searchInput" placeholder="Search products..." />
                 <button onclick="searchProducts()">Search</button>
             </div>
             <div class="filters">
@@ -268,6 +272,7 @@
                         <option value="amazon">Amazon</option>
                     </select>
                 </label>
+                <button onclick="resetFilters()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;padding:4px 12px;border-radius:6px;cursor:pointer;">Reset</button>
             </div>
         </div>
     </section>
@@ -310,88 +315,26 @@
 
     <script>
         // ============================================================
-        //  CATALOG WITH REAL WORKING IMAGES
-        //  USING PLACEHOLDER SERVICE FOR GUARANTEED DISPLAY
+        //  ALL PRODUCTS SHOW AT START — SEARCH WORKS ON TOP
         // ============================================================
 
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
         const EURC_USD = 1.15;
 
-        // ===== PRODUCT CATALOG WITH RELIABLE IMAGES =====
-        // Using picsum.photos for guaranteed working images
+        // ===== PRODUCT CATALOG =====
         const catalog = [
-            { 
-                name: 'Xiaomi Redmi Buds 4 Pro Wireless Earbuds',
-                price_usd: 12.50,
-                platform: 'aliexpress',
-                image: 'https://picsum.photos/seed/buds/300/200'
-            },
-            { 
-                name: 'Amazfit GTS 4 Mini Smartwatch',
-                price_usd: 45.00,
-                platform: 'aliexpress',
-                image: 'https://picsum.photos/seed/watch/300/200'
-            },
-            { 
-                name: 'Xiaomi Mi Band 8 Fitness Tracker',
-                price_usd: 8.20,
-                platform: 'aliexpress',
-                image: 'https://picsum.photos/seed/band/300/200'
-            },
-            { 
-                name: 'Sony WH-1000XM5 Headphones',
-                price_usd: 185.00,
-                platform: 'amazon',
-                image: 'https://picsum.photos/seed/sony/300/200'
-            },
-            { 
-                name: 'Nike Air Max 270 White Sneakers',
-                price_usd: 92.00,
-                platform: 'amazon',
-                image: 'https://picsum.photos/seed/nike/300/200'
-            },
-            { 
-                name: 'Xiaomi Redmi Note 13 Pro Smartphone',
-                price_usd: 210.00,
-                platform: 'aliexpress',
-                image: 'https://picsum.photos/seed/redmi/300/200'
-            },
-            { 
-                name: 'Apple AirPods Pro 2',
-                price_usd: 160.00,
-                platform: 'amazon',
-                image: 'https://picsum.photos/seed/airpods/300/200'
-            },
-            { 
-                name: 'DJI Mini 3 Drone',
-                price_usd: 320.00,
-                platform: 'aliexpress',
-                image: 'https://picsum.photos/seed/drone/300/200'
-            },
-            { 
-                name: 'Logitech MX Master 3S Mouse',
-                price_usd: 75.00,
-                platform: 'amazon',
-                image: 'https://picsum.photos/seed/mouse/300/200'
-            },
-            { 
-                name: 'Anker Power Bank 20000mAh',
-                price_usd: 28.00,
-                platform: 'aliexpress',
-                image: 'https://picsum.photos/seed/powerbank/300/200'
-            },
-            { 
-                name: 'Keychron K3 Ultra-Slim Keyboard',
-                price_usd: 68.00,
-                platform: 'amazon',
-                image: 'https://picsum.photos/seed/keyboard/300/200'
-            },
-            { 
-                name: 'Samsung Odyssey G5 27" Monitor',
-                price_usd: 280.00,
-                platform: 'amazon',
-                image: 'https://picsum.photos/seed/monitor/300/200'
-            }
+            { name: 'Xiaomi Redmi Buds 4 Pro Wireless Earbuds', price_usd: 12.50, platform: 'aliexpress', image: 'https://picsum.photos/seed/buds/300/200' },
+            { name: 'Amazfit GTS 4 Mini Smartwatch', price_usd: 45.00, platform: 'aliexpress', image: 'https://picsum.photos/seed/watch/300/200' },
+            { name: 'Xiaomi Mi Band 8 Fitness Tracker', price_usd: 8.20, platform: 'aliexpress', image: 'https://picsum.photos/seed/band/300/200' },
+            { name: 'Sony WH-1000XM5 Headphones', price_usd: 185.00, platform: 'amazon', image: 'https://picsum.photos/seed/sony/300/200' },
+            { name: 'Nike Air Max 270 White Sneakers', price_usd: 92.00, platform: 'amazon', image: 'https://picsum.photos/seed/nike/300/200' },
+            { name: 'Xiaomi Redmi Note 13 Pro Smartphone', price_usd: 210.00, platform: 'aliexpress', image: 'https://picsum.photos/seed/redmi/300/200' },
+            { name: 'Apple AirPods Pro 2', price_usd: 160.00, platform: 'amazon', image: 'https://picsum.photos/seed/airpods/300/200' },
+            { name: 'DJI Mini 3 Drone', price_usd: 320.00, platform: 'aliexpress', image: 'https://picsum.photos/seed/drone/300/200' },
+            { name: 'Logitech MX Master 3S Mouse', price_usd: 75.00, platform: 'amazon', image: 'https://picsum.photos/seed/mouse/300/200' },
+            { name: 'Anker Power Bank 20000mAh', price_usd: 28.00, platform: 'aliexpress', image: 'https://picsum.photos/seed/powerbank/300/200' },
+            { name: 'Keychron K3 Ultra-Slim Keyboard', price_usd: 68.00, platform: 'amazon', image: 'https://picsum.photos/seed/keyboard/300/200' },
+            { name: 'Samsung Odyssey G5 27" Monitor', price_usd: 280.00, platform: 'amazon', image: 'https://picsum.photos/seed/monitor/300/200' }
         ];
 
         const resultsEl = document.getElementById('results');
@@ -405,6 +348,11 @@
 
         priceSlider.addEventListener('input', function() {
             priceLabel.textContent = this.value;
+            searchProducts();
+        });
+
+        platformSelect.addEventListener('change', function() {
+            searchProducts();
         });
 
         let searchTimeout;
@@ -412,6 +360,15 @@
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(searchProducts, 300);
         });
+
+        // ===== RESET FILTERS =====
+        function resetFilters() {
+            searchInput.value = '';
+            priceSlider.value = 100;
+            priceLabel.textContent = '100';
+            platformSelect.value = 'all';
+            searchProducts();
+        }
 
         // ===== SEARCH FUNCTION =====
         function searchProducts() {
@@ -521,9 +478,8 @@
             if (e.target === this) closePayment();
         });
 
-        // ===== AUTO-START =====
+        // ===== AUTO-SHOW ALL PRODUCTS ON LOAD =====
         document.addEventListener('DOMContentLoaded', function() {
-            searchInput.value = '';
             searchProducts();
         });
     </script>
