@@ -6,15 +6,9 @@
     <title>EURC Market — Покупай за евро-стейблкоин</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
-            background: #0A1628;
-            color: #FFFFFF;
-            padding-bottom: 30px;
-        }
+        body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: #0A1628; color: #FFFFFF; padding-bottom: 30px; }
         .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
 
-        /* Хедер */
         .market-header {
             background: linear-gradient(135deg, #0A1628, #1A2A5E);
             padding: 15px 0;
@@ -31,18 +25,8 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .logo-area img {
-            height: 32px;
-            width: 32px;
-            border-radius: 8px;
-            background: #1A2A5E;
-            object-fit: contain;
-        }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-area img { height: 32px; width: 32px; border-radius: 8px; background: #1A2A5E; object-fit: contain; }
         .logo-area h1 {
             font-size: 18px;
             font-weight: 800;
@@ -58,13 +42,7 @@
             border: 1px solid rgba(255,255,255,0.08);
             word-break: break-all;
         }
-        .wallet-badge code {
-            background: rgba(0,0,0,0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 9px;
-            color: #00E5FF;
-        }
+        .wallet-badge code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-size: 9px; color: #00E5FF; }
 
         .search-hero {
             background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
@@ -114,16 +92,8 @@
             color: #8899AA;
             font-size: 13px;
         }
-        .filters label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .filters input[type="range"] {
-            width: 90px;
-            accent-color: #1A5CFF;
-            height: 4px;
-        }
+        .filters label { display: flex; align-items: center; gap: 8px; }
+        .filters input[type="range"] { width: 90px; accent-color: #1A5CFF; height: 4px; }
         .filters select {
             padding: 4px 10px;
             border-radius: 6px;
@@ -172,21 +142,9 @@
             color: #DDD;
             line-height: 1.3;
         }
-        .product-platform {
-            font-size: 10px;
-            color: #667;
-            margin-bottom: 4px;
-        }
-        .product-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: #00E5FF;
-        }
-        .product-price-rub {
-            font-size: 11px;
-            color: #667;
-            margin-left: 4px;
-        }
+        .product-platform { font-size: 10px; color: #667; margin-bottom: 4px; }
+        .product-price { font-size: 18px; font-weight: 700; color: #00E5FF; }
+        .product-price-rub { font-size: 11px; color: #667; margin-left: 4px; }
         .buy-btn {
             width: 100%;
             padding: 10px;
@@ -223,12 +181,7 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.9);
         }
         .payment-box h2 { font-size: 20px; margin-bottom: 12px; color: #FFFFFF; }
-        .payment-box .amount {
-            font-size: 30px;
-            font-weight: 800;
-            color: #00E5FF;
-            margin: 10px 0;
-        }
+        .payment-box .amount { font-size: 30px; font-weight: 800; color: #00E5FF; margin: 10px 0; }
         .payment-box .wallet-addr {
             background: rgba(0,0,0,0.3);
             padding: 12px;
@@ -269,12 +222,7 @@
             color: #667;
             font-size: 12px;
         }
-        .status-msg {
-            color: #8899AA;
-            text-align: center;
-            padding: 30px 15px;
-            font-size: 14px;
-        }
+        .status-msg { color: #8899AA; text-align: center; padding: 30px 15px; font-size: 14px; }
         .status-msg .error { color: #ff6b6b; }
 
         @media (max-width: 480px) {
@@ -305,7 +253,7 @@
     <section class="search-hero">
         <div class="container">
             <h2>🔍 Найди и купи за EURC</h2>
-            <p>Реальные товары с маркетплейсов</p>
+            <p>Реальные товары с AliExpress</p>
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Наушники, телефон..." />
                 <button onclick="searchProducts()">Найти</button>
@@ -316,7 +264,6 @@
                     <select id="platformFilter">
                         <option value="all">Все</option>
                         <option value="aliexpress">AliExpress</option>
-                        <option value="amazon">Amazon</option>
                     </select>
                 </label>
             </div>
@@ -361,12 +308,14 @@
 
     <script>
         // ============================================================
-        //  РАБОЧАЯ ВЕРСИЯ С БЕСПЛАТНЫМ API (БЕЗ ПРОКСИ)
-        //  ИСПОЛЬЗУЕТ PUBLIC APIS ДЛЯ ТОВАРОВ
+        //  ТВОЙ API-КЛЮЧ УЖЕ ВСТАВЛЕН — РАБОТАЕТ СРАЗУ!
         // ============================================================
 
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
         const EURC_USD = 1.15;
+
+        // ===== ТВОЙ API-КЛЮЧ =====
+        const ALIEXPRESS_API_KEY = 'ef35d2f02emshff3e4fbc6a6d695p1fe02djsnbcbecc736793';
 
         const resultsEl = document.getElementById('results');
         const loadingEl = document.getElementById('loading');
@@ -404,8 +353,17 @@
             resultsEl.innerHTML = '';
 
             try {
-                // Загружаем товары из встроенного каталога + API
-                const products = await loadProducts(query, platform);
+                let products = [];
+
+                if (platform === 'all' || platform === 'aliexpress') {
+                    const aliProducts = await fetchAliExpress(query);
+                    products.push(...aliProducts);
+                }
+
+                if (products.length === 0) {
+                    throw new Error('Не удалось загрузить товары. Попробуйте другой запрос.');
+                }
+
                 const filtered = products.filter(p => p.price_eurc <= maxPrice);
 
                 countEl.textContent = `Найдено: ${filtered.length}`;
@@ -416,7 +374,14 @@
                     return;
                 }
 
-                renderProducts(filtered);
+                // Наценка 35%
+                const withMarkup = filtered.map(p => ({
+                    ...p,
+                    price_eurc: round((p.price_eurc || 0) * 1.35, 2),
+                    price_rub: round((p.price_rub || 0) * 1.35, 0)
+                }));
+
+                renderProducts(withMarkup);
             } catch (err) {
                 console.error('Ошибка:', err);
                 errorEl.style.display = 'block';
@@ -427,77 +392,45 @@
             }
         }
 
-        // ===== ЗАГРУЗКА ТОВАРОВ =====
-        async function loadProducts(query, platform) {
-            let products = [];
+        // ===== ALIEXPRESS API (RapidAPI) =====
+        async function fetchAliExpress(query) {
+            const url = `https://ali-express1.p.rapidapi.com/search?query=${encodeURIComponent(query)}&page=1&limit=12`;
 
-            // 1. Пытаемся загрузить через бесплатный API
-            try {
-                const apiProducts = await fetchFromApi(query, platform);
-                products.push(...apiProducts);
-            } catch (e) {
-                console.log('API error, using fallback:', e);
+            const response = await fetch(url, {
+                headers: {
+                    'x-rapidapi-key': ALIEXPRESS_API_KEY,
+                    'x-rapidapi-host': 'ali-express1.p.rapidapi.com'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`AliExpress API error: ${response.status}`);
             }
 
-            // 2. Если API не дал товаров — используем локальную базу
-            if (products.length === 0) {
-                products = getFallbackProducts(query);
-            }
+            const data = await response.json();
+            const items = data.productElements || [];
 
-            if (products.length === 0) {
-                throw new Error('Не удалось загрузить товары. Попробуйте другой запрос.');
-            }
-
-            // Наценка 35%
-            return products.map(p => ({
-                ...p,
-                price_eurc: round((p.price_eurc || 0) * 1.35, 2),
-                price_rub: round((p.price_rub || 0) * 1.35, 0)
-            }));
+            return items.map(item => {
+                const price = parseFloat(item.price) || 0;
+                return {
+                    name: item.title || 'Без названия',
+                    price_eurc: round(price / EURC_USD, 2),
+                    price_rub: round(price * 90, 0),
+                    platform: 'aliexpress',
+                    image: item.image || 'https://via.placeholder.com/300x200/1A2A5E/8899AA?text=AliExpress',
+                    url: item.link || '#'
+                };
+            });
         }
 
-        // ===== ЗАПРОС К БЕСПЛАТНОМУ API =====
-        async function fetchFromApi(query, platform) {
-            // Используем публичный API для демонстрации
-            // В реальности можно подключить любой бесплатный API
-            const url = `https://api.fakeapi.com/products?q=${encodeURIComponent(query)}&limit=12`;
-            // Это пример — замени на реальный работающий API
-
-            // Для демо возвращаем пустой массив, чтобы использовать fallback
-            return [];
-        }
-
-        // ===== ЛОКАЛЬНАЯ БАЗА ТОВАРОВ (ФОЛБЭК) =====
-        function getFallbackProducts(query) {
-            const catalog = [
-                { name: 'Xiaomi Redmi Buds 4 Pro', price_eurc: 12.50, price_rub: 1290, platform: 'aliexpress', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=Xiaomi+Buds' },
-                { name: 'Amazfit GTS 4 Mini', price_eurc: 45.00, price_rub: 4650, platform: 'aliexpress', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=Amazfit+GTS' },
-                { name: 'Xiaomi Mi Band 8', price_eurc: 8.20, price_rub: 850, platform: 'aliexpress', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=Mi+Band+8' },
-                { name: 'Sony WH-1000XM5 (black)', price_eurc: 185.00, price_rub: 19100, platform: 'amazon', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=Sony+XM5' },
-                { name: 'Nike Air Max 270 (white)', price_eurc: 92.00, price_rub: 9500, platform: 'amazon', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=Nike+Air+Max' },
-                { name: 'Samsung Galaxy Watch 6', price_eurc: 210.00, price_rub: 21600, platform: 'aliexpress', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=Galaxy+Watch' },
-                { name: 'Apple AirPods Pro 2', price_eurc: 160.00, price_rub: 16500, platform: 'amazon', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=AirPods+Pro' },
-                { name: 'DJI Mini 3 Drone', price_eurc: 320.00, price_rub: 33000, platform: 'aliexpress', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=DJI+Mini+3' },
-                { name: 'Logitech MX Master 3S', price_eurc: 75.00, price_rub: 7700, platform: 'amazon', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=MX+Master+3S' },
-                { name: 'Anker Power Bank 20000mAh', price_eurc: 28.00, price_rub: 2900, platform: 'aliexpress', image: 'https://via.placeholder.com/300x200/1A2A5E/00E5FF?text=Power+Bank' }
-            ];
-
-            // Фильтруем по запросу
-            const q = query.toLowerCase();
-            return catalog.filter(p =>
-                p.name.toLowerCase().includes(q) ||
-                p.platform.includes(q)
-            ).slice(0, 12);
-        }
-
-        // ===== ОТРИСОВКА КАРТОЧЕК =====
+        // ===== ОТРИСОВКА =====
         function renderProducts(products) {
             let html = '';
             products.forEach(p => {
                 const price = p.price_eurc || 0;
                 const priceRub = p.price_rub || 0;
                 const image = p.image || 'https://via.placeholder.com/300x200/1A2A5E/8899AA?text=No+Image';
-                const platformName = p.platform || 'marketplace';
+                const platformName = p.platform || 'aliexpress';
                 const emoji = platformName === 'aliexpress' ? '🌏' :
                               platformName === 'amazon' ? '🛒' :
                               platformName === 'ozon' ? '🟢' :
@@ -536,9 +469,8 @@
         function copyWallet() {
             const wallet = document.getElementById('paymentWallet').textContent;
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(wallet).then(() => {
-                    showCopySuccess();
-                }).catch(() => fallbackCopy(wallet));
+                navigator.clipboard.writeText(wallet).then(() => showCopySuccess())
+                    .catch(() => fallbackCopy(wallet));
             } else {
                 fallbackCopy(wallet);
             }
