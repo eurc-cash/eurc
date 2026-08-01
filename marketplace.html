@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>EURC Market — Покупай за евро-стейблкоин</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        /* Дополнительные стили для маркетплейса (поверх styles.css) */
+        .market-header {
+            background: linear-gradient(135deg, #0A1628, #1A2A5E);
+            color: white;
+            padding: 20px 0;
+            border-bottom: 2px solid #1A5CFF;
+        }
+        .market-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .market-header .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .market-header .logo-area img {
+            height: 40px;
+            border-radius: 8px;
+        }
+        .market-header .logo-area h1 {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF, #00E5FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .wallet-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .wallet-badge code {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #00E5FF;
+        }
+        .search-hero {
+            background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
+            padding: 40px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 30px 30px;
+        }
+        .search-box {
+            display: flex;
+            gap: 12px;
+            max-width: 700px;
+            margin: 15px auto;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 16px;
+        }
+        .search-box input::placeholder { color: #8899AA; }
+        .search-box input:focus { outline: none; border-color: #1A5CFF; }
+        .search-box button {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #1A5CFF, #0066FF);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .search-box button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(26,92,255,0.4); }
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            color: #8899AA;
+        }
+        .filters label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .filters input[type="range"] {
+            width: 120px;
+            accent-color: #1A5CFF;
+        }
+        .filters select {
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            color: #8899AA;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .product-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: #1A5CFF;
+            box-shadow: 0 10px 40px rgba(26,92,255,0.15);
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #0A1628;
+        }
+        .product-info {
+            padding: 18px;
+        }
+        .product-info h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            height: 48px;
+            overflow: hidden;
+            color: #FFFFFF;
+        }
+        .product-platform {
+            font-size: 12px;
+            color: #8899AA;
+            margin-bottom: 6px;
+        }
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00E5FF;
+        }
+        .product-price-rub {
+            font-size: 14px;
+            color: #8899AA;
+            margin-left: 8px;
+        }
+        .buy-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 14px;
+            background: linear-gradient(135deg, #1A5CFF, #0066FF);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .buy-btn:hover { background: #0066FF; transform: scale(1.02); }
+        .payment-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .payment-modal.active { display: flex; }
+        .payment-box {
+            background: #0A1628;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        .payment-box h2 { margin-bottom: 20px; color: #FFFFFF; }
+        .payment-box .amount { font-size: 36px; font-weight: 800; color: #00E5FF; }
+        .payment-box .wallet-addr {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 10px;
+            word-break: break-all;
+            color: #8899AA;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+        .payment-box .wallet-addr code { color: #00E5FF; }
+        .payment-box .copy-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .payment-box .copy-btn:hover { background: rgba(26,92,255,0.2); }
+        .payment-box .close-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .payment-box .close-btn:hover { background: rgba(255,255,255,0.1); }
+        .footer-market {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            color: #8899AA;
+            font-size: 14px;
+        }
+        @media (max-width: 768px) {
+            .market-header .container { flex-direction: column; text-align: center; }
+            .search-box { flex-direction: column; }
+            .filters { flex-direction: column; align-items: center; }
+            .products-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="market-header">
+        <div class="container">
+            <div class="logo-area">
+                <img src="eurc-logo.png" alt="EURC" />
+                <h1>EURC Market</h1>
+            </div>
+            <div class="wallet-badge">
+                💳 Кошелек: <code>DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== ПОИСК ===== -->
+    <section class="search-hero">
+        <div class="container" style="text-align:center;">
+            <h2 style="color:#FFFFFF; font-size:28px; margin-bottom:8px;">🔍 Найди товар и купи за EURC</h2>
+            <p style="color:#8899AA; margin-bottom:20px;">Автоматическая конвертация цен в евро-стейблкоин</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Например: наушники, телефон, кроссовки..." />
+                <button onclick="searchProducts()">Найти</button>
+            </div>
+            <div class="filters">
+                <label>Макс. цена (EURC): <input type="range" min="0" max="200" value="50" id="priceFilter" /> <span id="priceLabel">50</span></label>
+                <label>Платформа:
+                    <select id="platformFilter">
+                        <option value="all">Все</option>
+                        <option value="aliexpress">AliExpress</option>
+                        <option value="ozon">Ozon</option>
+                        <option value="wildberries">Wildberries</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== РЕЗУЛЬТАТЫ ===== -->
+    <main class="container">
+        <div class="results-header">
+            <span id="resultCount">Найдено: 0 товаров</span>
+            <span style="color:#8899AA; font-size:13px;">💰 1 EURC ≈ 1.15 USDC</span>
+        </div>
+        <div id="results" class="products-grid"></div>
+    </main>
+
+    <!-- ===== МОДАЛКА ОПЛАТЫ ===== -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-box">
+            <h2>💳 Оплата в EURC</h2>
+            <p style="color:#8899AA;">Отправьте точную сумму на кошелёк ниже:</p>
+            <div class="amount" id="paymentAmount">0 EURC</div>
+            <div class="wallet-addr">
+                📤 Адрес получателя:<br />
+                <code id="paymentWallet">DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+                <button class="copy-btn" onclick="copyWallet()">📋 Копировать</button>
+            </div>
+            <p style="color:#8899AA; font-size:13px; margin:10px 0;">
+                ⚡ Откройте Phantom/Solflare → отправьте EURC на адрес выше<br />
+                ✅ После подтверждения мы отправим товар
+            </p>
+            <button class="close-btn" onclick="closePayment()">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- ===== ФУТЕР ===== -->
+    <footer class="footer-market">
+        <div class="container">
+            <p>© 2026 EURC Cash — Покупай товары со всего мира за евро-стейблкоин</p>
+            <p style="font-size:12px; color:#666;">1 EURC ≈ 1 € (привязка к евро) • Наценка 35% включена в цену</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        //  app.js — ВСЯ ЛОГИКА МАРКЕТПЛЕЙСА
+        // ============================================================
+
+        const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
+        const API_URL = 'http://localhost:8000/api';
+
+        // Ползунок цены
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('priceFilter');
+            if (slider) {
+                slider.addEventListener('input', function() {
+                    document.getElementById('priceLabel').textContent = this.value;
+                });
+            }
+            // Демо-поиск при загрузке
+            const input = document.getElementById('searchInput');
+            if (input) {
+                input.value = 'наушники';
+                searchProducts();
+            }
+        });
+
+        // ===== ПОИСК ТОВАРОВ =====
+        async function searchProducts() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) {
+                alert('Введите запрос для поиска');
+                return;
+            }
+
+            const maxPrice = parseFloat(document.getElementById('priceFilter')?.value || 200);
+            const platform = document.getElementById('platformFilter')?.value || 'all';
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p style="color:#8899AA;">⏳ Загрузка товаров...</p>';
+
+            try {
+                const response = await axios.get(`${API_URL}/search`, {
+                    params: { q: query, limit: 30, platform: platform }
+                });
+
+                let products = response.data.products || [];
+
+                // Фильтр по цене (клиентская проверка)
+                products = products.filter(p => p.price_eurc <= maxPrice);
+
+                document.getElementById('resultCount').textContent = `Найдено: ${products.length} товаров`;
+
+                if (products.length === 0) {
+                    resultsDiv.innerHTML = '<p style="color:#8899AA;">😕 Товары не найдены. Попробуйте другой запрос.</p>';
+                    return;
+                }
+
+                let html = '';
+                products.forEach(p => {
+                    const price = p.price_eurc || 0;
+                    const priceRub = p.price_rub || Math.round(price * 90 * 1.15);
+                    const image = p.image || 'https://via.placeholder.com/300x200?text=No+Image';
+                    const platformName = p.platform || 'aliexpress';
+                    const platformEmoji = platformName === 'aliexpress' ? '🌏' :
+                                          platformName === 'ozon' ? '🟢' :
+                                          platformName === 'wildberries' ? '🟣' : '📦';
+
+                    html += `
+                        <div class="product-card">
+                            <img src="${image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=Error'" />
+                            <div class="product-info">
+                                <div class="product-platform">${platformEmoji} ${platformName}</div>
+                                <h3>${p.name}</h3>
+                                <div>
+                                    <span class="product-price">${price.toFixed(2)} EURC</span>
+                                    <span class="product-price-rub">≈ ${priceRub} ₽</span>
+                                </div>
+                                <button class="buy-btn" onclick="openPayment(${price.toFixed(2)})">
+                                    Купить за EURC
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                resultsDiv.innerHTML = html;
+
+            } catch (error) {
+                console.error('Ошибка поиска:', error);
+                resultsDiv.innerHTML = `<p style="color:#ff6b6b;">❌ Ошибка загрузки: ${error.message}. Убедитесь, что бэкенд запущен.</p>`;
+            }
+        }
+
+        // ===== ОПЛАТА =====
+        function openPayment(amount) {
+            document.getElementById('paymentAmount').textContent = `${amount.toFixed(2)} EURC`;
+            document.getElementById('paymentModal').classList.add('active');
+        }
+
+        function closePayment() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+
+        function copyWallet() {
+            const wallet = document.getElementById('paymentWallet').textContent;
+            navigator.clipboard.writeText(wallet).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const original = btn.textContent;
+                btn.textContent = '✅ Скопировано!';
+                setTimeout(() => btn.textContent = original, 2000);
+            });
+        }
+
+        // Закрытие по клику вне окна
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) closePayment();
+        });
+
+        // ===== ДЕМО-ДАННЫЕ (если бэкенд не запущен) =====
+        // Раскомментируй для теста без бэкенда:
+        /*
+        async function searchProducts() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Demo+Product" />
+                    <div class="product-info">
+                        <div class="product-platform">🌏 Aliexpress</div>
+                        <h3>Беспроводные наушники Xiaomi</h3>
+                        <div><span class="product-price">12.50 EURC</span><span class="product-price-rub">≈ 1290 ₽</span></div>
+                        <button class="buy-btn" onclick="openPayment(12.50)">Купить за EURC</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Demo+Product" />
+                    <div class="product-info">
+                        <div class="product-platform">🟢 Ozon</div>
+                        <h3>Смарт-часы Amazfit GTS 4</h3>
+                        <div><span class="product-price">45.00 EURC</span><span class="product-price-rub">≈ 4650 ₽</span></div>
+                        <button class="buy-btn" onclick="openPayment(45.00)">Купить за EURC</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('resultCount').textContent = 'Найдено: 2 товара (демо)';
+        }
+        */
+    </script>
+
+</body>
+</html>
