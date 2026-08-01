@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>EURC Market — Buy with euro-stablecoin</title>
     <style>
-        /* ===== ВСЕ СТИЛИ (ТАКИЕ ЖЕ, КАК В ПРЕДЫДУЩЕЙ ВЕРСИИ) ===== */
+        /* ===== ВСЕ СТИЛИ (без изменений) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: #0A1628; color: #FFFFFF; padding-bottom: 30px; }
         .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
@@ -117,6 +117,49 @@
             font-size: 12px;
         }
         .filters .reset-btn:hover { background: rgba(255, 255, 255, 0.1); }
+        .lang-selector {
+            position: relative;
+            display: inline-block;
+        }
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+        }
+        .lang-btn:hover { background: rgba(255, 255, 255, 0.15); }
+        .lang-dropdown {
+            display: none;
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: #1A2A5E;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+            min-width: 140px;
+            z-index: 100;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        .lang-dropdown.active { display: block; }
+        .lang-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 6px 12px;
+            background: none;
+            border: none;
+            color: white;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+        }
+        .lang-dropdown button:hover { background: rgba(255, 255, 255, 0.08); }
         .category-tabs {
             display: flex;
             gap: 10px;
@@ -351,6 +394,8 @@
             .pool-actions .btn-secondary { display: block; margin: 10px 0; }
             .pool-info { flex-direction: column; align-items: center; gap: 8px; }
             .category-tabs button { font-size: 11px; padding: 6px 14px; }
+            .lang-btn { font-size: 10px; padding: 3px 10px; }
+            .lang-dropdown { min-width: 120px; }
         }
     </style>
 </head>
@@ -366,27 +411,41 @@
             <div class="wallet-badge">
                 💳 <code>DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
             </div>
+            <div class="lang-selector">
+                <button class="lang-btn" id="langToggle">🌐 EN</button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <button onclick="setLang('en')">🇬🇧 English</button>
+                    <button onclick="setLang('ru')">🇷🇺 Русский</button>
+                    <button onclick="setLang('de')">🇩🇪 Deutsch</button>
+                    <button onclick="setLang('fr')">🇫🇷 Français</button>
+                    <button onclick="setLang('es')">🇪🇸 Español</button>
+                    <button onclick="setLang('zh')">🇨🇳 中文</button>
+                    <button onclick="setLang('ar')">🇸🇦 العربية</button>
+                    <button onclick="setLang('tr')">🇹🇷 Türkçe</button>
+                </div>
+            </div>
         </div>
     </header>
 
     <!-- ===== ПОИСК ===== -->
     <section class="search-hero">
         <div class="container">
-            <h2>🔍 Find and buy with EURC</h2>
-            <p>Electronics · EVs · Real Estate · Photo</p>
+            <h2 id="s-title">🔍 Find and buy with EURC</h2>
+            <p id="s-sub">Electronics · EVs · Real Estate · Photo · Banks</p>
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Search..." />
                 <button onclick="searchProducts()">Search</button>
             </div>
             <div class="filters">
-                <label>Price (EURC): <input type="range" min="0" max="100000000" value="5000000" id="priceFilter" /> <span id="priceLabel">5,000,000</span></label>
-                <label>Category:
+                <label id="s-price-label">Price (EURC): <input type="range" min="0" max="100000000" value="5000000" id="priceFilter" /> <span id="priceLabel">5,000,000</span></label>
+                <label id="s-category-label">Category:
                     <select id="categoryFilter">
                         <option value="all">All</option>
                         <option value="electronics">Electronics</option>
-                        <option value="ev">Electric Vehicles</option>
+                        <option value="ev">EVs</option>
                         <option value="realestate">Real Estate</option>
                         <option value="photos">Photo</option>
+                        <option value="banks">Banks</option>
                     </select>
                 </label>
                 <button class="reset-btn" onclick="resetFilters()">↺ Reset</button>
@@ -402,6 +461,7 @@
             <button data-cat="ev" onclick="filterCategory('ev', this)">🚗 EVs</button>
             <button data-cat="realestate" onclick="filterCategory('realestate', this)">🏠 Real Estate</button>
             <button data-cat="photos" onclick="filterCategory('photos', this)">📷 Photo</button>
+            <button data-cat="banks" onclick="filterCategory('banks', this)">🏦 Banks</button>
         </div>
     </div>
 
@@ -419,54 +479,260 @@
     <!-- ===== ПУЛ ЛИКВИДНОСТИ ===== -->
     <section class="pool-section">
         <div class="container">
-            <h2>💧 Стань маркет-мейкером EURC</h2>
-            <p class="subtitle">Создай пул ликвидности с токеном EURC и начни зарабатывать на комиссиях.</p>
+            <h2 id="pool-title">💧 Become a EURC Market Maker</h2>
+            <p class="subtitle" id="pool-sub">Create a liquidity pool with EURC token and start earning fees from trades.</p>
             <div class="pool-steps">
-                <div class="pool-step"><span class="step-num">1️⃣</span><h4>Выбери пару</h4><p>EURC / SOL или EURC / USDC</p></div>
-                <div class="pool-step"><span class="step-num">2️⃣</span><h4>Внеси токены</h4><p>Укажи количество EURC и SOL</p></div>
-                <div class="pool-step"><span class="step-num">3️⃣</span><h4>Создай и получай</h4><p>Подтверди транзакцию и получай комиссии</p></div>
+                <div class="pool-step"><span class="step-num">1️⃣</span><h4 id="pool-step1">Choose a pair</h4><p id="pool-step1-d">EURC / SOL or EURC / USDC</p></div>
+                <div class="pool-step"><span class="step-num">2️⃣</span><h4 id="pool-step2">Add tokens</h4><p id="pool-step2-d">Enter EURC and SOL amounts</p></div>
+                <div class="pool-step"><span class="step-num">3️⃣</span><h4 id="pool-step3">Create and earn</h4><p id="pool-step3-d">Confirm transaction and start earning fees</p></div>
             </div>
             <div class="pool-info">
-                <div>📌 Адрес токена: <span id="tokenAddressDisplay">2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4</span></div>
-                <div>💰 Комиссия: <span>~0.005 SOL</span></div>
-                <div>📈 Доходность: <span>от 0.1% до 1%</span></div>
+                <div>📌 Token address: <span id="tokenAddressDisplay">2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4</span></div>
+                <div>💰 Fee: <span>~0.005 SOL</span></div>
+                <div>📈 Yield: <span>0.1% - 1%</span></div>
             </div>
             <div class="pool-actions">
-                <a href="https://app.meteora.ag/create-pool?base=2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4" target="_blank" class="btn-primary">🚀 Создать пул на Meteora</a>
-                <button class="btn-secondary" onclick="copyTokenAddress()">📋 Копировать адрес</button>
+                <a href="https://app.meteora.ag/create-pool?base=2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4" target="_blank" class="btn-primary" id="pool-btn">🚀 Create pool on Meteora</a>
+                <button class="btn-secondary" onclick="copyTokenAddress()" id="pool-copy">📋 Copy address</button>
             </div>
-            <p class="pool-footer">🔒 Блокируй ликвидность на срок от 1 месяца</p>
+            <p class="pool-footer" id="pool-footer">🔒 Lock liquidity for 1 month to build trust</p>
         </div>
     </section>
 
     <!-- ===== МОДАЛКА ОПЛАТЫ ===== -->
     <div id="paymentModal" class="payment-modal">
         <div class="payment-box">
-            <h2>💳 Payment in EURC</h2>
-            <p style="color:#8899AA;font-size:14px;">Send exact amount to wallet:</p>
+            <h2 id="pay-title">💳 Payment in EURC</h2>
+            <p style="color:#8899AA;font-size:14px;" id="pay-sub">Send exact amount to wallet:</p>
             <div class="amount" id="paymentAmount">0 EURC</div>
             <div class="wallet-addr">
                 📤 Recipient:<br />
                 <code id="paymentWallet">DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
                 <br />
-                <button class="copy-btn" onclick="copyWallet()">📋 Copy</button>
+                <button class="copy-btn" onclick="copyWallet()" id="pay-copy">📋 Copy</button>
             </div>
-            <p style="color:#667;font-size:12px;margin:10px 0;">⚡ Open Phantom/Solflare → send EURC<br />✅ After confirmation we ship</p>
-            <button class="close-btn" onclick="closePayment()">Close</button>
+            <p style="color:#667;font-size:12px;margin:10px 0;" id="pay-note">⚡ Open Phantom/Solflare → send EURC<br />✅ After confirmation we ship</p>
+            <button class="close-btn" onclick="closePayment()" id="pay-close">Close</button>
         </div>
     </div>
 
     <!-- ===== ФУТЕР ===== -->
     <footer class="footer-market">
         <div class="container">
-            <p>© 2026 EURC Market — Buy with euro-stablecoin</p>
+            <p id="footer-text">© 2026 EURC Market — Buy with euro-stablecoin</p>
             <p style="font-size:10px;color:#444;">1 EURC ≈ 1 €</p>
         </div>
     </footer>
 
     <script>
         // ============================================================
-        //  ЗАГРУЗКА ТОВАРОВ ИЗ JSON-ФАЙЛОВ
+        //  ПЕРЕВОДЫ НА 8 ЯЗЫКОВ
+        // ============================================================
+        const translations = {
+            en: {
+                's-title': '🔍 Find and buy with EURC',
+                's-sub': 'Electronics · EVs · Real Estate · Photo · Banks',
+                's-price-label': 'Price (EURC):',
+                's-category-label': 'Category:',
+                'pool-title': '💧 Become a EURC Market Maker',
+                'pool-sub': 'Create a liquidity pool with EURC token and start earning fees from trades.',
+                'pool-step1': 'Choose a pair',
+                'pool-step1-d': 'EURC / SOL or EURC / USDC',
+                'pool-step2': 'Add tokens',
+                'pool-step2-d': 'Enter EURC and SOL amounts',
+                'pool-step3': 'Create and earn',
+                'pool-step3-d': 'Confirm transaction and start earning fees',
+                'pool-btn': '🚀 Create pool on Meteora',
+                'pool-copy': '📋 Copy address',
+                'pool-footer': '🔒 Lock liquidity for 1 month to build trust',
+                'pay-title': '💳 Payment in EURC',
+                'pay-sub': 'Send exact amount to wallet:',
+                'pay-copy': '📋 Copy',
+                'pay-note': '⚡ Open Phantom/Solflare → send EURC\n✅ After confirmation we ship',
+                'pay-close': 'Close',
+                'footer-text': '© 2026 EURC Market — Buy with euro-stablecoin',
+                'found': 'Found:',
+                'no-products': '😕 No products found'
+            },
+            ru: {
+                's-title': '🔍 Найди и купи за EURC',
+                's-sub': 'Электроника · Электромобили · Недвижимость · Фото · Банки',
+                's-price-label': 'Цена (EURC):',
+                's-category-label': 'Категория:',
+                'pool-title': '💧 Стань маркет-мейкером EURC',
+                'pool-sub': 'Создай пул ликвидности с токеном EURC и зарабатывай на комиссиях.',
+                'pool-step1': 'Выбери пару',
+                'pool-step1-d': 'EURC / SOL или EURC / USDC',
+                'pool-step2': 'Внеси токены',
+                'pool-step2-d': 'Укажи количество EURC и SOL',
+                'pool-step3': 'Создай и получай',
+                'pool-step3-d': 'Подтверди транзакцию и получай комиссии',
+                'pool-btn': '🚀 Создать пул на Meteora',
+                'pool-copy': '📋 Копировать адрес',
+                'pool-footer': '🔒 Блокируй ликвидность на 1 месяц для доверия',
+                'pay-title': '💳 Оплата в EURC',
+                'pay-sub': 'Отправьте точную сумму на кошелёк:',
+                'pay-copy': '📋 Копировать',
+                'pay-note': '⚡ Открой Phantom/Solflare → отправь EURC\n✅ После подтверждения мы отправим товар',
+                'pay-close': 'Закрыть',
+                'footer-text': '© 2026 EURC Market — Покупай за евро-стейблкоин',
+                'found': 'Найдено:',
+                'no-products': '😕 Товары не найдены'
+            },
+            de: {
+                's-title': '🔍 Finden und kaufen mit EURC',
+                's-sub': 'Elektronik · EVs · Immobilien · Foto · Banken',
+                's-price-label': 'Preis (EURC):',
+                's-category-label': 'Kategorie:',
+                'pool-title': '💧 Werde EURC Market Maker',
+                'pool-sub': 'Erstelle einen Liquiditätspool mit EURC und verdiene Gebühren.',
+                'pool-step1': 'Wähle ein Paar',
+                'pool-step1-d': 'EURC / SOL oder EURC / USDC',
+                'pool-step2': 'Füge Tokens hinzu',
+                'pool-step2-d': 'Gib EURC und SOL Mengen ein',
+                'pool-step3': 'Erstellen und verdienen',
+                'pool-step3-d': 'Bestätige Transaktion und verdiene Gebühren',
+                'pool-btn': '🚀 Pool auf Meteora erstellen',
+                'pool-copy': '📋 Adresse kopieren',
+                'pool-footer': '🔒 Sperre Liquidität für 1 Monat für Vertrauen',
+                'pay-title': '💳 Zahlung in EURC',
+                'pay-sub': 'Sende den genauen Betrag an die Wallet:',
+                'pay-copy': '📋 Kopieren',
+                'pay-note': '⚡ Öffne Phantom/Solflare → sende EURC\n✅ Nach Bestätigung versenden wir',
+                'pay-close': 'Schließen',
+                'footer-text': '© 2026 EURC Market — Kaufen mit Euro-Stablecoin',
+                'found': 'Gefunden:',
+                'no-products': '😕 Keine Produkte gefunden'
+            },
+            fr: {
+                's-title': '🔍 Trouver et acheter avec EURC',
+                's-sub': 'Électronique · VE · Immobilier · Photo · Banques',
+                's-price-label': 'Prix (EURC):',
+                's-category-label': 'Catégorie:',
+                'pool-title': '💧 Devenez teneur de marché EURC',
+                'pool-sub': 'Créez un pool de liquidité avec EURC et gagnez des frais.',
+                'pool-step1': 'Choisissez une paire',
+                'pool-step1-d': 'EURC / SOL ou EURC / USDC',
+                'pool-step2': 'Ajoutez des tokens',
+                'pool-step2-d': 'Entrez les montants EURC et SOL',
+                'pool-step3': 'Créez et gagnez',
+                'pool-step3-d': 'Confirmez la transaction et gagnez des frais',
+                'pool-btn': '🚀 Créer un pool sur Meteora',
+                'pool-copy': '📋 Copier l\'adresse',
+                'pool-footer': '🔒 Verrouillez la liquidité pour 1 mois',
+                'pay-title': '💳 Paiement en EURC',
+                'pay-sub': 'Envoyez le montant exact au portefeuille:',
+                'pay-copy': '📋 Copier',
+                'pay-note': '⚡ Ouvrez Phantom/Solflare → envoyez EURC\n✅ Après confirmation, nous expédions',
+                'pay-close': 'Fermer',
+                'footer-text': '© 2026 EURC Market — Achetez avec euro-stablecoin',
+                'found': 'Trouvé:',
+                'no-products': '😕 Aucun produit trouvé'
+            },
+            es: {
+                's-title': '🔍 Encuentra y compra con EURC',
+                's-sub': 'Electrónica · EVs · Bienes Raíces · Foto · Bancos',
+                's-price-label': 'Precio (EURC):',
+                's-category-label': 'Categoría:',
+                'pool-title': '💧 Conviértete en creador de mercado EURC',
+                'pool-sub': 'Crea un pool de liquidez con EURC y gana comisiones.',
+                'pool-step1': 'Elige un par',
+                'pool-step1-d': 'EURC / SOL o EURC / USDC',
+                'pool-step2': 'Añade tokens',
+                'pool-step2-d': 'Ingresa cantidades de EURC y SOL',
+                'pool-step3': 'Crea y gana',
+                'pool-step3-d': 'Confirma la transacción y gana comisiones',
+                'pool-btn': '🚀 Crear pool en Meteora',
+                'pool-copy': '📋 Copiar dirección',
+                'pool-footer': '🔒 Bloquear liquidez por 1 mes',
+                'pay-title': '💳 Pago en EURC',
+                'pay-sub': 'Envía el monto exacto a la cartera:',
+                'pay-copy': '📋 Copiar',
+                'pay-note': '⚡ Abre Phantom/Solflare → envía EURC\n✅ Después de la confirmación enviamos',
+                'pay-close': 'Cerrar',
+                'footer-text': '© 2026 EURC Market — Compra con euro-stablecoin',
+                'found': 'Encontrado:',
+                'no-products': '😕 No se encontraron productos'
+            },
+            zh: {
+                's-title': '🔍 用EURC查找和购买',
+                's-sub': '电子产品 · 电动车 · 房地产 · 摄影 · 银行',
+                's-price-label': '价格 (EURC):',
+                's-category-label': '类别:',
+                'pool-title': '💧 成为EURC做市商',
+                'pool-sub': '创建EURC流动性池，赚取交易费。',
+                'pool-step1': '选择货币对',
+                'pool-step1-d': 'EURC / SOL 或 EURC / USDC',
+                'pool-step2': '添加代币',
+                'pool-step2-d': '输入EURC和SOL数量',
+                'pool-step3': '创建并赚取',
+                'pool-step3-d': '确认交易，开始赚取费用',
+                'pool-btn': '🚀 在Meteora上创建池',
+                'pool-copy': '📋 复制地址',
+                'pool-footer': '🔒 锁定流动性1个月以建立信任',
+                'pay-title': '💳 用EURC支付',
+                'pay-sub': '将确切金额发送到钱包:',
+                'pay-copy': '📋 复制',
+                'pay-note': '⚡ 打开Phantom/Solflare → 发送EURC\n✅ 确认后发货',
+                'pay-close': '关闭',
+                'footer-text': '© 2026 EURC Market — 用欧元稳定币购买',
+                'found': '找到:',
+                'no-products': '😕 未找到产品'
+            },
+            ar: {
+                's-title': '🔍 ابحث واشتري بـ EURC',
+                's-sub': 'إلكترونيات · سيارات كهربائية · عقارات · تصوير · بنوك',
+                's-price-label': 'السعر (EURC):',
+                's-category-label': 'الفئة:',
+                'pool-title': '💧 كن صانع سوق EURC',
+                'pool-sub': 'أنشئ مجمع سيولة بـ EURC وابدأ في كسب الرسوم.',
+                'pool-step1': 'اختر زوجًا',
+                'pool-step1-d': 'EURC / SOL أو EURC / USDC',
+                'pool-step2': 'أضف الرموز',
+                'pool-step2-d': 'أدخل كميات EURC و SOL',
+                'pool-step3': 'أنشئ واربح',
+                'pool-step3-d': 'أكد المعاملة وابدأ في كسب الرسوم',
+                'pool-btn': '🚀 أنشئ مجمعًا على Meteora',
+                'pool-copy': '📋 نسخ العنوان',
+                'pool-footer': '🔒 قفل السيولة لمدة شهر واحد لبناء الثقة',
+                'pay-title': '💳 الدفع بـ EURC',
+                'pay-sub': 'أرسل المبلغ المحدد إلى المحفظة:',
+                'pay-copy': '📋 نسخ',
+                'pay-note': '⚡ افتح Phantom/Solflare → أرسل EURC\n✅ بعد التأكيد نرسل',
+                'pay-close': 'إغلاق',
+                'footer-text': '© 2026 EURC Market — اشترِ بـ euro-stablecoin',
+                'found': 'تم العثور على:',
+                'no-products': '😕 لم يتم العثور على منتجات'
+            },
+            tr: {
+                's-title': '🔍 EURC ile bul ve satın al',
+                's-sub': 'Elektronik · EV'ler · Emlak · Fotoğraf · Bankalar',
+                's-price-label': 'Fiyat (EURC):',
+                's-category-label': 'Kategori:',
+                'pool-title': '💧 EURC piyasa yapıcısı ol',
+                'pool-sub': 'EURC tokeni ile likidite havuzu oluştur ve ücret kazan.',
+                'pool-step1': 'Bir çift seç',
+                'pool-step1-d': 'EURC / SOL veya EURC / USDC',
+                'pool-step2': 'Token ekle',
+                'pool-step2-d': 'EURC ve SOL miktarlarını gir',
+                'pool-step3': 'Oluştur ve kazan',
+                'pool-step3-d': 'İşlemi onayla ve ücret kazanmaya başla',
+                'pool-btn': '🚀 Meteora\'da havuz oluştur',
+                'pool-copy': '📋 Adresi kopyala',
+                'pool-footer': '🔒 Güven oluşturmak için likiditeyi 1 ay kilitle',
+                'pay-title': '💳 EURC ile ödeme',
+                'pay-sub': 'Tam tutarı cüzdana gönder:',
+                'pay-copy': '📋 Kopyala',
+                'pay-note': '⚡ Phantom/Solflare\'ı aç → EURC gönder\n✅ Onaydan sonra gönderiyoruz',
+                'pay-close': 'Kapat',
+                'footer-text': '© 2026 EURC Market — Euro-stablecoin ile satın al',
+                'found': 'Bulunan:',
+                'no-products': '😕 Ürün bulunamadı'
+            }
+        };
+
+        // ============================================================
+        //  ЗАГРУЗКА ТОВАРОВ И ПЕРЕВОД
         // ============================================================
 
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
@@ -476,6 +742,7 @@
 
         let allProducts = [];
         let currentCategory = 'all';
+        let currentLang = 'en';
 
         const resultsEl = document.getElementById('results');
         const loadingEl = document.getElementById('loading');
@@ -486,42 +753,59 @@
         const priceLabel = document.getElementById('priceLabel');
         const categoryFilter = document.getElementById('categoryFilter');
 
-        // ===== ЗАГРУЗКА ВСЕХ JSON =====
+        // ===== ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА =====
+        function setLang(lang) {
+            currentLang = lang;
+            document.getElementById('langToggle').textContent = '🌐 ' + lang.toUpperCase();
+            document.querySelectorAll('[id]').forEach(el => {
+                if (translations[lang] && translations[lang][el.id]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[lang][el.id];
+                    } else {
+                        el.textContent = translations[lang][el.id];
+                    }
+                }
+            });
+            document.getElementById('langDropdown').classList.remove('active');
+            localStorage.setItem('eurc-lang', lang);
+        }
+
+        document.getElementById('langToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('langDropdown').classList.toggle('active');
+        });
+        document.addEventListener('click', function() {
+            document.getElementById('langDropdown').classList.remove('active');
+        });
+
+        // ===== ЗАГРУЗКА JSON =====
         async function loadAllData() {
             loadingEl.style.display = 'block';
             try {
-                const files = [
-                    'data/electronics.json',
-                    'data/ev.json',
-                    'data/realestate.json',
-                    'data/photos.json'
-                ];
+                const files = ['data/electronics.json', 'data/ev.json', 'data/realestate.json', 'data/photos.json'];
                 const responses = await Promise.all(files.map(f => fetch(f)));
-                // Проверяем, что все файлы загружены
                 const ok = responses.every(r => r.ok);
-                if (!ok) throw new Error('Один из JSON-файлов не найден. Проверь папку data/');
+                if (!ok) throw new Error('JSON files not found. Check data/ folder.');
                 const data = await Promise.all(responses.map(r => r.json()));
                 allProducts = data.flat();
-                console.log(`✅ Загружено ${allProducts.length} товаров`);
+                console.log(`✅ Loaded ${allProducts.length} products`);
                 searchProducts();
             } catch (err) {
                 errorEl.style.display = 'block';
                 errorEl.innerHTML = `<span class="error">❌ ${err.message}</span>`;
-                // Показываем пример товаров, если JSON не загрузились
                 showFallbackProducts();
             } finally {
                 loadingEl.style.display = 'none';
             }
         }
 
-        // ===== ФОЛБЭК (ЕСЛИ JSON НЕ ЗАГРУЗИЛИСЬ) =====
         function showFallbackProducts() {
-            const fallback = [
+            allProducts = [
                 { id: 1, name: 'Apple iPhone 15 Pro Max', price_usd: 1199, category: 'electronics', image: 'https://picsum.photos/seed/iphone15/300/200', specs: '6.7″ OLED, A17 Pro' },
                 { id: 2, name: 'Tesla Model 3 Long Range', price_usd: 45000, category: 'ev', image: 'https://picsum.photos/seed/tesla3/300/200', specs: '333 mi, AWD' },
-                { id: 3, name: '23 Plantation Road, The Peak, HK', price_usd: 26900000, category: 'realestate', image: 'https://picsum.photos/seed/hkpeak/300/200', specs: '6 bed, 7 bath' }
+                { id: 3, name: '23 Plantation Road, The Peak, HK', price_usd: 26923076, category: 'realestate', image: 'https://picsum.photos/seed/hkpeak/300/200', specs: '6 bed, 7 bath' },
+                { id: 4, name: 'PTSB Bank - Sale to BAWAG, Ireland', price_usd: 8000000000, category: 'banks', image: 'https://picsum.photos/seed/ptsb/300/200', specs: '€1.6B deal, 26% premium' }
             ];
-            allProducts = fallback;
             searchProducts();
         }
 
@@ -541,10 +825,12 @@
             });
 
             filtered.sort((a, b) => a.price_usd - b.price_usd);
-            countEl.textContent = `Found: ${filtered.length}`;
+            const foundText = translations[currentLang]?.found || 'Found:';
+            countEl.textContent = `${foundText} ${filtered.length}`;
 
             if (filtered.length === 0) {
-                resultsEl.innerHTML = '<div class="status-msg">😕 No products found</div>';
+                const noText = translations[currentLang]?.['no-products'] || '😕 No products found';
+                resultsEl.innerHTML = `<div class="status-msg">${noText}</div>`;
                 return;
             }
             renderProducts(filtered);
@@ -560,11 +846,12 @@
                     'electronics': '📱',
                     'ev': '🚗',
                     'realestate': '🏠',
-                    'photos': '📷'
+                    'photos': '📷',
+                    'banks': '🏦'
                 } [p.category] || '📦';
 
                 html += `
-                    <div class="product-card" onclick="alert('Product: ${p.name}\\nPrice: ${priceEURC.toFixed(2)} EURC\\n${p.specs || ''}')">
+                    <div class="product-card" onclick="alert('${p.name}\\nPrice: ${priceEURC.toFixed(2)} EURC\\n${p.specs || ''}')">
                         <img src="${p.image || 'https://picsum.photos/seed/default/300/200'}" alt="${p.name}" loading="lazy" onerror="this.src='https://picsum.photos/seed/error/300/200'" />
                         <div class="product-info">
                             <div class="product-platform">${categoryEmoji} ${p.category}</div>
@@ -638,7 +925,7 @@
             navigator.clipboard.writeText(address).then(() => {
                 const btn = document.querySelector('.pool-actions .btn-secondary');
                 btn.textContent = '✅ Copied!';
-                setTimeout(() => btn.textContent = '📋 Копировать адрес', 2000);
+                setTimeout(() => btn.textContent = '📋 Copy address', 2000);
             }).catch(() => {
                 const input = document.createElement('input');
                 input.value = address;
@@ -648,7 +935,7 @@
                 document.body.removeChild(input);
                 const btn = document.querySelector('.pool-actions .btn-secondary');
                 btn.textContent = '✅ Copied!';
-                setTimeout(() => btn.textContent = '📋 Копировать адрес', 2000);
+                setTimeout(() => btn.textContent = '📋 Copy address', 2000);
             });
         }
 
@@ -676,7 +963,11 @@
         });
 
         // ===== ЗАПУСК =====
-        document.addEventListener('DOMContentLoaded', loadAllData);
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('eurc-lang') || 'en';
+            setLang(savedLang);
+            loadAllData();
+        });
     </script>
 </body>
 </html>
