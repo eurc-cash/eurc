@@ -955,7 +955,13 @@
         async function loadAllData() {
             loadingEl.style.display = 'block';
             try {
-                const files = ['data/electronics.json', 'data/ev.json', 'data/realestate.json', 'data/photos.json'];
+                const files = [
+                    'data/electronics.json',
+                    'data/ev.json',
+                    'data/realestate.json',
+                    'data/photos.json',
+                    'data/banks.json'
+                ];
                 const responses = await Promise.all(files.map(f => fetch(f)));
                 const ok = responses.every(r => r.ok);
                 if (!ok) throw new Error('JSON files not found. Check data/ folder.');
