@@ -4,9 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>EURC Market — Buy with euro-stablecoin</title>
-    <link rel="stylesheet" href="styles.css" />
     <style>
-        /* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ МАРКЕТПЛЕЙСА ===== */
+        /* ===== ВСЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #0A1628;
+            color: #FFFFFF;
+            padding-bottom: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
         .market-header {
             background: linear-gradient(135deg, #0A1628, #1A2A5E);
             padding: 15px 0;
@@ -57,7 +72,6 @@
             font-size: 9px;
             color: #00E5FF;
         }
-
         .search-hero {
             background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
             padding: 25px 0 30px;
@@ -115,7 +129,6 @@
             transform: translateY(-2px);
             box-shadow: 0 0 30px rgba(26, 92, 255, 0.4);
         }
-
         .filters {
             display: flex;
             justify-content: center;
@@ -155,7 +168,6 @@
         .filters .reset-btn:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-
         .category-tabs {
             display: flex;
             gap: 10px;
@@ -182,7 +194,6 @@
         .category-tabs button:hover {
             background: rgba(255, 255, 255, 0.08);
         }
-
         .results-header {
             display: flex;
             justify-content: space-between;
@@ -193,7 +204,6 @@
             flex-wrap: wrap;
             gap: 8px;
         }
-
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
@@ -273,8 +283,6 @@
         .buy-btn:hover {
             transform: scale(1.02);
         }
-
-        /* ПУЛ ЛИКВИДНОСТИ */
         .pool-section {
             background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
             border-radius: 16px;
@@ -379,8 +387,6 @@
             font-size: 12px;
             margin-top: 12px;
         }
-
-        /* МОДАЛКА */
         .payment-modal {
             display: none;
             position: fixed;
@@ -448,7 +454,6 @@
             margin-top: 12px;
             font-size: 15px;
         }
-
         .footer-market {
             margin-top: 40px;
             padding: 20px 0;
@@ -457,7 +462,6 @@
             color: #667;
             font-size: 12px;
         }
-
         .status-msg {
             color: #8899AA;
             text-align: center;
@@ -467,7 +471,6 @@
         .status-msg .error {
             color: #ff6b6b;
         }
-
         @media (max-width: 480px) {
             .products-grid {
                 grid-template-columns: 1fr 1fr;
@@ -554,7 +557,7 @@
         </div>
     </section>
 
-    <!-- ===== КАТЕГОРИИ (ВКЛАДКИ) ===== -->
+    <!-- ===== КАТЕГОРИИ ===== -->
     <div class="container">
         <div class="category-tabs">
             <button class="active" data-cat="all" onclick="filterCategory('all', this)">📦 All</button>
@@ -580,7 +583,7 @@
     <section class="pool-section">
         <div class="container">
             <h2>💧 Стань маркет-мейкером EURC</h2>
-            <p class="subtitle">Создай пул ликвидности с токеном EURC и начни зарабатывать на комиссиях от обменов. Чем больше пулов — тем стабильнее цена токена!</p>
+            <p class="subtitle">Создай пул ликвидности с токеном EURC и начни зарабатывать на комиссиях.</p>
             <div class="pool-steps">
                 <div class="pool-step"><span class="step-num">1️⃣</span><h4>Выбери пару</h4><p>EURC / SOL или EURC / USDC</p></div>
                 <div class="pool-step"><span class="step-num">2️⃣</span><h4>Внеси токены</h4><p>Укажи количество EURC и SOL</p></div>
@@ -595,7 +598,7 @@
                 <a href="https://app.meteora.ag/create-pool?base=2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4" target="_blank" class="btn-primary">🚀 Создать пул на Meteora</a>
                 <button class="btn-secondary" onclick="copyTokenAddress()">📋 Копировать адрес</button>
             </div>
-            <p class="pool-footer">🔒 Блокируй ликвидность на срок от 1 месяца для повышения доверия</p>
+            <p class="pool-footer">🔒 Блокируй ликвидность на срок от 1 месяца</p>
         </div>
     </section>
 
@@ -611,7 +614,7 @@
                 <br />
                 <button class="copy-btn" onclick="copyWallet()">📋 Copy</button>
             </div>
-            <p style="color:#667;font-size:12px;margin:10px 0;">⚡ Open Phantom/Solflare → send EURC to address above<br />✅ After confirmation we will ship the product</p>
+            <p style="color:#667;font-size:12px;margin:10px 0;">⚡ Open Phantom/Solflare → send EURC<br />✅ After confirmation we ship</p>
             <button class="close-btn" onclick="closePayment()">Close</button>
         </div>
     </div>
@@ -626,14 +629,66 @@
 
     <script>
         // ============================================================
-        //  MARKET.JS — ЗАГРУЗКА JSON, ПОИСК, ФИЛЬТРАЦИЯ, ОПЛАТА
+        //  ВСТРОЕННЫЙ КАТАЛОГ — НЕ НУЖНЫ JSON ФАЙЛЫ!
         // ============================================================
 
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
         const EURC_USD = 1.15;
         const TOKEN_ADDRESS = '2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4';
+        const MARKUP = 1.30;
 
-        let allProducts = [];
+        // ===== ВСЕ ТОВАРЫ ЗДЕСЬ =====
+        const allProducts = [
+            // === ЭЛЕКТРОНИКА (10 товаров для примера) ===
+            { id: 1, name: 'Apple iPhone 15 Pro Max', price_usd: 1199, category: 'electronics', image: 'https://picsum.photos/seed/iphone15/300/200', specs: '6.7″ OLED, A17 Pro, 48MP', seller: 'Apple Store', rating: 4.9 },
+            { id: 2, name: 'Samsung Galaxy S24 Ultra', price_usd: 1299, category: 'electronics', image: 'https://picsum.photos/seed/s24ultra/300/200', specs: '6.8″ AMOLED, 200MP, S Pen', seller: 'Samsung Store', rating: 4.8 },
+            { id: 3, name: 'Sony WH-1000XM5', price_usd: 399, category: 'electronics', image: 'https://picsum.photos/seed/sonyxm5/300/200', specs: 'ANC, 40h battery, LDAC', seller: 'Sony Store', rating: 4.9 },
+            { id: 4, name: 'Apple AirPods Pro 2', price_usd: 249, category: 'electronics', image: 'https://picsum.photos/seed/airpodspro2/300/200', specs: 'ANC, Adaptive Audio, 30h', seller: 'Apple Store', rating: 4.8 },
+            { id: 5, name: 'MacBook Pro 16 M3 Max', price_usd: 3499, category: 'electronics', image: 'https://picsum.photos/seed/macbookpro/300/200', specs: '16″ XDR, M3 Max, 36GB', seller: 'Apple Store', rating: 4.9 },
+            { id: 6, name: 'Dell XPS 16', price_usd: 1499, category: 'electronics', image: 'https://picsum.photos/seed/dellxps/300/200', specs: '16″ 4K, i9, RTX 4070', seller: 'Dell Store', rating: 4.7 },
+            { id: 7, name: 'Logitech MX Master 3S', price_usd: 99, category: 'electronics', image: 'https://picsum.photos/seed/mxmaster3s/300/200', specs: '8K DPI, silent clicks', seller: 'Logitech Store', rating: 4.9 },
+            { id: 8, name: 'Samsung 49″ Odyssey G9', price_usd: 1599, category: 'electronics', image: 'https://picsum.photos/seed/odysseyg9/300/200', specs: '49″ QLED, 240Hz, 1ms', seller: 'Samsung Store', rating: 4.8 },
+            { id: 9, name: 'Sony A7 IV', price_usd: 2498, category: 'electronics', image: 'https://picsum.photos/seed/sonya7iv/300/200', specs: '33MP, 10fps, 4K 60p', seller: 'Sony Store', rating: 4.9 },
+            { id: 10, name: 'DJI Mini 4 Pro', price_usd: 759, category: 'electronics', image: 'https://picsum.photos/seed/djimini4/300/200', specs: '249g, 4K 60fps, 34min', seller: 'DJI Store', rating: 4.9 },
+
+            // === ЭЛЕКТРОМОБИЛИ (10 товаров) ===
+            { id: 101, name: 'Tesla Model 3 Long Range', price_usd: 45000, category: 'ev', image: 'https://picsum.photos/seed/tesla3/300/200', specs: '333 mi, AWD, 0-60 4.2s', seller: 'Tesla', rating: 4.9 },
+            { id: 102, name: 'Tesla Model Y Performance', price_usd: 52000, category: 'ev', image: 'https://picsum.photos/seed/teslay/300/200', specs: '303 mi, AWD, 0-60 3.5s', seller: 'Tesla', rating: 4.8 },
+            { id: 103, name: 'Tesla Model S Plaid', price_usd: 89000, category: 'ev', image: 'https://picsum.photos/seed/teslas/300/200', specs: '396 mi, AWD, 0-60 1.99s', seller: 'Tesla', rating: 4.9 },
+            { id: 104, name: 'Lucid Air Grand Touring', price_usd: 125000, category: 'ev', image: 'https://picsum.photos/seed/lucidgt/300/200', specs: '516 mi, AWD, 0-60 3.0s', seller: 'Lucid', rating: 4.9 },
+            { id: 105, name: 'Porsche Taycan Turbo S', price_usd: 175000, category: 'ev', image: 'https://picsum.photos/seed/taycant/300/200', specs: '221 mi, AWD, 0-60 2.6s', seller: 'Porsche', rating: 4.9 },
+            { id: 106, name: 'Rivian R1T Adventure', price_usd: 78000, category: 'ev', image: 'https://picsum.photos/seed/rivian1/300/200', specs: '314 mi, AWD, 0-60 3.0s', seller: 'Rivian', rating: 4.8 },
+            { id: 107, name: 'Ford Mustang Mach-E GT', price_usd: 53000, category: 'ev', image: 'https://picsum.photos/seed/mache/300/200', specs: '270 mi, AWD, 0-60 3.5s', seller: 'Ford', rating: 4.7 },
+            { id: 108, name: 'BMW iX xDrive50', price_usd: 84000, category: 'ev', image: 'https://picsum.photos/seed/bmwix/300/200', specs: '324 mi, AWD, 0-60 4.6s', seller: 'BMW', rating: 4.8 },
+            { id: 109, name: 'Mercedes-Benz EQS 450+', price_usd: 105000, category: 'ev', image: 'https://picsum.photos/seed/eqs450/300/200', specs: '350 mi, RWD, 0-60 5.9s', seller: 'Mercedes', rating: 4.9 },
+            { id: 110, name: 'Hyundai Ioniq 6 Limited', price_usd: 52000, category: 'ev', image: 'https://picsum.photos/seed/ioniq6/300/200', specs: '361 mi, RWD, 0-60 5.1s', seller: 'Hyundai', rating: 4.8 },
+
+            // === ЭЛИТНАЯ НЕДВИЖИМОСТЬ (10 объектов) ===
+            { id: 201, name: 'Jumeirah Bay Villa, Dubai', price_usd: 25000000, category: 'realestate', image: 'https://picsum.photos/seed/dubai1/300/200', specs: '6 bed, 8 bath, private beach', seller: 'Dubai Sotheby\'s', rating: 4.9 },
+            { id: 202, name: 'Palm Jumeirah Signature Villa', price_usd: 45000000, category: 'realestate', image: 'https://picsum.photos/seed/palm/300/200', specs: '8 bed, 10 bath, ocean view', seller: 'Dubai Sotheby\'s', rating: 5.0 },
+            { id: 203, name: 'Hannam-dong Penthouse, Seoul', price_usd: 6880000, category: 'realestate', image: 'https://picsum.photos/seed/seoul1/300/200', specs: '4 bed, 5 bath, Han River view', seller: 'Seoul Realty', rating: 4.8 },
+            { id: 204, name: 'Gangnam Penthouse, Seoul', price_usd: 8200000, category: 'realestate', image: 'https://picsum.photos/seed/seoul2/300/200', specs: '5 bed, 6 bath, city view', seller: 'Seoul Realty', rating: 4.9 },
+            { id: 205, name: 'The Peak Villa, Hong Kong', price_usd: 2050000, category: 'realestate', image: 'https://picsum.photos/seed/hk1/300/200', specs: '4 bed, 4 bath, mountain view', seller: 'HK Luxury', rating: 4.7 },
+            { id: 206, name: 'Mount Nicholson Estate, HK', price_usd: 8650000, category: 'realestate', image: 'https://picsum.photos/seed/hk2/300/200', specs: '5 bed, 6 bath, panoramic view', seller: 'HK Luxury', rating: 4.9 },
+            { id: 207, name: 'Amir Temur Penthouse, Tashkent', price_usd: 4500000, category: 'realestate', image: 'https://picsum.photos/seed/tash1/300/200', specs: '5 bed, 6 bath, city view', seller: 'Tashkent Realty', rating: 4.8 },
+            { id: 208, name: 'Frankfurt Tower Penthouse', price_usd: 2500000, category: 'realestate', image: 'https://picsum.photos/seed/frank1/300/200', specs: '4 bed, 5 bath, skyline view', seller: 'Frankfurt Homes', rating: 4.8 },
+            { id: 209, name: 'Mauritius Beachfront Estate', price_usd: 5600000, category: 'realestate', image: 'https://picsum.photos/seed/mauritius1/300/200', specs: '6 bed, 7 bath, oceanfront', seller: 'Mauritius Props', rating: 5.0 },
+            { id: 210, name: 'Istanbul Bosphorus Palace', price_usd: 2900000, category: 'realestate', image: 'https://picsum.photos/seed/istanbul1/300/200', specs: '6 bed, 7 bath, Bosphorus view', seller: 'Istanbul Realty', rating: 4.9 },
+
+            // === ФОТОТОВАРЫ (10 товаров) ===
+            { id: 301, name: 'Canon EOS R6 Mark II', price_usd: 2499, category: 'photos', image: 'https://picsum.photos/seed/canonr6/300/200', specs: '24MP, 40fps, 6K video', seller: 'Canon Store', rating: 4.8 },
+            { id: 302, name: 'Sony A7 IV', price_usd: 2498, category: 'photos', image: 'https://picsum.photos/seed/sonya7iv2/300/200', specs: '33MP, 10fps, 4K 60p', seller: 'Sony Store', rating: 4.9 },
+            { id: 303, name: 'Nikon Z8', price_usd: 3999, category: 'photos', image: 'https://picsum.photos/seed/nikonz8/300/200', specs: '45MP, 20fps, 8K video', seller: 'Nikon Store', rating: 4.9 },
+            { id: 304, name: 'GoPro Hero 12 Black', price_usd: 399, category: 'photos', image: 'https://picsum.photos/seed/gopro12/300/200', specs: '5.3K 60fps, HyperSmooth 6.0', seller: 'GoPro Store', rating: 4.8 },
+            { id: 305, name: 'DJI Osmo Pocket 3', price_usd: 669, category: 'photos', image: 'https://picsum.photos/seed/osmopocket3/300/200', specs: '4K 120fps, 3-axis gimbal', seller: 'DJI Store', rating: 4.9 },
+            { id: 306, name: 'Sigma 24-70mm f/2.8', price_usd: 1099, category: 'photos', image: 'https://picsum.photos/seed/sigma2470/300/200', specs: '24-70mm, f/2.8, Art series', seller: 'Sigma Store', rating: 4.9 },
+            { id: 307, name: 'Sony FE 70-200mm f/2.8', price_usd: 2799, category: 'photos', image: 'https://picsum.photos/seed/sony70200/300/200', specs: '70-200mm, f/2.8, OSS', seller: 'Sony Store', rating: 4.9 },
+            { id: 308, name: 'Canon RF 24-105mm f/4', price_usd: 1299, category: 'photos', image: 'https://picsum.photos/seed/canon24105/300/200', specs: '24-105mm, f/4, L series', seller: 'Canon Store', rating: 4.8 },
+            { id: 309, name: 'Fujifilm X-T5', price_usd: 1699, category: 'photos', image: 'https://picsum.photos/seed/xt5/300/200', specs: '40MP, 15fps, 6.2K video', seller: 'Fujifilm Store', rating: 4.9 },
+            { id: 310, name: 'Tamron 28-75mm f/2.8', price_usd: 899, category: 'photos', image: 'https://picsum.photos/seed/tamron2875/300/200', specs: '28-75mm, f/2.8, VXD', seller: 'Tamron Store', rating: 4.8 }
+        ];
+
+        // ===== ОСТАЛЬНАЯ ЛОГИКА =====
         let currentCategory = 'all';
         const resultsEl = document.getElementById('results');
         const loadingEl = document.getElementById('loading');
@@ -644,29 +699,6 @@
         const priceLabel = document.getElementById('priceLabel');
         const categoryFilter = document.getElementById('categoryFilter');
 
-        // ===== ЗАГРУЗКА ВСЕХ JSON =====
-        async function loadAllData() {
-            loadingEl.style.display = 'block';
-            try {
-                const files = [
-                    'data/electronics.json',
-                    'data/ev.json',
-                    'data/realestate.json',
-                    'data/photos.json'
-                ];
-                const responses = await Promise.all(files.map(f => fetch(f)));
-                const data = await Promise.all(responses.map(r => r.json()));
-                allProducts = data.flat();
-                console.log(`✅ Загружено ${allProducts.length} товаров`);
-                searchProducts();
-            } catch (err) {
-                errorEl.style.display = 'block';
-                errorEl.innerHTML = `<span class="error">❌ Ошибка загрузки: ${err.message}. Проверьте файлы JSON.</span>`;
-            } finally {
-                loadingEl.style.display = 'none';
-            }
-        }
-
         // ===== ПОИСК =====
         function searchProducts() {
             const query = searchInput.value.trim().toLowerCase();
@@ -676,20 +708,19 @@
             let filtered = allProducts.filter(p => {
                 const matchesQuery = !query || p.name.toLowerCase().includes(query);
                 const matchesCategory = category === 'all' || p.category === category;
-                const matchesPrice = ((p.price_usd / EURC_USD) * 1.30) <= maxPrice;
                 const matchesCategoryTab = currentCategory === 'all' || p.category === currentCategory;
+                const priceEURC = (p.price_usd / EURC_USD) * MARKUP;
+                const matchesPrice = priceEURC <= maxPrice;
                 return matchesQuery && matchesCategory && matchesPrice && matchesCategoryTab;
             });
 
             filtered.sort((a, b) => a.price_usd - b.price_usd);
-
             countEl.textContent = `Found: ${filtered.length}`;
 
             if (filtered.length === 0) {
-                resultsEl.innerHTML = '<div class="status-msg">😕 No products found or price too high</div>';
+                resultsEl.innerHTML = '<div class="status-msg">😕 No products found</div>';
                 return;
             }
-
             renderProducts(filtered);
         }
 
@@ -697,7 +728,7 @@
         function renderProducts(products) {
             let html = '';
             products.forEach(p => {
-                const priceEURC = (p.price_usd / EURC_USD) * 1.30;
+                const priceEURC = (p.price_usd / EURC_USD) * MARKUP;
                 const priceRub = priceEURC * 90;
                 const categoryEmoji = {
                     'electronics': '📱',
@@ -707,7 +738,7 @@
                 } [p.category] || '📦';
 
                 html += `
-                    <div class="product-card" onclick="openProduct(${p.id})">
+                    <div class="product-card" onclick="alert('Product: ${p.name}\\nPrice: ${priceEURC.toFixed(2)} EURC\\nSeller: ${p.seller}\\nRating: ${p.rating || 'N/A'}')">
                         <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://picsum.photos/seed/error/300/200'" />
                         <div class="product-info">
                             <div class="product-platform">${categoryEmoji} ${p.category}</div>
@@ -727,21 +758,15 @@
             resultsEl.innerHTML = html;
         }
 
-        // ===== ОТКРЫТИЕ ТОВАРА (СТРАНИЦА product.html) =====
-        function openProduct(id) {
-            window.location.href = `pages/product.html?id=${id}`;
-        }
-
-        // ===== ФИЛЬТР ПО КАТЕГОРИЯМ (ВКЛАДКИ) =====
+        // ===== ФИЛЬТРЫ =====
         function filterCategory(cat, btn) {
             currentCategory = cat;
             document.querySelectorAll('.category-tabs button').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
-            categoryFilter.value = cat; // синхронизация с выпадающим списком
+            categoryFilter.value = cat;
             searchProducts();
         }
 
-        // ===== СБРОС =====
         function resetFilters() {
             searchInput.value = '';
             priceSlider.value = 5000000;
@@ -767,9 +792,8 @@
             const wallet = document.getElementById('paymentWallet').textContent;
             navigator.clipboard.writeText(wallet).then(() => {
                 const btn = document.querySelector('.copy-btn');
-                const original = btn.textContent;
                 btn.textContent = '✅ Copied!';
-                setTimeout(() => btn.textContent = original, 1500);
+                setTimeout(() => btn.textContent = '📋 Copy', 1500);
             }).catch(() => {
                 const input = document.createElement('input');
                 input.value = wallet;
@@ -778,9 +802,8 @@
                 document.execCommand('copy');
                 document.body.removeChild(input);
                 const btn = document.querySelector('.copy-btn');
-                const original = btn.textContent;
                 btn.textContent = '✅ Copied!';
-                setTimeout(() => btn.textContent = original, 1500);
+                setTimeout(() => btn.textContent = '📋 Copy', 1500);
             });
         }
 
@@ -788,9 +811,8 @@
             const address = document.getElementById('tokenAddressDisplay').textContent;
             navigator.clipboard.writeText(address).then(() => {
                 const btn = document.querySelector('.pool-actions .btn-secondary');
-                const original = btn.textContent;
                 btn.textContent = '✅ Copied!';
-                setTimeout(() => btn.textContent = original, 2000);
+                setTimeout(() => btn.textContent = '📋 Копировать адрес', 2000);
             }).catch(() => {
                 const input = document.createElement('input');
                 input.value = address;
@@ -799,9 +821,8 @@
                 document.execCommand('copy');
                 document.body.removeChild(input);
                 const btn = document.querySelector('.pool-actions .btn-secondary');
-                const original = btn.textContent;
                 btn.textContent = '✅ Copied!';
-                setTimeout(() => btn.textContent = original, 2000);
+                setTimeout(() => btn.textContent = '📋 Копировать адрес', 2000);
             });
         }
 
@@ -809,7 +830,6 @@
             if (e.target === this) closePayment();
         });
 
-        // ===== ОБРАБОТЧИКИ =====
         priceSlider.addEventListener('input', function() {
             priceLabel.textContent = Number(this.value).toLocaleString();
             searchProducts();
@@ -830,7 +850,11 @@
         });
 
         // ===== ЗАПУСК =====
-        document.addEventListener('DOMContentLoaded', loadAllData);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Скрываем загрузку и показываем товары сразу
+            loadingEl.style.display = 'none';
+            searchProducts();
+        });
     </script>
 </body>
 </html>
