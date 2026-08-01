@@ -5,576 +5,388 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>EURC Market — Buy with euro-stablecoin</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
-            background: #0A1628;
-            color: #FFFFFF;
-            padding-bottom: 30px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#0A1628; color:#FFFFFF; padding-bottom:30px; }
+        .container { max-width:1200px; margin:0 auto; padding:15px; }
         .market-header {
-            background: linear-gradient(135deg, #0A1628, #1A2A5E);
-            padding: 15px 0;
-            border-bottom: 2px solid #1A5CFF;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            background:linear-gradient(135deg,#0A1628,#1A2A5E);
+            padding:15px 0;
+            border-bottom:2px solid #1A5CFF;
+            position:sticky;
+            top:0;
+            z-index:100;
+            backdrop-filter:blur(10px);
         }
         .market-header .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            gap:10px;
         }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .logo-area img {
-            height: 32px;
-            width: 32px;
-            border-radius: 8px;
-            background: #1A2A5E;
-            object-fit: contain;
-        }
+        .logo-area { display:flex; align-items:center; gap:10px; }
+        .logo-area img { height:32px; width:32px; border-radius:8px; background:#1A2A5E; object-fit:contain; }
         .logo-area h1 {
-            font-size: 18px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FFFFFF, #00E5FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size:18px;
+            font-weight:800;
+            background:linear-gradient(135deg,#FFFFFF,#00E5FF);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
         }
         .wallet-badge {
-            background: rgba(255, 255, 255, 0.06);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            word-break: break-all;
+            background:rgba(255,255,255,0.06);
+            padding:4px 10px;
+            border-radius:20px;
+            font-size:10px;
+            border:1px solid rgba(255,255,255,0.08);
+            word-break:break-all;
         }
-        .wallet-badge code {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 9px;
-            color: #00E5FF;
-        }
-        .lang-selector {
-            position: relative;
-            display: inline-block;
-        }
+        .wallet-badge code { background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px; font-size:9px; color:#00E5FF; }
+        .lang-selector { position:relative; display:inline-block; }
         .lang-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            font-family: inherit;
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.1);
+            color:white;
+            padding:4px 12px;
+            border-radius:20px;
+            cursor:pointer;
+            font-size:12px;
+            font-family:inherit;
         }
-        .lang-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
+        .lang-btn:hover { background:rgba(255,255,255,0.15); }
         .lang-dropdown {
-            display: none;
-            position: absolute;
-            top: 110%;
-            right: 0;
-            background: #1A2A5E;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 8px;
-            min-width: 140px;
-            z-index: 100;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display:none;
+            position:absolute;
+            top:110%;
+            right:0;
+            background:#1A2A5E;
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:12px;
+            padding:8px;
+            min-width:140px;
+            z-index:100;
+            box-shadow:0 10px 40px rgba(0,0,0,0.5);
         }
-        .lang-dropdown.active {
-            display: block;
-        }
+        .lang-dropdown.active { display:block; }
         .lang-dropdown button {
-            display: block;
-            width: 100%;
-            padding: 6px 12px;
-            background: none;
-            border: none;
-            color: white;
-            text-align: left;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-family: inherit;
+            display:block;
+            width:100%;
+            padding:6px 12px;
+            background:none;
+            border:none;
+            color:white;
+            text-align:left;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:13px;
+            font-family:inherit;
         }
-        .lang-dropdown button:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
+        .lang-dropdown button:hover { background:rgba(255,255,255,0.08); }
         .search-hero {
-            background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
-            padding: 25px 0 30px;
-            margin-bottom: 20px;
-            border-radius: 0 0 20px 20px;
-            text-align: center;
+            background:linear-gradient(135deg,#0F1A3A,#1A2A5E);
+            padding:25px 0 30px;
+            margin-bottom:20px;
+            border-radius:0 0 20px 20px;
+            text-align:center;
         }
-        .search-hero h2 {
-            font-size: 20px;
-            color: #FFFFFF;
-            margin-bottom: 4px;
-        }
-        .search-hero p {
-            color: #8899AA;
-            font-size: 13px;
-            margin-bottom: 15px;
-        }
+        .search-hero h2 { font-size:20px; color:#FFFFFF; margin-bottom:4px; }
+        .search-hero p { color:#8899AA; font-size:13px; margin-bottom:15px; }
         .search-box {
-            display: flex;
-            gap: 8px;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 15px;
+            display:flex;
+            gap:8px;
+            max-width:600px;
+            margin:0 auto;
+            padding:0 15px;
         }
         .search-box input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            font-size: 15px;
-            min-width: 0;
+            flex:1;
+            padding:12px 16px;
+            border:2px solid rgba(255,255,255,0.1);
+            border-radius:10px;
+            background:rgba(255,255,255,0.05);
+            color:white;
+            font-size:15px;
+            min-width:0;
         }
-        .search-box input::placeholder {
-            color: #667;
-        }
-        .search-box input:focus {
-            outline: none;
-            border-color: #1A5CFF;
-        }
+        .search-box input::placeholder { color:#667; }
+        .search-box input:focus { outline:none; border-color:#1A5CFF; }
         .search-box button {
-            padding: 12px 22px;
-            background: linear-gradient(135deg, #1A5CFF, #0066FF);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.3s;
+            padding:12px 22px;
+            background:linear-gradient(135deg,#1A5CFF,#0066FF);
+            color:white;
+            border:none;
+            border-radius:10px;
+            font-weight:700;
+            font-size:14px;
+            cursor:pointer;
+            white-space:nowrap;
+            transition:all 0.3s;
         }
-        .search-box button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(26, 92, 255, 0.4);
-        }
+        .search-box button:hover { transform:translateY(-2px); box-shadow:0 0 30px rgba(26,92,255,0.4); }
         .filters {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 15px;
-            color: #8899AA;
-            font-size: 13px;
+            display:flex;
+            justify-content:center;
+            gap:15px;
+            flex-wrap:wrap;
+            margin-top:15px;
+            color:#8899AA;
+            font-size:13px;
         }
-        .filters label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .filters input[type="range"] {
-            width: 90px;
-            accent-color: #1A5CFF;
-            height: 4px;
-        }
+        .filters label { display:flex; align-items:center; gap:8px; }
+        .filters input[type="range"] { width:90px; accent-color:#1A5CFF; height:4px; }
         .filters select {
-            padding: 4px 10px;
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 12px;
+            padding:4px 10px;
+            border-radius:6px;
+            background:rgba(255,255,255,0.05);
+            color:white;
+            border:1px solid rgba(255,255,255,0.1);
+            font-size:12px;
         }
         .filters .reset-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.1);
+            color:white;
+            padding:4px 12px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:12px;
         }
-        .filters .reset-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+        .filters .reset-btn:hover { background:rgba(255,255,255,0.1); }
         .category-tabs {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 15px 0 25px;
+            display:flex;
+            gap:10px;
+            justify-content:center;
+            flex-wrap:wrap;
+            margin:15px 0 25px;
         }
         .category-tabs button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #8899AA;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s;
-            font-family: inherit;
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            color:#8899AA;
+            padding:8px 20px;
+            border-radius:20px;
+            cursor:pointer;
+            font-size:13px;
+            transition:all 0.3s;
+            font-family:inherit;
         }
         .category-tabs button.active {
-            background: rgba(26, 92, 255, 0.2);
-            border-color: #1A5CFF;
-            color: #FFFFFF;
+            background:rgba(26,92,255,0.2);
+            border-color:#1A5CFF;
+            color:#FFFFFF;
         }
-        .category-tabs button:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
+        .category-tabs button:hover { background:rgba(255,255,255,0.08); }
         .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            color: #8899AA;
-            font-size: 13px;
-            flex-wrap: wrap;
-            gap: 8px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin:15px 0;
+            color:#8899AA;
+            font-size:13px;
+            flex-wrap:wrap;
+            gap:8px;
         }
         .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
-            gap: 15px;
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(165px,1fr));
+            gap:15px;
         }
         .product-card {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: all 0.2s;
-            cursor: pointer;
+            background:rgba(255,255,255,0.02);
+            border-radius:12px;
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,0.04);
+            transition:all 0.2s;
+            cursor:pointer;
         }
-        .product-card:hover {
-            border-color: #1A5CFF;
-            transform: translateY(-2px);
-        }
-        .product-card:active {
-            transform: scale(0.97);
-        }
+        .product-card:hover { border-color:#1A5CFF; transform:translateY(-2px); }
+        .product-card:active { transform:scale(0.97); }
         .product-card img {
-            width: 100%;
-            height: 140px;
-            object-fit: contain;
-            background: #0A1628;
-            padding: 5px;
+            width:100%;
+            height:140px;
+            object-fit:contain;
+            background:#0A1628;
+            padding:5px;
         }
-        .product-info {
-            padding: 12px;
-        }
+        .product-info { padding:12px; }
         .product-info h3 {
-            font-size: 13px;
-            margin-bottom: 4px;
-            height: 36px;
-            overflow: hidden;
-            color: #DDD;
-            line-height: 1.3;
+            font-size:13px;
+            margin-bottom:4px;
+            height:36px;
+            overflow:hidden;
+            color:#DDD;
+            line-height:1.3;
         }
-        .product-platform {
-            font-size: 10px;
-            color: #667;
-            margin-bottom: 4px;
-            text-transform: capitalize;
-        }
-        .product-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: #00E5FF;
-        }
-        .product-price-usd {
-            font-size: 11px;
-            color: #667;
-            margin-left: 4px;
-        }
-        .product-specs {
-            font-size: 10px;
-            color: #8899AA;
-            margin: 4px 0;
-            line-height: 1.4;
-        }
+        .product-platform { font-size:10px; color:#667; margin-bottom:4px; text-transform:capitalize; }
+        .product-price { font-size:18px; font-weight:700; color:#00E5FF; }
+        .product-price-usd { font-size:11px; color:#667; margin-left:4px; }
+        .product-specs { font-size:10px; color:#8899AA; margin:4px 0; line-height:1.4; }
         .buy-btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background: linear-gradient(135deg, #1A5CFF, #0066FF);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
+            width:100%;
+            padding:10px;
+            margin-top:10px;
+            background:linear-gradient(135deg,#1A5CFF,#0066FF);
+            color:white;
+            border:none;
+            border-radius:8px;
+            font-weight:700;
+            font-size:13px;
+            cursor:pointer;
+            transition:all 0.3s;
         }
-        .buy-btn:active {
-            opacity: 0.7;
-        }
-        .buy-btn:hover {
-            transform: scale(1.02);
-        }
+        .buy-btn:active { opacity:0.7; }
+        .buy-btn:hover { transform:scale(1.02); }
         .pool-section {
-            background: linear-gradient(135deg, #0F1A3A, #1A2A5E);
-            border-radius: 16px;
-            padding: 30px 20px;
-            margin: 30px 0;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background:linear-gradient(135deg,#0F1A3A,#1A2A5E);
+            border-radius:16px;
+            padding:30px 20px;
+            margin:30px 0;
+            border:1px solid rgba(255,255,255,0.05);
         }
-        .pool-section h2 {
-            font-size: 24px;
-            color: #FFFFFF;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-        .pool-section .subtitle {
-            color: #8899AA;
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 20px;
-            font-size: 14px;
-        }
+        .pool-section h2 { font-size:24px; color:#FFFFFF; text-align:center; margin-bottom:12px; }
+        .pool-section .subtitle { color:#8899AA; text-align:center; max-width:600px; margin:0 auto 20px; font-size:14px; }
         .pool-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-            text-align: left;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+            gap:15px;
+            margin:20px 0;
+            text-align:left;
         }
         .pool-step {
-            background: rgba(255, 255, 255, 0.04);
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background:rgba(255,255,255,0.04);
+            padding:16px;
+            border-radius:12px;
+            border:1px solid rgba(255,255,255,0.06);
         }
-        .pool-step .step-num {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .pool-step h4 {
-            color: #FFFFFF;
-            font-size: 14px;
-        }
-        .pool-step p {
-            color: #8899AA;
-            font-size: 12px;
-        }
+        .pool-step .step-num { font-size:24px; display:block; margin-bottom:6px; }
+        .pool-step h4 { color:#FFFFFF; font-size:14px; }
+        .pool-step p { color:#8899AA; font-size:12px; }
         .pool-info {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin: 15px 0;
-            color: #8899AA;
-            font-size: 13px;
+            display:flex;
+            justify-content:center;
+            gap:30px;
+            flex-wrap:wrap;
+            margin:15px 0;
+            color:#8899AA;
+            font-size:13px;
         }
-        .pool-info span {
-            color: #00E5FF;
-            font-weight: 700;
-        }
-        .pool-actions {
-            text-align: center;
-            margin-top: 20px;
-        }
+        .pool-info span { color:#00E5FF; font-weight:700; }
+        .pool-actions { text-align:center; margin-top:20px; }
         .pool-actions .btn-primary {
-            display: inline-block;
-            background: linear-gradient(135deg, #1A5CFF, #0066FF);
-            color: white;
-            padding: 14px 40px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 16px;
-            text-decoration: none;
-            box-shadow: 0 0 30px rgba(26, 92, 255, 0.4);
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
+            display:inline-block;
+            background:linear-gradient(135deg,#1A5CFF,#0066FF);
+            color:white;
+            padding:14px 40px;
+            border-radius:30px;
+            font-weight:700;
+            font-size:16px;
+            text-decoration:none;
+            box-shadow:0 0 30px rgba(26,92,255,0.4);
+            transition:all 0.3s;
+            border:none;
+            cursor:pointer;
         }
-        .pool-actions .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 50px rgba(26, 92, 255, 0.6);
-        }
+        .pool-actions .btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 50px rgba(26,92,255,0.6); }
         .pool-actions .btn-secondary {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            padding: 14px 40px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 16px;
-            text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-            margin-left: 10px;
+            display:inline-block;
+            background:rgba(255,255,255,0.05);
+            color:white;
+            padding:14px 40px;
+            border-radius:30px;
+            font-weight:700;
+            font-size:16px;
+            text-decoration:none;
+            border:1px solid rgba(255,255,255,0.1);
+            transition:all 0.3s;
+            cursor:pointer;
+            margin-left:10px;
         }
-        .pool-actions .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .pool-footer {
-            text-align: center;
-            color: #667;
-            font-size: 12px;
-            margin-top: 12px;
-        }
+        .pool-actions .btn-secondary:hover { background:rgba(255,255,255,0.1); }
+        .pool-footer { text-align:center; color:#667; font-size:12px; margin-top:12px; }
         .payment-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(6px);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.8);
+            backdrop-filter:blur(6px);
+            z-index:9999;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
         }
-        .payment-modal.active {
-            display: flex;
-        }
+        .payment-modal.active { display:flex; }
         .payment-box {
-            background: #0F1A3A;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 28px 24px;
-            max-width: 420px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            background:#0F1A3A;
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:16px;
+            padding:28px 24px;
+            max-width:420px;
+            width:100%;
+            box-shadow:0 20px 60px rgba(0,0,0,0.9);
         }
-        .payment-box h2 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            color: #FFFFFF;
-        }
-        .payment-box .amount {
-            font-size: 30px;
-            font-weight: 800;
-            color: #00E5FF;
-            margin: 10px 0;
-        }
+        .payment-box h2 { font-size:20px; margin-bottom:12px; color:#FFFFFF; }
+        .payment-box .amount { font-size:30px; font-weight:800; color:#00E5FF; margin:10px 0; }
         .payment-box .wallet-addr {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px;
-            border-radius: 10px;
-            word-break: break-all;
-            color: #8899AA;
-            font-size: 13px;
-            margin: 15px 0;
+            background:rgba(0,0,0,0.3);
+            padding:12px;
+            border-radius:10px;
+            word-break:break-all;
+            color:#8899AA;
+            font-size:13px;
+            margin:15px 0;
         }
-        .payment-box .wallet-addr code {
-            color: #00E5FF;
-        }
+        .payment-box .wallet-addr code { color:#00E5FF; }
         .payment-box .copy-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-top: 6px;
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            color:white;
+            padding:4px 12px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:12px;
+            margin-top:6px;
         }
         .payment-box .close-btn {
-            width: 100%;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: white;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 12px;
-            font-size: 15px;
+            width:100%;
+            padding:12px;
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            color:white;
+            border-radius:10px;
+            cursor:pointer;
+            margin-top:12px;
+            font-size:15px;
         }
         .footer-market {
-            margin-top: 40px;
-            padding: 20px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            text-align: center;
-            color: #667;
-            font-size: 12px;
+            margin-top:40px;
+            padding:20px 0;
+            border-top:1px solid rgba(255,255,255,0.03);
+            text-align:center;
+            color:#667;
+            font-size:12px;
         }
-        .status-msg {
-            color: #8899AA;
-            text-align: center;
-            padding: 30px 15px;
-            font-size: 14px;
-        }
-        .status-msg .error {
-            color: #ff6b6b;
-        }
-        @media (max-width: 480px) {
-            .products-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .product-card img {
-                height: 120px;
-            }
-            .product-info h3 {
-                font-size: 12px;
-                height: 32px;
-            }
-            .product-price {
-                font-size: 16px;
-            }
-            .search-box input {
-                font-size: 14px;
-                padding: 10px 12px;
-            }
-            .search-box button {
-                padding: 10px 16px;
-                font-size: 13px;
-            }
-            .wallet-badge {
-                font-size: 9px;
-            }
-            .pool-steps {
-                grid-template-columns: 1fr;
-            }
+        .status-msg { color:#8899AA; text-align:center; padding:30px 15px; font-size:14px; }
+        .status-msg .error { color:#ff6b6b; }
+        @media (max-width:480px) {
+            .products-grid { grid-template-columns:1fr 1fr; gap:10px; }
+            .product-card img { height:120px; }
+            .product-info h3 { font-size:12px; height:32px; }
+            .product-price { font-size:16px; }
+            .search-box input { font-size:14px; padding:10px 12px; }
+            .search-box button { padding:10px 16px; font-size:13px; }
+            .wallet-badge { font-size:9px; }
+            .pool-steps { grid-template-columns:1fr; }
             .pool-actions .btn-primary,
-            .pool-actions .btn-secondary {
-                display: block;
-                margin: 10px 0;
-            }
-            .pool-info {
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-            .category-tabs button {
-                font-size: 11px;
-                padding: 6px 14px;
-            }
-            .lang-btn {
-                font-size: 10px;
-                padding: 3px 10px;
-            }
-            .lang-dropdown {
-                min-width: 120px;
-            }
+            .pool-actions .btn-secondary { display:block; margin:10px 0; }
+            .pool-info { flex-direction:column; align-items:center; gap:8px; }
+            .category-tabs button { font-size:11px; padding:6px 14px; }
+            .lang-btn { font-size:10px; padding:3px 10px; }
+            .lang-dropdown { min-width:120px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
     <header class="market-header">
         <div class="container">
             <div class="logo-area">
@@ -600,7 +412,6 @@
         </div>
     </header>
 
-    <!-- ===== ПОИСК ===== -->
     <section class="search-hero">
         <div class="container">
             <h2 id="s-title">🔍 Find and buy with EURC</h2>
@@ -626,7 +437,6 @@
         </div>
     </section>
 
-    <!-- ===== КАТЕГОРИИ ===== -->
     <div class="container">
         <div class="category-tabs">
             <button class="active" data-cat="all" onclick="filterCategory('all', this)">📦 All</button>
@@ -638,7 +448,6 @@
         </div>
     </div>
 
-    <!-- ===== РЕЗУЛЬТАТЫ ===== -->
     <main class="container">
         <div class="results-header">
             <span id="resultCount">Found: 0</span>
@@ -649,7 +458,6 @@
         <div id="errorMsg" class="status-msg" style="display:none;"></div>
     </main>
 
-    <!-- ===== ПУЛ ЛИКВИДНОСТИ ===== -->
     <section class="pool-section">
         <div class="container">
             <h2 id="pool-title">💧 Become a EURC Market Maker</h2>
@@ -672,7 +480,6 @@
         </div>
     </section>
 
-    <!-- ===== МОДАЛКА ОПЛАТЫ ===== -->
     <div id="paymentModal" class="payment-modal">
         <div class="payment-box">
             <h2 id="pay-title">💳 Payment in EURC</h2>
@@ -689,7 +496,6 @@
         </div>
     </div>
 
-    <!-- ===== ФУТЕР ===== -->
     <footer class="footer-market">
         <div class="container">
             <p id="footer-text">© 2026 EURC Market — Buy with euro-stablecoin</p>
