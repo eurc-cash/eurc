@@ -42,46 +42,6 @@
             word-break:break-all;
         }
         .wallet-badge code { background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px; font-size:9px; color:#00E5FF; }
-        .lang-selector { position:relative; display:inline-block; }
-        .lang-btn {
-            background:rgba(255,255,255,0.08);
-            border:1px solid rgba(255,255,255,0.1);
-            color:white;
-            padding:4px 12px;
-            border-radius:20px;
-            cursor:pointer;
-            font-size:12px;
-            font-family:inherit;
-        }
-        .lang-btn:hover { background:rgba(255,255,255,0.15); }
-        .lang-dropdown {
-            display:none;
-            position:absolute;
-            top:110%;
-            right:0;
-            background:#1A2A5E;
-            border:1px solid rgba(255,255,255,0.1);
-            border-radius:12px;
-            padding:8px;
-            min-width:140px;
-            z-index:100;
-            box-shadow:0 10px 40px rgba(0,0,0,0.5);
-        }
-        .lang-dropdown.active { display:block; }
-        .lang-dropdown button {
-            display:block;
-            width:100%;
-            padding:6px 12px;
-            background:none;
-            border:none;
-            color:white;
-            text-align:left;
-            border-radius:6px;
-            cursor:pointer;
-            font-size:13px;
-            font-family:inherit;
-        }
-        .lang-dropdown button:hover { background:rgba(255,255,255,0.08); }
         .search-hero {
             background:linear-gradient(135deg,#0F1A3A,#1A2A5E);
             padding:25px 0 30px;
@@ -367,6 +327,49 @@
         }
         .status-msg { color:#8899AA; text-align:center; padding:30px 15px; font-size:14px; }
         .status-msg .error { color:#ff6b6b; }
+        .lang-selector {
+            position:relative;
+            display:inline-block;
+        }
+        .lang-btn {
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.1);
+            color:white;
+            padding:4px 12px;
+            border-radius:20px;
+            cursor:pointer;
+            font-size:12px;
+            font-family:inherit;
+        }
+        .lang-btn:hover { background:rgba(255,255,255,0.15); }
+        .lang-dropdown {
+            display:none;
+            position:absolute;
+            top:110%;
+            right:0;
+            background:#1A2A5E;
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:12px;
+            padding:8px;
+            min-width:140px;
+            z-index:100;
+            box-shadow:0 10px 40px rgba(0,0,0,0.5);
+        }
+        .lang-dropdown.active { display:block; }
+        .lang-dropdown button {
+            display:block;
+            width:100%;
+            padding:6px 12px;
+            background:none;
+            border:none;
+            color:white;
+            text-align:left;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:13px;
+            font-family:inherit;
+        }
+        .lang-dropdown button:hover { background:rgba(255,255,255,0.08); }
         @media (max-width:480px) {
             .products-grid { grid-template-columns:1fr 1fr; gap:10px; }
             .product-card img { height:120px; }
@@ -765,8 +768,7 @@
                     'data/electronics.json',
                     'data/ev.json',
                     'data/realestate.json',
-                    'data/photos.json',
-                    'data/banks.json'
+                    'data/photos.json'
                 ];
                 const responses = await Promise.all(files.map(f => fetch(f)));
                 const ok = responses.every(r => r.ok);
@@ -791,9 +793,7 @@
                 { id: 2, name: 'Tesla Model 3 Long Range', price_usd: 45000, category: 'ev',
                     image: 'https://picsum.photos/seed/tesla3/300/200', specs: '333 mi, AWD' },
                 { id: 3, name: '23 Plantation Road, The Peak, HK', price_usd: 26923076, category: 'realestate',
-                    image: 'https://picsum.photos/seed/hkpeak/300/200', specs: '6 bed, 7 bath' },
-                { id: 4, name: 'PTSB Bank - Sale to BAWAG, Ireland', price_usd: 8000000000, category: 'banks',
-                    image: 'https://picsum.photos/seed/ptsb/300/200', specs: '€1.6B deal, 26% premium' }
+                    image: 'https://picsum.photos/seed/hkpeak/300/200', specs: '6 bed, 7 bath' }
             ];
             searchProducts();
         }
