@@ -615,6 +615,7 @@
                 <a href="#community" data-key="nav-community">Community</a>
                 <a href="#faq" data-key="nav-faq">FAQ</a>
                 <a href="#contact" data-key="nav-contact">Contact</a>
+                <a href="market.html" data-key="nav-market" style="color:#00E5FF; font-weight:700;">🛒 Market</a>
             </nav>
             <div class="header-right">
                 <div class="lang-selector">
@@ -671,6 +672,9 @@
                 <button class="btn-secondary btn-large" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
                     📖 <span data-key="hero-learn">Learn More</span>
                 </button>
+                <a href="market.html" class="btn-primary btn-large" style="text-decoration:none; display:inline-block; background:linear-gradient(135deg,#00E5FF,#1A5CFF);">
+                    🛒 <span data-key="hero-market">Go to Market</span>
+                </a>
             </div>
         </div>
     </section>
@@ -885,6 +889,9 @@
                 <button class="btn-primary btn-large" onclick="window.open('https://jup.ag/swap/SOL-2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4', '_blank')">
                     🚀 <span data-key="cta-button">Buy EuroCash Now</span>
                 </button>
+                <a href="market.html" class="btn-primary btn-large" style="text-decoration:none; display:inline-block; margin-left:12px; background:linear-gradient(135deg,#00E5FF,#1A5CFF);">
+                    🛒 <span data-key="cta-market">Go to Market</span>
+                </a>
             </div>
         </div>
     </section>
@@ -903,7 +910,7 @@
                         <a href="https://youtube.com" target="_blank">📺</a>
                     </div>
                 </div>
-                <div class="footer-links"><h4 data-key="footer-about">About</h4><a href="#about" data-key="footer-about-link">Project</a><a href="#tokenomics" data-key="footer-tokenomics">Tokenomics</a><a href="#roadmap" data-key="footer-roadmap">Roadmap</a></div>
+                <div class="footer-links"><h4 data-key="footer-about">About</h4><a href="#about" data-key="footer-about-link">Project</a><a href="#tokenomics" data-key="footer-tokenomics">Tokenomics</a><a href="#roadmap" data-key="footer-roadmap">Roadmap</a><a href="market.html" style="color:#00E5FF;">🛒 Market</a></div>
                 <div class="footer-links"><h4 data-key="footer-support">Support</h4><a href="#faq" data-key="footer-faq">FAQ</a><a href="#contact" data-key="footer-contact">Contact</a><a href="#" onclick="openAI();return false;" data-key="footer-ai">AI Assistant</a></div>
                 <div class="footer-links"><h4 data-key="footer-legal">Legal</h4><a href="#" data-key="footer-privacy">Privacy Policy</a><a href="#" data-key="footer-terms">Terms of Service</a><a href="#" data-key="footer-disclaimer">Disclaimer</a></div>
             </div>
@@ -933,9 +940,9 @@
         // ===== LANGUAGE DATA =====
         const translations = {
             en: {
-                'nav-home':'Home','nav-about':'About','nav-tokenomics':'Tokenomics','nav-how':'How to Buy','nav-card':'Card','nav-partners':'Partners','nav-roadmap':'Roadmap','nav-community':'Community','nav-faq':'FAQ','nav-contact':'Contact',
+                'nav-home':'Home','nav-about':'About','nav-tokenomics':'Tokenomics','nav-how':'How to Buy','nav-card':'Card','nav-partners':'Partners','nav-roadmap':'Roadmap','nav-community':'Community','nav-faq':'FAQ','nav-contact':'Contact','nav-market':'🛒 Market',
                 'btn-buy':'Buy EURC','hero-badge':'European Stablecoin','hero-sub':'Euro stability. Crypto freedom.','stat-price':'Price','stat-mcap':'Market Cap','stat-liq':'Liquidity','stat-supply':'Supply',
-                'hero-buy':'Buy EuroCash','hero-learn':'Learn More',
+                'hero-buy':'Buy EuroCash','hero-learn':'Learn More','hero-market':'🛒 Go to Market',
                 'about-title':'About EuroCash','about-p1':'EuroCash (EURC) is a digital euro token on Solana, combining the stability of the euro with the speed and efficiency of blockchain technology.','about-p2':'Our mission is to create a European stablecoin for everyday payments, DeFi, and staking — accessible to everyone.',
                 'about-f1':'Bank-grade security','about-f2':'Instant (0.4s)','about-f3':'Real-world payments','about-f4':'Accepted across Europe',
                 'tokenomics-title':'Tokenomics','tokenomics-contract':'Contract Address','tokenomics-pool':'Liquidity Pool','tokenomics-dist':'Distribution','tokenomics-liq':'Liquidity Pool','tokenomics-comm':'Community & Marketing','tokenomics-team':'Team (locked 12mo)','tokenomics-stake':'Staking Rewards','tokenomics-charity':'Charity','tokenomics-chart':'Token distribution chart',
@@ -947,13 +954,13 @@
                 'faq-title':'FAQ','faq-q1':'What is EuroCash?','faq-a1':'EuroCash (EURC) is a digital euro token on Solana, combining the stability of the euro with the speed and efficiency of blockchain technology.','faq-q2':'How do I buy EURC?','faq-a2':'Install Phantom wallet, fund with SOL, then swap on Jupiter using the contract address: 2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4','faq-q3':'Is EuroCash safe?','faq-a3':'Yes! EuroCash uses bank-grade security, complies with European regulations, and is built on the secure Solana blockchain.','faq-q4':'Where can I use EURC?','faq-a4':'You can use EURC at 150M+ merchants worldwide via our debit card, online payments, and partner platforms across Europe.','faq-q5':'What are the fees?','faq-a5':'Transaction fees on Solana are ~$0.0001. The EuroCash debit card has 0% monthly fees for the first year.',
                 'contact-title':'Contact Us','contact-email':'Email','contact-twitter':'Twitter','contact-telegram':'Telegram','contact-web':'Website','contact-form':'Send us a message','contact-send':'Send Message',
                 'gallery-title':'Gallery',
-                'cta-title':'Ready to join the future of payments?','cta-desc':'Buy EuroCash now and start using it across Europe.','cta-button':'Buy EuroCash Now',
+                'cta-title':'Ready to join the future of payments?','cta-desc':'Buy EuroCash now and start using it across Europe.','cta-button':'Buy EuroCash Now','cta-market':'🛒 Go to Market',
                 'footer-desc':'European digital token on Solana','footer-about':'About','footer-about-link':'Project','footer-tokenomics':'Tokenomics','footer-roadmap':'Roadmap','footer-support':'Support','footer-faq':'FAQ','footer-contact':'Contact','footer-ai':'AI Assistant','footer-legal':'Legal','footer-privacy':'Privacy Policy','footer-terms':'Terms of Service','footer-disclaimer':'Disclaimer','footer-rights':'All rights reserved.'
             },
             de: {
-                'nav-home':'Startseite','nav-about':'Über','nav-tokenomics':'Tokenomics','nav-how':'Wie kaufen','nav-card':'Karte','nav-partners':'Partner','nav-roadmap':'Fahrplan','nav-community':'Community','nav-faq':'FAQ','nav-contact':'Kontakt',
+                'nav-home':'Startseite','nav-about':'Über','nav-tokenomics':'Tokenomics','nav-how':'Wie kaufen','nav-card':'Karte','nav-partners':'Partner','nav-roadmap':'Fahrplan','nav-community':'Community','nav-faq':'FAQ','nav-contact':'Kontakt','nav-market':'🛒 Markt',
                 'btn-buy':'EURC kaufen','hero-badge':'Europäischer Stablecoin','hero-sub':'Euro-Stabilität. Krypto-Freiheit.','stat-price':'Preis','stat-mcap':'Marktkapitalisierung','stat-liq':'Liquidität','stat-supply':'Angebot',
-                'hero-buy':'EuroCash kaufen','hero-learn':'Mehr erfahren',
+                'hero-buy':'EuroCash kaufen','hero-learn':'Mehr erfahren','hero-market':'🛒 Zum Markt',
                 'about-title':'Über EuroCash','about-p1':'EuroCash (EURC) ist ein digitaler Euro-Token auf Solana, der die Stabilität des Euros mit der Geschwindigkeit und Effizienz der Blockchain verbindet.','about-p2':'Unsere Mission ist es, einen europäischen Stablecoin für den täglichen Zahlungsverkehr, DeFi und Staking zu schaffen — für jeden zugänglich.',
                 'about-f1':'Bankensicherheit','about-f2':'Sofort (0,4s)','about-f3':'Zahlungen in der realen Welt','about-f4':'In ganz Europa akzeptiert',
                 'tokenomics-title':'Tokenomics','tokenomics-contract':'Vertragsadresse','tokenomics-pool':'Liquiditätspool','tokenomics-dist':'Verteilung','tokenomics-liq':'Liquiditätspool','tokenomics-comm':'Community & Marketing','tokenomics-team':'Team (12 Monate gesperrt)','tokenomics-stake':'Staking-Belohnungen','tokenomics-charity':'Wohltätigkeit','tokenomics-chart':'Token-Verteilungsdiagramm',
@@ -965,7 +972,7 @@
                 'faq-title':'FAQ','faq-q1':'Was ist EuroCash?','faq-a1':'EuroCash (EURC) ist ein digitaler Euro-Token auf Solana, der die Stabilität des Euros mit der Geschwindigkeit und Effizienz der Blockchain verbindet.','faq-q2':'Wie kaufe ich EURC?','faq-a2':'Installieren Sie Phantom Wallet, laden Sie mit SOL auf und tauschen Sie auf Jupiter mit der Vertragsadresse: 2y48YY37oS7n94BSGKUrYhGCbxVTgGRZDqCfAjJ5yzG4','faq-q3':'Ist EuroCash sicher?','faq-a3':'Ja! EuroCash verwendet Bankensicherheit, entspricht europäischen Vorschriften und ist auf der sicheren Solana-Blockchain aufgebaut.','faq-q4':'Wo kann ich EURC verwenden?','faq-a4':'Sie können EURC bei 150M+ Händlern weltweit über unsere Debitkarte, Online-Zahlungen und Partnerplattformen in ganz Europa verwenden.','faq-q5':'Welche Gebühren gibt es?','faq-a5':'Transaktionsgebühren auf Solana betragen ~$0.0001. Die EuroCash-Debitkarte hat 0% monatliche Gebühren im ersten Jahr.',
                 'contact-title':'Kontaktieren Sie uns','contact-email':'E-Mail','contact-twitter':'Twitter','contact-telegram':'Telegram','contact-web':'Webseite','contact-form':'Senden Sie uns eine Nachricht','contact-send':'Nachricht senden',
                 'gallery-title':'Galerie',
-                'cta-title':'Bereit für die Zukunft des Zahlungsverkehrs?','cta-desc':'Kaufen Sie EuroCash jetzt und nutzen Sie es in ganz Europa.','cta-button':'EuroCash jetzt kaufen',
+                'cta-title':'Bereit für die Zukunft des Zahlungsverkehrs?','cta-desc':'Kaufen Sie EuroCash jetzt und nutzen Sie es in ganz Europa.','cta-button':'EuroCash jetzt kaufen','cta-market':'🛒 Zum Markt',
                 'footer-desc':'Europäischer digitaler Token auf Solana','footer-about':'Über','footer-about-link':'Projekt','footer-tokenomics':'Tokenomics','footer-roadmap':'Fahrplan','footer-support':'Support','footer-faq':'FAQ','footer-contact':'Kontakt','footer-ai':'KI-Assistent','footer-legal':'Rechtliches','footer-privacy':'Datenschutz','footer-terms':'Nutzungsbedingungen','footer-disclaimer':'Haftungsausschluss','footer-rights':'Alle Rechte vorbehalten.'
             },
             // Добавлены остальные языки (FR, ES, IT, PT, NL, PL, SV, DA) - для краткости я их пропускаю здесь, но в полном коде они есть.
