@@ -768,7 +768,8 @@
                     'data/electronics.json',
                     'data/ev.json',
                     'data/realestate.json',
-                    'data/photos.json'
+                    'data/photos.json',
+                    'data/banks.json'  // <--- ДОБАВЛЕН БАНК
                 ];
                 const responses = await Promise.all(files.map(f => fetch(f)));
                 const ok = responses.every(r => r.ok);
