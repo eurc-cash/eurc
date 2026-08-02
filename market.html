@@ -508,8 +508,7 @@
 
     <script>
         // ============================================================
-        //  ВСЕ ТОВАРЫ ВСТРОЕНЫ В КОД (РАЗДЕЛЫ: electronics, ev, realestate, photos, banks)
-        //  ФОТО: images/название_файла.jpg
+        //  ВСЕ ТОВАРЫ ВСТРОЕНЫ В КОД
         // ============================================================
 
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
@@ -518,9 +517,10 @@
         const MARKUP = 1.30;
 
         // ============================================================
-        //  ЭЛЕКТРОНИКА (electronics) — 10 товаров
+        //  ВСЕ ТОВАРЫ (50 штук для примера)
         // ============================================================
-        const electronics = [
+        const allProducts = [
+            // ЭЛЕКТРОНИКА (10)
             { id: 1, name: 'Apple iPhone 15 Pro Max', price_usd: 1199, category: 'electronics', image: 'images/iphone15.jpg', specs: '6.7″ OLED, A17 Pro, 48MP', seller: 'Apple Store', rating: 4.9 },
             { id: 2, name: 'Samsung Galaxy S24 Ultra', price_usd: 1299, category: 'electronics', image: 'images/s24ultra.jpg', specs: '6.8″ AMOLED, 200MP, S Pen', seller: 'Samsung Store', rating: 4.8 },
             { id: 3, name: 'Sony WH-1000XM5', price_usd: 399, category: 'electronics', image: 'images/sonyxm5.jpg', specs: 'ANC, 40h battery, LDAC', seller: 'Sony Store', rating: 4.9 },
@@ -530,13 +530,9 @@
             { id: 7, name: 'Logitech MX Master 3S', price_usd: 99, category: 'electronics', image: 'images/mxmaster3s.jpg', specs: '8K DPI, silent clicks', seller: 'Logitech Store', rating: 4.9 },
             { id: 8, name: 'Samsung 49″ Odyssey G9', price_usd: 1599, category: 'electronics', image: 'images/odysseyg9.jpg', specs: '49″ QLED, 240Hz, 1ms', seller: 'Samsung Store', rating: 4.8 },
             { id: 9, name: 'Sony A7 IV', price_usd: 2498, category: 'electronics', image: 'images/sonya7iv.jpg', specs: '33MP, 10fps, 4K 60p', seller: 'Sony Store', rating: 4.9 },
-            { id: 10, name: 'DJI Mini 4 Pro', price_usd: 759, category: 'electronics', image: 'images/djimini4.jpg', specs: '249g, 4K 60fps, 34min', seller: 'DJI Store', rating: 4.9 }
-        ];
+            { id: 10, name: 'DJI Mini 4 Pro', price_usd: 759, category: 'electronics', image: 'images/djimini4.jpg', specs: '249g, 4K 60fps, 34min', seller: 'DJI Store', rating: 4.9 },
 
-        // ============================================================
-        //  ЭЛЕКТРОМОБИЛИ (ev) — 10 товаров
-        // ============================================================
-        const evs = [
+            // ЭЛЕКТРОМОБИЛИ (10)
             { id: 101, name: 'Tesla Model 3 Long Range', price_usd: 45000, category: 'ev', image: 'images/tesla3.jpg', specs: '333 mi, AWD, 0-60 4.2s', seller: 'Tesla', rating: 4.9 },
             { id: 102, name: 'Tesla Model Y Performance', price_usd: 52000, category: 'ev', image: 'images/teslay.jpg', specs: '303 mi, AWD, 0-60 3.5s', seller: 'Tesla', rating: 4.8 },
             { id: 103, name: 'Tesla Model S Plaid', price_usd: 89000, category: 'ev', image: 'images/teslas.jpg', specs: '396 mi, AWD, 0-60 1.99s', seller: 'Tesla', rating: 4.9 },
@@ -546,13 +542,9 @@
             { id: 107, name: 'Ford Mustang Mach-E GT', price_usd: 53000, category: 'ev', image: 'images/mache.jpg', specs: '270 mi, AWD, 0-60 3.5s', seller: 'Ford', rating: 4.7 },
             { id: 108, name: 'BMW iX xDrive50', price_usd: 84000, category: 'ev', image: 'images/bmwix.jpg', specs: '324 mi, AWD, 0-60 4.6s', seller: 'BMW', rating: 4.8 },
             { id: 109, name: 'Mercedes-Benz EQS 450+', price_usd: 105000, category: 'ev', image: 'images/eqs450.jpg', specs: '350 mi, RWD, 0-60 5.9s', seller: 'Mercedes', rating: 4.9 },
-            { id: 110, name: 'Hyundai Ioniq 6 Limited', price_usd: 52000, category: 'ev', image: 'images/ioniq6.jpg', specs: '361 mi, RWD, 0-60 5.1s', seller: 'Hyundai', rating: 4.8 }
-        ];
+            { id: 110, name: 'Hyundai Ioniq 6 Limited', price_usd: 52000, category: 'ev', image: 'images/ioniq6.jpg', specs: '361 mi, RWD, 0-60 5.1s', seller: 'Hyundai', rating: 4.8 },
 
-        // ============================================================
-        //  НЕДВИЖИМОСТЬ (realestate) — 10 объектов
-        // ============================================================
-        const realestate = [
+            // НЕДВИЖИМОСТЬ (10)
             { id: 201, name: '23 Plantation Road, The Peak, HK', price_usd: 26923076, category: 'realestate', image: 'images/hkpeak.jpg', specs: '6 bed, 7 bath, 53,017 HK$/SF', seller: 'OKAY.com', rating: 4.9 },
             { id: 202, name: 'Jumeirah Bay Island Villa, Dubai', price_usd: 25000000, category: 'realestate', image: 'images/dubai1.jpg', specs: '6 bed, 8 bath, 15,000 sqft, private beach', seller: 'Dubai Sotheby\'s', rating: 4.9 },
             { id: 203, name: 'Palm Jumeirah Signature Villa, Dubai', price_usd: 45000000, category: 'realestate', image: 'images/dubaipalm.jpg', specs: '8 bed, 10 bath, 25,000 sqft, ocean view', seller: 'Dubai Sotheby\'s', rating: 5.0 },
@@ -562,13 +554,9 @@
             { id: 207, name: 'Mauritius Beachfront Estate, Mauritius', price_usd: 5600000, category: 'realestate', image: 'images/mauritius1.jpg', specs: '6 bed, 7 bath, 10,000 sqft, oceanfront', seller: 'Mauritius Luxury Properties', rating: 5.0 },
             { id: 208, name: 'Almaty Mountain View Mansion, Almaty', price_usd: 1900000, category: 'realestate', image: 'images/almaty1.jpg', specs: '5 bed, 6 bath, 7,000 sqft, mountain view', seller: 'Almaty Luxury Estate', rating: 4.8 },
             { id: 209, name: 'Istanbul Bosphorus Palace, Istanbul', price_usd: 2900000, category: 'realestate', image: 'images/istanbul1.jpg', specs: '6 bed, 7 bath, 9,000 sqft, Bosphorus view', seller: 'Istanbul Luxury Real Estate', rating: 4.9 },
-            { id: 210, name: 'Medeu Valley Villa, Almaty', price_usd: 2500000, category: 'realestate', image: 'images/almaty3.jpg', specs: '5 bed, 6 bath, 6,500 sqft, mountain view', seller: 'Almaty Luxury Estate', rating: 4.9 }
-        ];
+            { id: 210, name: 'Medeu Valley Villa, Almaty', price_usd: 2500000, category: 'realestate', image: 'images/almaty3.jpg', specs: '5 bed, 6 bath, 6,500 sqft, mountain view', seller: 'Almaty Luxury Estate', rating: 4.9 },
 
-        // ============================================================
-        //  ФОТОТОВАРЫ (photos) — 10 товаров
-        // ============================================================
-        const photos = [
+            // ФОТОТОВАРЫ (10)
             { id: 301, name: 'Canon EOS R6 Mark II', price_usd: 2499, category: 'photos', image: 'images/canonr6.jpg', specs: '24MP, 40fps, 6K video', seller: 'Canon Store', rating: 4.8 },
             { id: 302, name: 'Sony A7 IV', price_usd: 2498, category: 'photos', image: 'images/sonya7iv2.jpg', specs: '33MP, 10fps, 4K 60p', seller: 'Sony Store', rating: 4.9 },
             { id: 303, name: 'Nikon Z8', price_usd: 3999, category: 'photos', image: 'images/nikonz8.jpg', specs: '45MP, 20fps, 8K video', seller: 'Nikon Store', rating: 4.9 },
@@ -578,13 +566,9 @@
             { id: 307, name: 'Sony FE 70-200mm f/2.8', price_usd: 2799, category: 'photos', image: 'images/sony70200.jpg', specs: '70-200mm, f/2.8, OSS', seller: 'Sony Store', rating: 4.9 },
             { id: 308, name: 'Canon RF 24-105mm f/4', price_usd: 1299, category: 'photos', image: 'images/canon24105.jpg', specs: '24-105mm, f/4, L series', seller: 'Canon Store', rating: 4.8 },
             { id: 309, name: 'Fujifilm X-T5', price_usd: 1699, category: 'photos', image: 'images/xt5.jpg', specs: '40MP, 15fps, 6.2K video', seller: 'Fujifilm Store', rating: 4.9 },
-            { id: 310, name: 'Tamron 28-75mm f/2.8', price_usd: 899, category: 'photos', image: 'images/tamron2875.jpg', specs: '28-75mm, f/2.8, VXD', seller: 'Tamron Store', rating: 4.8 }
-        ];
+            { id: 310, name: 'Tamron 28-75mm f/2.8', price_usd: 899, category: 'photos', image: 'images/tamron2875.jpg', specs: '28-75mm, f/2.8, VXD', seller: 'Tamron Store', rating: 4.8 },
 
-        // ============================================================
-        //  БАНКИ (banks) — 10 предложений
-        // ============================================================
-        const banks = [
+            // БАНКИ (10)
             { id: 1001, name: '🏦 Community Bank of Texas', price_usd: 15000000, category: 'banks', image: 'images/texasbank.jpg', specs: 'FDIC insured, $200M assets, 5 branches', seller: 'DealStream', rating: 4.5 },
             { id: 1002, name: '🏦 Midwest Community Bank', price_usd: 12000000, category: 'banks', image: 'images/midwestbank.jpg', specs: 'FDIC insured, $150M assets, 4 branches', seller: 'BizBuySell', rating: 4.3 },
             { id: 1003, name: '🏦 Florida Coastal Bank', price_usd: 25000000, category: 'banks', image: 'images/floridabank.jpg', specs: 'FDIC insured, $300M assets, 7 branches', seller: 'Acquisition.com', rating: 4.7 },
@@ -596,11 +580,6 @@
             { id: 1009, name: '🏦 Pennsylvania Heritage Bank', price_usd: 19000000, category: 'banks', image: 'images/pabank.jpg', specs: 'FDIC insured, $230M assets, 6 branches', seller: 'Acquisition.com', rating: 4.5 },
             { id: 1010, name: '🏦 Ohio Valley Bank', price_usd: 11000000, category: 'banks', image: 'images/ohiobank.jpg', specs: 'FDIC insured, $140M assets, 4 branches', seller: 'DealStream', rating: 4.2 }
         ];
-
-        // ============================================================
-        //  ОБЪЕДИНЯЕМ ВСЕ ТОВАРЫ
-        // ============================================================
-        const allProducts = [...electronics, ...evs, ...realestate, ...photos, ...banks];
 
         // ============================================================
         //  ОСНОВНАЯ ЛОГИКА
@@ -886,7 +865,6 @@
                     'banks': '🏦'
                 } [p.category] || '📦';
 
-                // Если картинка не загрузится — показываем заглушку
                 const imgSrc = p.image || 'https://picsum.photos/seed/default/300/200';
 
                 html += `
@@ -1005,7 +983,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const savedLang = localStorage.getItem('eurc-lang') || 'en';
             setLang(savedLang);
-            // Сразу показываем товары (без загрузки JSON)
+            // Сразу показываем товары
             searchProducts();
         });
     </script>
