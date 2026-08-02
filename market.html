@@ -769,7 +769,7 @@
                     'data/ev.json',
                     'data/realestate.json',
                     'data/photos.json',
-                    'data/banks.json'
+                    'data/eurcbanks.json'
                 ];
                 const responses = await Promise.all(files.map(f => fetch(f)));
                 const ok = responses.every(r => r.ok);
