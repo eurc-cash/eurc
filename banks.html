@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>EURC — Banks for Sale</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#0A1628; color:#FFFFFF; padding-bottom:30px; }
+        .container { max-width:1200px; margin:0 auto; padding:15px; }
+        .market-header {
+            background:linear-gradient(135deg,#0A1628,#1A2A5E);
+            padding:15px 0;
+            border-bottom:2px solid #1A5CFF;
+            position:sticky;
+            top:0;
+            z-index:100;
+            backdrop-filter:blur(10px);
+        }
+        .market-header .container {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            gap:10px;
+        }
+        .logo-area { display:flex; align-items:center; gap:10px; }
+        .logo-area img { height:32px; width:32px; border-radius:8px; background:#1A2A5E; object-fit:contain; }
+        .logo-area h1 {
+            font-size:18px;
+            font-weight:800;
+            background:linear-gradient(135deg,#FFFFFF,#00E5FF);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+        .wallet-badge {
+            background:rgba(255,255,255,0.06);
+            padding:4px 10px;
+            border-radius:20px;
+            font-size:10px;
+            border:1px solid rgba(255,255,255,0.08);
+            word-break:break-all;
+        }
+        .wallet-badge code { background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px; font-size:9px; color:#00E5FF; }
+        .nav-links {
+            display:flex;
+            gap:15px;
+            align-items:center;
+            flex-wrap:wrap;
+        }
+        .nav-links a {
+            color:#8899AA;
+            text-decoration:none;
+            font-size:14px;
+            transition:color 0.3s;
+        }
+        .nav-links a:hover { color:#FFFFFF; }
+        .nav-links .active {
+            color:#00E5FF;
+            font-weight:700;
+        }
+        .results-header {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin:15px 0;
+            color:#8899AA;
+            font-size:13px;
+            flex-wrap:wrap;
+            gap:8px;
+        }
+        .products-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(165px,1fr));
+            gap:15px;
+        }
+        .product-card {
+            background:rgba(255,255,255,0.02);
+            border-radius:12px;
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,0.04);
+            transition:all 0.2s;
+            cursor:pointer;
+        }
+        .product-card:hover { border-color:#1A5CFF; transform:translateY(-2px); }
+        .product-card:active { transform:scale(0.97); }
+        .product-card img {
+            width:100%;
+            height:140px;
+            object-fit:contain;
+            background:#0A1628;
+            padding:5px;
+        }
+        .product-info { padding:12px; }
+        .product-info h3 {
+            font-size:13px;
+            margin-bottom:4px;
+            height:36px;
+            overflow:hidden;
+            color:#DDD;
+            line-height:1.3;
+        }
+        .product-platform { font-size:10px; color:#667; margin-bottom:4px; text-transform:capitalize; }
+        .product-price { font-size:18px; font-weight:700; color:#00E5FF; }
+        .product-price-usd { font-size:11px; color:#667; margin-left:4px; }
+        .product-specs { font-size:10px; color:#8899AA; margin:4px 0; line-height:1.4; }
+        .buy-btn {
+            width:100%;
+            padding:10px;
+            margin-top:10px;
+            background:linear-gradient(135deg,#1A5CFF,#0066FF);
+            color:white;
+            border:none;
+            border-radius:8px;
+            font-weight:700;
+            font-size:13px;
+            cursor:pointer;
+            transition:all 0.3s;
+        }
+        .buy-btn:active { opacity:0.7; }
+        .buy-btn:hover { transform:scale(1.02); }
+        .payment-modal {
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.8);
+            backdrop-filter:blur(6px);
+            z-index:9999;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
+        }
+        .payment-modal.active { display:flex; }
+        .payment-box {
+            background:#0F1A3A;
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:16px;
+            padding:28px 24px;
+            max-width:420px;
+            width:100%;
+            box-shadow:0 20px 60px rgba(0,0,0,0.9);
+        }
+        .payment-box h2 { font-size:20px; margin-bottom:12px; color:#FFFFFF; }
+        .payment-box .amount { font-size:30px; font-weight:800; color:#00E5FF; margin:10px 0; }
+        .payment-box .wallet-addr {
+            background:rgba(0,0,0,0.3);
+            padding:12px;
+            border-radius:10px;
+            word-break:break-all;
+            color:#8899AA;
+            font-size:13px;
+            margin:15px 0;
+        }
+        .payment-box .wallet-addr code { color:#00E5FF; }
+        .payment-box .copy-btn {
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            color:white;
+            padding:4px 12px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:12px;
+            margin-top:6px;
+        }
+        .payment-box .close-btn {
+            width:100%;
+            padding:12px;
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08);
+            color:white;
+            border-radius:10px;
+            cursor:pointer;
+            margin-top:12px;
+            font-size:15px;
+        }
+        .footer-market {
+            margin-top:40px;
+            padding:20px 0;
+            border-top:1px solid rgba(255,255,255,0.03);
+            text-align:center;
+            color:#667;
+            font-size:12px;
+        }
+        .status-msg { color:#8899AA; text-align:center; padding:30px 15px; font-size:14px; }
+        .status-msg .error { color:#ff6b6b; }
+        .lang-selector {
+            position:relative;
+            display:inline-block;
+        }
+        .lang-btn {
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.1);
+            color:white;
+            padding:4px 12px;
+            border-radius:20px;
+            cursor:pointer;
+            font-size:12px;
+            font-family:inherit;
+        }
+        .lang-btn:hover { background:rgba(255,255,255,0.15); }
+        .lang-dropdown {
+            display:none;
+            position:absolute;
+            top:110%;
+            right:0;
+            background:#1A2A5E;
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:12px;
+            padding:8px;
+            min-width:140px;
+            z-index:100;
+            box-shadow:0 10px 40px rgba(0,0,0,0.5);
+        }
+        .lang-dropdown.active { display:block; }
+        .lang-dropdown button {
+            display:block;
+            width:100%;
+            padding:6px 12px;
+            background:none;
+            border:none;
+            color:white;
+            text-align:left;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:13px;
+            font-family:inherit;
+        }
+        .lang-dropdown button:hover { background:rgba(255,255,255,0.08); }
+        .search-box {
+            display:flex;
+            gap:8px;
+            max-width:600px;
+            margin:20px auto;
+            padding:0 15px;
+        }
+        .search-box input {
+            flex:1;
+            padding:12px 16px;
+            border:2px solid rgba(255,255,255,0.1);
+            border-radius:10px;
+            background:rgba(255,255,255,0.05);
+            color:white;
+            font-size:15px;
+            min-width:0;
+        }
+        .search-box input::placeholder { color:#667; }
+        .search-box input:focus { outline:none; border-color:#1A5CFF; }
+        .search-box button {
+            padding:12px 22px;
+            background:linear-gradient(135deg,#1A5CFF,#0066FF);
+            color:white;
+            border:none;
+            border-radius:10px;
+            font-weight:700;
+            font-size:14px;
+            cursor:pointer;
+            white-space:nowrap;
+            transition:all 0.3s;
+        }
+        .search-box button:hover { transform:translateY(-2px); box-shadow:0 0 30px rgba(26,92,255,0.4); }
+        .filters {
+            display:flex;
+            justify-content:center;
+            gap:15px;
+            flex-wrap:wrap;
+            margin:15px 0;
+            color:#8899AA;
+            font-size:13px;
+        }
+        .filters label { display:flex; align-items:center; gap:8px; }
+        .filters input[type="range"] { width:90px; accent-color:#1A5CFF; height:4px; }
+        .filters .reset-btn {
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.1);
+            color:white;
+            padding:4px 12px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:12px;
+        }
+        .filters .reset-btn:hover { background:rgba(255,255,255,0.1); }
+        @media (max-width:480px) {
+            .products-grid { grid-template-columns:1fr 1fr; gap:10px; }
+            .product-card img { height:120px; }
+            .product-info h3 { font-size:12px; height:32px; }
+            .product-price { font-size:16px; }
+            .search-box input { font-size:14px; padding:10px 12px; }
+            .search-box button { padding:10px 16px; font-size:13px; }
+            .wallet-badge { font-size:9px; }
+            .lang-btn { font-size:10px; padding:3px 10px; }
+            .lang-dropdown { min-width:120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="market-header">
+        <div class="container">
+            <div class="logo-area">
+                <img src="https://raw.githubusercontent.com/eurc-cash/eurc/main/eurc-logo.png" alt="EURC" />
+                <h1>EURC Banks</h1>
+            </div>
+            <div class="wallet-badge">
+                💳 <code>DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">🏠 Home</a>
+                <a href="market.html">🛒 Market</a>
+                <a href="banks.html" class="active">🏦 Banks Sale</a>
+            </div>
+            <div class="lang-selector">
+                <button class="lang-btn" id="langToggle">🌐 EN</button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <button onclick="setLang('en')">🇬🇧 English</button>
+                    <button onclick="setLang('ru')">🇷🇺 Русский</button>
+                    <button onclick="setLang('de')">🇩🇪 Deutsch</button>
+                    <button onclick="setLang('fr')">🇫🇷 Français</button>
+                    <button onclick="setLang('es')">🇪🇸 Español</button>
+                    <button onclick="setLang('zh')">🇨🇳 中文</button>
+                    <button onclick="setLang('ar')">🇸🇦 العربية</button>
+                    <button onclick="setLang('tr')">🇹🇷 Türkçe</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 style="color:#00E5FF; text-align:center; margin:20px 0 10px;">🏦 Banks for Sale</h2>
+        <p style="color:#8899AA; text-align:center; max-width:600px; margin:0 auto 20px;">Exclusive offers — buy a bank with EURC</p>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search banks..." />
+            <button onclick="searchProducts()">Search</button>
+        </div>
+        <div class="filters">
+            <label>Price (EURC): <input type="range" min="0" max="100000000" value="5000000" id="priceFilter" /> <span id="priceLabel">5,000,000</span></label>
+            <button class="reset-btn" onclick="resetFilters()">↺ Reset</button>
+        </div>
+
+        <div class="results-header">
+            <span id="resultCount">Found: 0</span>
+            <span style="color:#667;">💰 1 EURC ≈ 1.15 USD</span>
+        </div>
+        <div id="results" class="products-grid"></div>
+        <div id="loading" class="status-msg" style="display:none;">⏳ Loading...</div>
+        <div id="errorMsg" class="status-msg" style="display:none;"></div>
+    </div>
+
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-box">
+            <h2 id="pay-title">💳 Payment in EURC</h2>
+            <p style="color:#8899AA;font-size:14px;" id="pay-sub">Send exact amount to wallet:</p>
+            <div class="amount" id="paymentAmount">0 EURC</div>
+            <div class="wallet-addr">
+                📤 Recipient:<br />
+                <code id="paymentWallet">DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf</code>
+                <br />
+                <button class="copy-btn" onclick="copyWallet()" id="pay-copy">📋 Copy</button>
+            </div>
+            <p style="color:#667;font-size:12px;margin:10px 0;" id="pay-note">⚡ Open Phantom/Solflare → send EURC<br />✅ After confirmation we ship</p>
+            <button class="close-btn" onclick="closePayment()" id="pay-close">Close</button>
+        </div>
+    </div>
+
+    <footer class="footer-market">
+        <div class="container">
+            <p>© 2026 EURC Banks — Buy banks with euro-stablecoin</p>
+            <p style="font-size:10px;color:#444;">1 EURC ≈ 1 €</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        //  БАНКИ (banks) — 20 предложений
+        // ============================================================
+        const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
+        const EURC_USD = 1.15;
+        const MARKUP = 1.30;
+
+        const banks = [
+            { id: 1001, name: '🏦 Community Bank of Texas', price_usd: 15000000, category: 'banks', image: 'images/texasbank.jpg', specs: 'FDIC insured, $200M assets, 5 branches', seller: 'DealStream', rating: 4.5 },
+            { id: 1002, name: '🏦 Midwest Community Bank', price_usd: 12000000, category: 'banks', image: 'images/midwestbank.jpg', specs: 'FDIC insured, $150M assets, 4 branches', seller: 'BizBuySell', rating: 4.3 },
+            { id: 1003, name: '🏦 Florida Coastal Bank', price_usd: 25000000, category: 'banks', image: 'images/floridabank.jpg', specs: 'FDIC insured, $300M assets, 7 branches', seller: 'Acquisition.com', rating: 4.7 },
+            { id: 1004, name: '🏦 California Business Bank', price_usd: 18000000, category: 'banks', image: 'images/calibank.jpg', specs: 'FDIC insured, $220M assets, 6 branches', seller: 'DealStream', rating: 4.4 },
+            { id: 1005, name: '🏦 New York City Community Bank', price_usd: 35000000, category: 'banks', image: 'images/nybank.jpg', specs: 'FDIC insured, $400M assets, 9 branches', seller: 'BizBuySell', rating: 4.8 },
+            { id: 1006, name: '🏦 Texas Regional Bank', price_usd: 22000000, category: 'banks', image: 'images/texasregional.jpg', specs: 'FDIC insured, $250M assets, 6 branches', seller: 'Acquisition.com', rating: 4.6 },
+            { id: 1007, name: '🏦 Illinois Savings Bank', price_usd: 8000000, category: 'banks', image: 'images/illinoisbank.jpg', specs: 'FDIC insured, $100M assets, 3 branches', seller: 'DealStream', rating: 4.1 },
+            { id: 1008, name: '🏦 Arizona Mortgage Bank', price_usd: 14000000, category: 'banks', image: 'images/arizonabank.jpg', specs: 'FDIC insured, $180M assets, 5 branches', seller: 'BizBuySell', rating: 4.3 },
+            { id: 1009, name: '🏦 Pennsylvania Heritage Bank', price_usd: 19000000, category: 'banks', image: 'images/pabank.jpg', specs: 'FDIC insured, $230M assets, 6 branches', seller: 'Acquisition.com', rating: 4.5 },
+            { id: 1010, name: '🏦 Ohio Valley Bank', price_usd: 11000000, category: 'banks', image: 'images/ohiobank.jpg', specs: 'FDIC insured, $140M assets, 4 branches', seller: 'DealStream', rating: 4.2 },
+            { id: 1011, name: '🏦 Georgia Trust Bank', price_usd: 16000000, category: 'banks', image: 'images/georgiabank.jpg', specs: 'FDIC insured, $210M assets, 5 branches', seller: 'BizBuySell', rating: 4.4 },
+            { id: 1012, name: '🏦 Washington State Bank', price_usd: 28000000, category: 'banks', image: 'images/wabank.jpg', specs: 'FDIC insured, $350M assets, 8 branches', seller: 'Acquisition.com', rating: 4.7 },
+            { id: 1013, name: '🏦 Michigan Community Bank', price_usd: 9000000, category: 'banks', image: 'images/michiganbank.jpg', specs: 'FDIC insured, $120M assets, 3 branches', seller: 'DealStream', rating: 4.0 },
+            { id: 1014, name: '🏦 North Carolina Savings Bank', price_usd: 17000000, category: 'banks', image: 'images/ncbank.jpg', specs: 'FDIC insured, $220M assets, 5 branches', seller: 'BizBuySell', rating: 4.4 },
+            { id: 1015, name: '🏦 Nevada Business Bank', price_usd: 21000000, category: 'banks', image: 'images/nevadabank.jpg', specs: 'FDIC insured, $260M assets, 6 branches', seller: 'Acquisition.com', rating: 4.6 },
+            { id: 1016, name: '🏦 Tennessee Bank of Commerce', price_usd: 13000000, category: 'banks', image: 'images/tnbank.jpg', specs: 'FDIC insured, $160M assets, 4 branches', seller: 'DealStream', rating: 4.3 },
+            { id: 1017, name: '🏦 Louisiana Gulf Bank', price_usd: 20000000, category: 'banks', image: 'images/labank.jpg', specs: 'FDIC insured, $250M assets, 6 branches', seller: 'BizBuySell', rating: 4.5 },
+            { id: 1018, name: '🏦 Oregon Pacific Bank', price_usd: 24000000, category: 'banks', image: 'images/orbank.jpg', specs: 'FDIC insured, $300M assets, 7 branches', seller: 'Acquisition.com', rating: 4.7 },
+            { id: 1019, name: '🏦 Connecticut Valley Bank', price_usd: 16000000, category: 'banks', image: 'images/ctbank.jpg', specs: 'FDIC insured, $200M assets, 5 branches', seller: 'DealStream', rating: 4.4 },
+            { id: 1020, name: '🏦 Missouri Savings Bank', price_usd: 10000000, category: 'banks', image: 'images/mobank.jpg', specs: 'FDIC insured, $130M assets, 4 branches', seller: 'BizBuySell', rating: 4.1 }
+        ];
+
+        // ============================================================
+        //  ОСНОВНАЯ ЛОГИКА
+        // ============================================================
+        const translations = {
+            en: {
+                'pay-title': '💳 Payment in EURC',
+                'pay-sub': 'Send exact amount to wallet:',
+                'pay-copy': '📋 Copy',
+                'pay-note': '⚡ Open Phantom/Solflare → send EURC\n✅ After confirmation we ship',
+                'pay-close': 'Close',
+                'found': 'Found:',
+                'no-products': '😕 No banks found'
+            },
+            ru: {
+                'pay-title': '💳 Оплата в EURC',
+                'pay-sub': 'Отправьте точную сумму на кошелёк:',
+                'pay-copy': '📋 Копировать',
+                'pay-note': '⚡ Открой Phantom/Solflare → отправь EURC\n✅ После подтверждения мы отправим товар',
+                'pay-close': 'Закрыть',
+                'found': 'Найдено:',
+                'no-products': '😕 Банки не найдены'
+            },
+            de: {
+                'pay-title': '💳 Zahlung in EURC',
+                'pay-sub': 'Sende den genauen Betrag an die Wallet:',
+                'pay-copy': '📋 Kopieren',
+                'pay-note': '⚡ Öffne Phantom/Solflare → sende EURC\n✅ Nach Bestätigung versenden wir',
+                'pay-close': 'Schließen',
+                'found': 'Gefunden:',
+                'no-products': '😕 Keine Banken gefunden'
+            },
+            fr: {
+                'pay-title': '💳 Paiement en EURC',
+                'pay-sub': 'Envoyez le montant exact au portefeuille:',
+                'pay-copy': '📋 Copier',
+                'pay-note': '⚡ Ouvrez Phantom/Solflare → envoyez EURC\n✅ Après confirmation, nous expédions',
+                'pay-close': 'Fermer',
+                'found': 'Trouvé:',
+                'no-products': '😕 Aucune banque trouvée'
+            },
+            es: {
+                'pay-title': '💳 Pago en EURC',
+                'pay-sub': 'Envía el monto exacto a la cartera:',
+                'pay-copy': '📋 Copiar',
+                'pay-note': '⚡ Abre Phantom/Solflare → envía EURC\n✅ Después de la confirmación enviamos',
+                'pay-close': 'Cerrar',
+                'found': 'Encontrado:',
+                'no-products': '😕 No se encontraron bancos'
+            },
+            zh: {
+                'pay-title': '💳 用EURC支付',
+                'pay-sub': '将确切金额发送到钱包:',
+                'pay-copy': '📋 复制',
+                'pay-note': '⚡ 打开Phantom/Solflare → 发送EURC\n✅ 确认后发货',
+                'pay-close': '关闭',
+                'found': '找到:',
+                'no-products': '😕 未找到银行'
+            },
+            ar: {
+                'pay-title': '💳 الدفع بـ EURC',
+                'pay-sub': 'أرسل المبلغ المحدد إلى المحفظة:',
+                'pay-copy': '📋 نسخ',
+                'pay-note': '⚡ افتح Phantom/Solflare → أرسل EURC\n✅ بعد التأكيد نرسل',
+                'pay-close': 'إغلاق',
+                'found': 'تم العثور على:',
+                'no-products': '😕 لم يتم العثور على بنوك'
+            },
+            tr: {
+                'pay-title': '💳 EURC ile ödeme',
+                'pay-sub': 'Tam tutarı cüzdana gönder:',
+                'pay-copy': '📋 Kopyala',
+                'pay-note': '⚡ Phantom/Solflare\'ı aç → EURC gönder\n✅ Onaydan sonra gönderiyoruz',
+                'pay-close': 'Kapat',
+                'found': 'Bulunan:',
+                'no-products': '😕 Banka bulunamadı'
+            }
+        };
+
+        let currentLang = 'en';
+
+        const resultsEl = document.getElementById('results');
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('errorMsg');
+        const countEl = document.getElementById('resultCount');
+        const searchInput = document.getElementById('searchInput');
+        const priceSlider = document.getElementById('priceFilter');
+        const priceLabel = document.getElementById('priceLabel');
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.getElementById('langToggle').textContent = '🌐 ' + lang.toUpperCase();
+            document.querySelectorAll('[id]').forEach(el => {
+                if (translations[lang] && translations[lang][el.id]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[lang][el.id];
+                    } else {
+                        el.textContent = translations[lang][el.id];
+                    }
+                }
+            });
+            document.getElementById('langDropdown').classList.remove('active');
+            localStorage.setItem('eurc-lang', lang);
+        }
+
+        document.getElementById('langToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('langDropdown').classList.toggle('active');
+        });
+        document.addEventListener('click', function() {
+            document.getElementById('langDropdown').classList.remove('active');
+        });
+
+        function searchProducts() {
+            const query = searchInput.value.trim().toLowerCase();
+            const maxPrice = parseFloat(priceSlider.value) || 5000000;
+
+            let filtered = banks.filter(p => {
+                const matchesQuery = !query || p.name.toLowerCase().includes(query);
+                const priceEURC = (p.price_usd / EURC_USD) * MARKUP;
+                const matchesPrice = priceEURC <= maxPrice;
+                return matchesQuery && matchesPrice;
+            });
+
+            filtered.sort((a, b) => a.price_usd - b.price_usd);
+            const foundText = translations[currentLang]?.found || 'Found:';
+            countEl.textContent = `${foundText} ${filtered.length}`;
+
+            if (filtered.length === 0) {
+                const noText = translations[currentLang]?.['no-products'] || '😕 No banks found';
+                resultsEl.innerHTML = `<div class="status-msg">${noText}</div>`;
+                return;
+            }
+            renderProducts(filtered);
+        }
+
+        function renderProducts(products) {
+            let html = '';
+            products.forEach(p => {
+                const priceEURC = (p.price_usd / EURC_USD) * MARKUP;
+                const priceUSD = p.price_usd * MARKUP;
+                const imgSrc = p.image || 'https://picsum.photos/seed/bank/300/200';
+
+                html += `
+                    <div class="product-card" onclick="alert('${p.name}\\nPrice: ${priceEURC.toFixed(2)} EURC\\n${p.specs || ''}\\nSeller: ${p.seller || 'Unknown'}')">
+                        <img src="${imgSrc}" alt="${p.name}" loading="lazy" onerror="this.src='https://picsum.photos/seed/bankerror/300/200'" />
+                        <div class="product-info">
+                            <div class="product-platform">🏦 Bank</div>
+                            <h3>${p.name}</h3>
+                            ${p.specs ? `<div class="product-specs">${p.specs}</div>` : ''}
+                            <div>
+                                <span class="product-price">${priceEURC.toFixed(2)} EURC</span>
+                                <span class="product-price-usd">≈ $${priceUSD.toFixed(0)} USD</span>
+                            </div>
+                            <button class="buy-btn" onclick="event.stopPropagation(); openPayment(${priceEURC.toFixed(2)})">
+                                Buy Bank
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsEl.innerHTML = html;
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            priceSlider.value = 5000000;
+            priceLabel.textContent = '5,000,000';
+            searchProducts();
+        }
+
+        function openPayment(amount) {
+            document.getElementById('paymentAmount').textContent = `${amount} EURC`;
+            document.getElementById('paymentModal').classList.add('active');
+        }
+
+        function closePayment() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+
+        function copyWallet() {
+            const wallet = document.getElementById('paymentWallet').textContent;
+            navigator.clipboard.writeText(wallet).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = '📋 Copy', 1500);
+            }).catch(() => {
+                const input = document.createElement('input');
+                input.value = wallet;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = '📋 Copy', 1500);
+            });
+        }
+
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) closePayment();
+        });
+
+        priceSlider.addEventListener('input', function() {
+            priceLabel.textContent = Number(this.value).toLocaleString();
+            searchProducts();
+        });
+
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchProducts, 300);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('eurc-lang') || 'en';
+            setLang(savedLang);
+            searchProducts();
+        });
+    </script>
+</body>
+</html>
