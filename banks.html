@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>EURC — Banks for Sale</title>
+    <title>EURC Banks — Buy banks with euro-stablecoin</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#0A1628; color:#FFFFFF; padding-bottom:30px; }
@@ -56,9 +56,71 @@
         }
         .nav-links a:hover { color:#FFFFFF; }
         .nav-links .active {
-            color:#00E5FF;
+            color:#FFD700;
             font-weight:700;
         }
+        .search-hero {
+            background:linear-gradient(135deg,#0F1A3A,#1A2A5E);
+            padding:25px 0 30px;
+            margin-bottom:20px;
+            border-radius:0 0 20px 20px;
+            text-align:center;
+        }
+        .search-hero h2 { font-size:24px; color:#FFD700; margin-bottom:4px; }
+        .search-hero p { color:#8899AA; font-size:13px; margin-bottom:15px; }
+        .search-box {
+            display:flex;
+            gap:8px;
+            max-width:600px;
+            margin:15px auto;
+            padding:0 15px;
+        }
+        .search-box input {
+            flex:1;
+            padding:12px 16px;
+            border:2px solid rgba(255,255,255,0.1);
+            border-radius:10px;
+            background:rgba(255,255,255,0.05);
+            color:white;
+            font-size:15px;
+            min-width:0;
+        }
+        .search-box input::placeholder { color:#667; }
+        .search-box input:focus { outline:none; border-color:#1A5CFF; }
+        .search-box button {
+            padding:12px 22px;
+            background:linear-gradient(135deg,#1A5CFF,#0066FF);
+            color:white;
+            border:none;
+            border-radius:10px;
+            font-weight:700;
+            font-size:14px;
+            cursor:pointer;
+            white-space:nowrap;
+            transition:all 0.3s;
+        }
+        .search-box button:hover { transform:translateY(-2px); box-shadow:0 0 30px rgba(26,92,255,0.4); }
+        .filters {
+            display:flex;
+            justify-content:center;
+            gap:15px;
+            flex-wrap:wrap;
+            margin:15px 0;
+            color:#8899AA;
+            font-size:13px;
+        }
+        .filters label { display:flex; align-items:center; gap:8px; }
+        .filters input[type="range"] { width:90px; accent-color:#1A5CFF; height:4px; }
+        .filters .reset-btn {
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.1);
+            color:white;
+            padding:4px 12px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:12px;
+        }
+        .filters .reset-btn:hover { background:rgba(255,255,255,0.1); }
         .results-header {
             display:flex;
             justify-content:space-between;
@@ -82,7 +144,7 @@
             transition:all 0.2s;
             cursor:pointer;
         }
-        .product-card:hover { border-color:#1A5CFF; transform:translateY(-2px); }
+        .product-card:hover { border-color:#FFD700; transform:translateY(-2px); }
         .product-card:active { transform:scale(0.97); }
         .product-card img {
             width:100%;
@@ -101,15 +163,15 @@
             line-height:1.3;
         }
         .product-platform { font-size:10px; color:#667; margin-bottom:4px; text-transform:capitalize; }
-        .product-price { font-size:18px; font-weight:700; color:#00E5FF; }
+        .product-price { font-size:18px; font-weight:700; color:#FFD700; }
         .product-price-usd { font-size:11px; color:#667; margin-left:4px; }
         .product-specs { font-size:10px; color:#8899AA; margin:4px 0; line-height:1.4; }
         .buy-btn {
             width:100%;
             padding:10px;
             margin-top:10px;
-            background:linear-gradient(135deg,#1A5CFF,#0066FF);
-            color:white;
+            background:linear-gradient(135deg,#FFD700,#FFA500);
+            color:#0A1628;
             border:none;
             border-radius:8px;
             font-weight:700;
@@ -141,7 +203,7 @@
             box-shadow:0 20px 60px rgba(0,0,0,0.9);
         }
         .payment-box h2 { font-size:20px; margin-bottom:12px; color:#FFFFFF; }
-        .payment-box .amount { font-size:30px; font-weight:800; color:#00E5FF; margin:10px 0; }
+        .payment-box .amount { font-size:30px; font-weight:800; color:#FFD700; margin:10px 0; }
         .payment-box .wallet-addr {
             background:rgba(0,0,0,0.3);
             padding:12px;
@@ -151,7 +213,7 @@
             font-size:13px;
             margin:15px 0;
         }
-        .payment-box .wallet-addr code { color:#00E5FF; }
+        .payment-box .wallet-addr code { color:#FFD700; }
         .payment-box .copy-btn {
             background:rgba(255,255,255,0.05);
             border:1px solid rgba(255,255,255,0.08);
@@ -226,59 +288,6 @@
             font-family:inherit;
         }
         .lang-dropdown button:hover { background:rgba(255,255,255,0.08); }
-        .search-box {
-            display:flex;
-            gap:8px;
-            max-width:600px;
-            margin:20px auto;
-            padding:0 15px;
-        }
-        .search-box input {
-            flex:1;
-            padding:12px 16px;
-            border:2px solid rgba(255,255,255,0.1);
-            border-radius:10px;
-            background:rgba(255,255,255,0.05);
-            color:white;
-            font-size:15px;
-            min-width:0;
-        }
-        .search-box input::placeholder { color:#667; }
-        .search-box input:focus { outline:none; border-color:#1A5CFF; }
-        .search-box button {
-            padding:12px 22px;
-            background:linear-gradient(135deg,#1A5CFF,#0066FF);
-            color:white;
-            border:none;
-            border-radius:10px;
-            font-weight:700;
-            font-size:14px;
-            cursor:pointer;
-            white-space:nowrap;
-            transition:all 0.3s;
-        }
-        .search-box button:hover { transform:translateY(-2px); box-shadow:0 0 30px rgba(26,92,255,0.4); }
-        .filters {
-            display:flex;
-            justify-content:center;
-            gap:15px;
-            flex-wrap:wrap;
-            margin:15px 0;
-            color:#8899AA;
-            font-size:13px;
-        }
-        .filters label { display:flex; align-items:center; gap:8px; }
-        .filters input[type="range"] { width:90px; accent-color:#1A5CFF; height:4px; }
-        .filters .reset-btn {
-            background:rgba(255,255,255,0.05);
-            border:1px solid rgba(255,255,255,0.1);
-            color:white;
-            padding:4px 12px;
-            border-radius:6px;
-            cursor:pointer;
-            font-size:12px;
-        }
-        .filters .reset-btn:hover { background:rgba(255,255,255,0.1); }
         @media (max-width:480px) {
             .products-grid { grid-template-columns:1fr 1fr; gap:10px; }
             .product-card img { height:120px; }
@@ -287,8 +296,15 @@
             .search-box input { font-size:14px; padding:10px 12px; }
             .search-box button { padding:10px 16px; font-size:13px; }
             .wallet-badge { font-size:9px; }
+            .pool-steps { grid-template-columns:1fr; }
+            .pool-actions .btn-primary,
+            .pool-actions .btn-secondary { display:block; margin:10px 0; }
+            .pool-info { flex-direction:column; align-items:center; gap:8px; }
+            .category-tabs button { font-size:11px; padding:6px 14px; }
             .lang-btn { font-size:10px; padding:3px 10px; }
             .lang-dropdown { min-width:120px; }
+            .nav-links { gap:10px; }
+            .nav-links a { font-size:12px; }
         }
     </style>
 </head>
@@ -324,19 +340,22 @@
         </div>
     </header>
 
+    <section class="search-hero">
+        <div class="container">
+            <h2 id="s-title">🏦 Banks for Sale</h2>
+            <p id="s-sub">Exclusive offers — buy a bank with EURC</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search banks..." />
+                <button onclick="searchProducts()">Search</button>
+            </div>
+            <div class="filters">
+                <label id="s-price-label">Price (EURC): <input type="range" min="0" max="100000000" value="5000000" id="priceFilter" /> <span id="priceLabel">5,000,000</span></label>
+                <button class="reset-btn" onclick="resetFilters()">↺ Reset</button>
+            </div>
+        </div>
+    </section>
+
     <div class="container">
-        <h2 style="color:#00E5FF; text-align:center; margin:20px 0 10px;">🏦 Banks for Sale</h2>
-        <p style="color:#8899AA; text-align:center; max-width:600px; margin:0 auto 20px;">Exclusive offers — buy a bank with EURC</p>
-
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search banks..." />
-            <button onclick="searchProducts()">Search</button>
-        </div>
-        <div class="filters">
-            <label>Price (EURC): <input type="range" min="0" max="100000000" value="5000000" id="priceFilter" /> <span id="priceLabel">5,000,000</span></label>
-            <button class="reset-btn" onclick="resetFilters()">↺ Reset</button>
-        </div>
-
         <div class="results-header">
             <span id="resultCount">Found: 0</span>
             <span style="color:#667;">💰 1 EURC ≈ 1.15 USD</span>
@@ -376,6 +395,7 @@
         const WALLET = 'DeE6WvLuhdXdaMJYog5k1Xgo2gbF48j42tVyN21E3QAf';
         const EURC_USD = 1.15;
         const MARKUP = 1.30;
+        const BANKS_MARKUP = 5.0; // дополнительная наценка ×5 для банков
 
         const banks = [
             { id: 1001, name: '🏦 Community Bank of Texas', price_usd: 15000000, category: 'banks', image: 'images/texasbank.jpg', specs: 'FDIC insured, $200M assets, 5 branches', seller: 'DealStream', rating: 4.5 },
@@ -405,6 +425,9 @@
         // ============================================================
         const translations = {
             en: {
+                's-title': '🏦 Banks for Sale',
+                's-sub': 'Exclusive offers — buy a bank with EURC',
+                's-price-label': 'Price (EURC):',
                 'pay-title': '💳 Payment in EURC',
                 'pay-sub': 'Send exact amount to wallet:',
                 'pay-copy': '📋 Copy',
@@ -414,6 +437,9 @@
                 'no-products': '😕 No banks found'
             },
             ru: {
+                's-title': '🏦 Банки на продажу',
+                's-sub': 'Эксклюзивные предложения — купи банк за EURC',
+                's-price-label': 'Цена (EURC):',
                 'pay-title': '💳 Оплата в EURC',
                 'pay-sub': 'Отправьте точную сумму на кошелёк:',
                 'pay-copy': '📋 Копировать',
@@ -423,6 +449,9 @@
                 'no-products': '😕 Банки не найдены'
             },
             de: {
+                's-title': '🏦 Banken zum Verkauf',
+                's-sub': 'Exklusive Angebote — kaufe eine Bank mit EURC',
+                's-price-label': 'Preis (EURC):',
                 'pay-title': '💳 Zahlung in EURC',
                 'pay-sub': 'Sende den genauen Betrag an die Wallet:',
                 'pay-copy': '📋 Kopieren',
@@ -432,6 +461,9 @@
                 'no-products': '😕 Keine Banken gefunden'
             },
             fr: {
+                's-title': '🏦 Banques à vendre',
+                's-sub': 'Offres exclusives — achetez une banque avec EURC',
+                's-price-label': 'Prix (EURC):',
                 'pay-title': '💳 Paiement en EURC',
                 'pay-sub': 'Envoyez le montant exact au portefeuille:',
                 'pay-copy': '📋 Copier',
@@ -441,6 +473,9 @@
                 'no-products': '😕 Aucune banque trouvée'
             },
             es: {
+                's-title': '🏦 Bancos en venta',
+                's-sub': 'Ofertas exclusivas — compra un banco con EURC',
+                's-price-label': 'Precio (EURC):',
                 'pay-title': '💳 Pago en EURC',
                 'pay-sub': 'Envía el monto exacto a la cartera:',
                 'pay-copy': '📋 Copiar',
@@ -450,6 +485,9 @@
                 'no-products': '😕 No se encontraron bancos'
             },
             zh: {
+                's-title': '🏦 银行出售',
+                's-sub': '独家优惠 — 用EURC购买银行',
+                's-price-label': '价格 (EURC):',
                 'pay-title': '💳 用EURC支付',
                 'pay-sub': '将确切金额发送到钱包:',
                 'pay-copy': '📋 复制',
@@ -459,6 +497,9 @@
                 'no-products': '😕 未找到银行'
             },
             ar: {
+                's-title': '🏦 بنوك للبيع',
+                's-sub': 'عروض حصرية — اشترِ بنكًا بـ EURC',
+                's-price-label': 'السعر (EURC):',
                 'pay-title': '💳 الدفع بـ EURC',
                 'pay-sub': 'أرسل المبلغ المحدد إلى المحفظة:',
                 'pay-copy': '📋 نسخ',
@@ -468,6 +509,9 @@
                 'no-products': '😕 لم يتم العثور على بنوك'
             },
             tr: {
+                's-title': '🏦 Bankalar satılık',
+                's-sub': 'Özel teklifler — EURC ile banka satın al',
+                's-price-label': 'Fiyat (EURC):',
                 'pay-title': '💳 EURC ile ödeme',
                 'pay-sub': 'Tam tutarı cüzdana gönder:',
                 'pay-copy': '📋 Kopyala',
@@ -518,7 +562,8 @@
 
             let filtered = banks.filter(p => {
                 const matchesQuery = !query || p.name.toLowerCase().includes(query);
-                const priceEURC = (p.price_usd / EURC_USD) * MARKUP;
+                // Наценка для банков: ×5 + 30%
+                const priceEURC = (p.price_usd / EURC_USD) * MARKUP * BANKS_MARKUP;
                 const matchesPrice = priceEURC <= maxPrice;
                 return matchesQuery && matchesPrice;
             });
@@ -538,8 +583,8 @@
         function renderProducts(products) {
             let html = '';
             products.forEach(p => {
-                const priceEURC = (p.price_usd / EURC_USD) * MARKUP;
-                const priceUSD = p.price_usd * MARKUP;
+                const priceEURC = (p.price_usd / EURC_USD) * MARKUP * BANKS_MARKUP;
+                const priceUSD = p.price_usd * MARKUP * BANKS_MARKUP;
                 const imgSrc = p.image || 'https://picsum.photos/seed/bank/300/200';
 
                 html += `
